@@ -12,7 +12,7 @@ let connection = require('./lib/db');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var userDataRouter = require('./routes/userData');
-var loginPage = require('./route/login')
+var loginRouter = require('./routes/loginUser');
 
 
 var app = express();
@@ -39,8 +39,8 @@ app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/userData', userDataRouter);
-app.use('/login', loginPage);
+app.use('/userData', userDataRouter);;
+app.use('/loginUser', loginRouter);;
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -57,10 +57,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// route page
-app.get('/', (req, res) => {
-  res.render('pages/login.ejs');
- });
 
 module.exports = app;
