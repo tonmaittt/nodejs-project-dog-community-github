@@ -11,4 +11,9 @@ router.get('/login', function(req, res, next) {
   res.render('loginUser', { title: 'Express' });
 });
 
+/* regis page. */
+router.get('/regis', function(req, res, next) {
+  res.render('regisUser', { title: 'Express' });
+});
+
 module.exports = router;
