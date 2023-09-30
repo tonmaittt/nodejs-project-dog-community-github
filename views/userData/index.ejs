@@ -35,8 +35,10 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">id</th>
+                            <th scope="col">อีเมล์</th>
                             <th scope="col">ชื่อ</th>
                             <th scope="col">สกุล</th>
+                            <th scope="col">รหัส</th>
                             <th width="200px">Action</th>
                         </tr>
                     </thead>
@@ -50,10 +52,16 @@
                                     <%= data[i].id %>
                                 </td>
                                 <td>
+                                    <%= data[i].email %>
+                                </td>
+                                <td>
                                     <%= data[i].fname %>
                                 </td>
                                 <td>
                                     <%= data[i].sname %>
+                                </td>
+                                <td>
+                                    <%= data[i].password %>
                                 </td>
                                 <td>
                                     <a href="../userData/edit/<%= data[i].id %>" class="btn btn-success edit">Edit</a>
