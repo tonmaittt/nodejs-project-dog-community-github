@@ -34,6 +34,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">id</th>
                             <th scope="col">ชื่อ</th>
                             <th scope="col">สกุล</th>
                             <th width="200px">Action</th>
@@ -43,8 +44,11 @@
                         <% for(let i=0; i < data.length; i++) { %>
                             <tr>
                                 <th scope="row">
-                                    <%= data[i].id %>
+                                    <%= i+1 %>
                                 </th>
+                                <td>
+                                    <%= data[i].id %>
+                                </td>
                                 <td>
                                     <%= data[i].fname %>
                                 </td>
