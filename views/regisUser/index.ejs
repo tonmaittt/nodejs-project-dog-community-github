@@ -13,7 +13,7 @@
 <body>
 
 
-  <section class="vh-100" style="background-color: #FF6633; width: 100vw; height: 100vh;">
+  <section class="vh-100" style="background-color: #FF6633;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -22,6 +22,7 @@
               <class class="card-body p-5 text-center">
 
                 <h3 class="mb-5">Register</h3>
+                <hr class="my-5">
                 <form action="/regis/add" method="post">
                   <div class="form-outline mb-4">
                     <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="" autocomplete="off" />
@@ -47,7 +48,15 @@
                     <input type="confirmpassword" id="typePasswordX-2" class="form-control form-control-lg" name="conpassw" value="" autocomplete="off"/>
                     <label class="form-label" for="typePasswordX-2">Confirm Password</label>
                   </div>
-    
+
+                 <!-- dropdown -->
+                 <label class="form-label" for="typePasswordX-2">ประเภทผู้ใช้งาน</label>
+                 <select name="cars" id="cars" class="form-control form-control-lg">
+                  <option value="volvo">ผู้ใช้งานทั่วไป</option>
+                  <option value="saab">ร้านค้า</option>
+                  <option value="opel">สัตวแพทย์</option>
+                </select>
+                <br><br>
                   <!-- Checkbox -->
                   <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
                   <p>Have already an account?<a href="/login">Login</a></p>
@@ -61,6 +70,8 @@
     </div>
     </div>
   </section>
+
+  
 </body>
 
 </html>
