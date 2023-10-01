@@ -9,6 +9,9 @@
     <p>Welcome to <%= title %></p>
     <% if (emailS) { %>
       <div class="alert alert-success" role="alert"><%= emailS %></div>
+      <% if (levelS == 0) { %>
+        <div class="alert alert-success" role="alert">ไม่มีข้อมูล</div>
+      <% } %>
       <% if (levelS == 1) { %>
         <div class="alert alert-success" role="alert">ผู้ใช้งานทั่วไป</div>
       <% } %>

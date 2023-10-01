@@ -16,15 +16,33 @@ const ifNotLogIn = (req, res, next) => {
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Home" });
+  if (!req.session.ifNotLogIn) {
+    res.render("index", { 
+      title: "Home",
+      emailS: "ไม่มีข้อมูล",
+      levelS: 0  
+    });
+  }
+  res.render("index", { 
+    title: "Home",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
+  });
 });
 
 /* login page. */
 router.get("/login", function (req, res, next) {
-  res.render("login", { 
-    title: "Login",
-    email: "",
-    password: ""
+  if (!req.session.ifNotLogIn) {
+    res.render("login", { 
+      title: "Login",
+      email: "",
+      password: ""
+    });
+  }
+  res.render("index", { 
+    title: "Home",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
   });
 });
 
@@ -211,7 +229,7 @@ router.get("/user", ifNotLogIn,function (req, res, next) {
 /* userData page. */
 router.get("/logout", ifNotLogIn,function (req, res, next) {
   req.session.destroy();
-  res.redirect("/login");
+  res.redirect("/");
 });
 
 
