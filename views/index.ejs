@@ -7,8 +7,21 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <% if (emailS) { %>
+      <div class="alert alert-success" role="alert"><%= emailS %></div>
+      <% if (levelS == 1) { %>
+        <div class="alert alert-success" role="alert">ผู้ใช้งานทั่วไป</div>
+      <% } %>
+      <% if (levelS == 2) { %>
+        <div class="alert alert-success" role="alert">ร้านค้า</div>
+      <% } %>
+      <% if (levelS == 3) { %>
+        <div class="alert alert-success" role="alert">สัตวแพทย์</div>
+      <% } %>
+    <% } %>
     <li><a href="/login">Login</a> </li>
-    <li><a href="/regis">regis</a> </li>
+    <li><a href="/register">regis</a> </li>
     <li><a href="/user">ข้อมูลผู้ใช้</a> </li>
+    <li><a href="/logout">ออกจากระบบ</a> </li>
   </body>
 </html>

@@ -12,7 +12,6 @@
 
 <body>
 
-
   <section class="vh-100" style="background-color: #FF6633;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -20,41 +19,45 @@
           <div class="card shadow-2-strong" style="border-radius: 1rem;">
             
               <class class="card-body p-5 text-center">
-
+                <% if (messages.error) { %>
+                  <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                <% } %>
                 <h3 class="mb-5">Register</h3>
                 <hr class="my-5">
-                <form action="/regis/add" method="post">
+                <form action="/register/add" method="post">
                   <div class="form-outline mb-4">
-                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="" autocomplete="off" />
+                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="<%= email %>" autocomplete="off" />
                     <label class="form-label" for="typeEmailX-2">Email</label>
                   </div>
     
                   <div class="form-outline mb-4">
-                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="fname" value="" autocomplete="off"/>
+                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="fname" value="<%= fname %>" autocomplete="off"/>
                     <label class="form-label" for="typeEmailX-2">First Name</label>
                   </div>
     
                   <div class="form-outline mb-4">
-                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="sname" value="" autocomplete="off"/>
+                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="sname" value="<%= sname %>" autocomplete="off"/>
                     <label class="form-label" for="typeEmailX-2">Last Name</label>
                   </div>
     
                   <div class="form-outline mb-4">
-                    <input type="password" id="typePasswordX-2" class="form-control form-control-lg" name="passw" value="" autocomplete="off"/>
+                    <input type="password" id="password" class="form-control form-control-lg" name="password" value="<%= password %>" autocomplete="off" onkeyup='check();'/>
                     <label class="form-label" for="typePasswordX-2">Password</label>
                   </div>
     
                   <div class="form-outline mb-4">
-                    <input type="confirmpassword" id="typePasswordX-2" class="form-control form-control-lg" name="conpassw" value="" autocomplete="off"/>
+                    <span id='message'></span>
+                    <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();'/>
                     <label class="form-label" for="typePasswordX-2">Confirm Password</label>
+                    
                   </div>
-
+                  
                  <!-- dropdown -->
                  <label class="form-label" for="typePasswordX-2">ประเภทผู้ใช้งาน</label>
-                 <select name="cars" id="cars" class="form-control form-control-lg">
-                  <option value="volvo">ผู้ใช้งานทั่วไป</option>
-                  <option value="saab">ร้านค้า</option>
-                  <option value="opel">สัตวแพทย์</option>
+                 <select name="level" id="level" class="form-control form-control-lg">
+                  <option value="1">ผู้ใช้งานทั่วไป</option>
+                  <option value="2">ร้านค้า</option>
+                  <option value="3">สัตวแพทย์</option>
                 </select>
                 <br><br>
                   <!-- Checkbox -->
@@ -70,7 +73,19 @@
     </div>
     </div>
   </section>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
   
 </body>
 
