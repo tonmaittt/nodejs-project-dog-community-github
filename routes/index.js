@@ -17,7 +17,7 @@ const ifNotLogIn = (req, res, next) => {
 /* GET home page. */
 router.get("/", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
-    res.render("index", { 
+    return res.render("index", { 
       title: "Home",
       emailS: "ไม่มีข้อมูล",
       levelS: 0  
@@ -227,7 +227,7 @@ router.get("/user", ifNotLogIn,function (req, res, next) {
 });
 
 /* userData page. */
-router.get("/logout", ifNotLogIn,function (req, res, next) {
+router.get("/logout", function (req, res, next)  {
   req.session.destroy();
   res.redirect("/");
 });

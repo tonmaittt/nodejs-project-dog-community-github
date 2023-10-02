@@ -26,11 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use(session({
   cookie: { maxAge: 60000},
-  store: new session.MemoryStore,
-  saveUnitialized: true,
-  resave: 'true',
+  // store: new session.MemoryStore,
+  saveUninitialized: true,
+  resave: true,
   secret: 'secret'
 }))
 
