@@ -2,6 +2,17 @@ let express = require('express');
 let router = express.Router();
 let dbCon = require('../lib/db');
 
+const ifNotLogIn = (req, res, next) => {
+    if (!req.session.ifNotLogIn) {
+      return  res.render("login", { 
+        title: "Login",
+        email: "",
+        password: ""
+      });
+    }
+    next();
+  }
+
 // display user data page
 router.get('/', (req, res, next) => {
     dbCon.query('SELECT * FROM tb_user ORDER BY id asc', (err, rows) => {
@@ -135,6 +146,13 @@ router.get('/delete/(:id)', (req, res, next) => {
         }
     })
 })
+
+router.get("/backHome", function (req, res, next) {
+    if (!req.session.ifNotLogIn) {
+        res.redirect("../");
+    }
+        res.redirect("../");
+  });
 
 module.exports = router;
 

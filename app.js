@@ -25,7 +25,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+// path รูป img
+app.use("/img",express.static('img'));
 
 app.use(session({
   cookie: { maxAge: 60000},

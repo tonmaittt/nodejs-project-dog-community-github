@@ -19,7 +19,7 @@ router.get("/", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return res.render("index", { 
       title: "Home",
-      emailS: "ไม่มีข้อมูล",
+      emailS: "0",
       levelS: 0  
     });
   }
@@ -81,11 +81,12 @@ router.post("/login/submit", (req, res, next) => {
                   req.session.ifNotLogIn = true;
                   let emailS = req.session.emailUser = rows[0].email;
                   let levelS = req.session.level = rows[0].level;
-                  res.render("index", { 
-                    title: "Home",
-                    emailS: emailS,
-                    levelS: levelS 
-                  });
+                  res.redirect("../");
+                  // res.render("index", { 
+                  //   title: "Home",
+                  //   emailS: emailS,
+                  //   levelS: levelS 
+                  // });
                 }else{
                   req.flash("error", "อีเมล์หรือรหัสผ่านไม่ถูกต้อง" + email);
                   res.render("login", {
