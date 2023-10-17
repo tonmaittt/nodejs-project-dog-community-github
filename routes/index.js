@@ -30,6 +30,70 @@ router.get("/", function (req, res, next) {
   });
 });
 
+/* GET boardhealth page. */
+router.get("/boardhealth", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("boardhealth", { 
+      title: "Board Health",
+      emailS: "0",
+      levelS: 0  
+    });
+  }
+  res.render("boardhealth", { 
+    title: "Board Health",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
+  });
+});
+
+/* GET shop page. */
+router.get("/shop", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("shop", { 
+      title: "Shop",
+      emailS: "0",
+      levelS: 0  
+    });
+  }
+  res.render("shop", { 
+    title: "Shop",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
+  });
+});
+
+/* GET board page. */
+router.get("/board", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("board", { 
+      title: "Board",
+      emailS: "0",
+      levelS: 0  
+    });
+  }
+  res.render("board", { 
+    title: "Board",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
+  });
+});
+
+/* GET boardcommunity page. */
+router.get("/boardcommunity", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("boardcommunity", { 
+      title: "Board Community",
+      emailS: "0",
+      levelS: 0  
+    });
+  }
+  res.render("boardcommunity", { 
+    title: "Board Community",
+    emailS: req.session.emailUser,
+    levelS: req.session.level  
+  });
+});
+
 /* login page. */
 router.get("/login", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
