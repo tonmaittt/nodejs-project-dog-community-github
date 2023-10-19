@@ -1,0 +1,46 @@
+.border{
+    margin-top: 150px;
+}
+.text-top{
+    text-align: center;
+}
+.text-with-lines {
+    position: relative;
+}
+
+.text-with-lines::before,
+.text-with-lines::after {
+    content: "";
+    position: absolute;
+    width: 20%;
+    height: 10px;
+    background-color: #000; /* เปลี่ยนสีตามความต้องการ */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.text-with-lines::before {
+    left: 0;
+}
+
+.text-with-lines::after {
+    right: 0;
+}
+
+/* เพิ่มสไตล์ข้อความตามที่ต้องการ */
+.text {
+    padding: 20px;
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังตามความต้องการ */
+}
+.underline {
+    text-decoration: underline;
+}
+/* .boxtop{
+    height: auto;
+    width: 355px;
+} */
+
+iframe {
+    width: 100%;
+    height: 500px;
+}

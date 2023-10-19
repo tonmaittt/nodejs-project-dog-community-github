@@ -29,10 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/img",express.static('img'));
 
 app.use(session({
-  cookie: { maxAge: 60000},
+  cookie: { maxAge: 7200000},
   // store: new session.MemoryStore,
-  saveUninitialized: true,
-  resave: true,
+  saveUninitialized: flash,
+  resave: flash,
   secret: 'secret'
 }))
 
