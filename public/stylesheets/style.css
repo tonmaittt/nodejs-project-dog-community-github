@@ -21,3 +21,9 @@ a {
 .carousel-control-next{
   margin-top: 250px;
 }
+
+.limited-text {
+  white-space: nowrap; /* ไม่ขึ้นบรรทัดใหม่ */
+  overflow: hidden; /* ซ่อนข้อความเกินเขต */
+  text-overflow: ellipsis; /* แสดงเครื่องหมาย ellipsis (...) ถ้าข้อความเกินเขต */
+}

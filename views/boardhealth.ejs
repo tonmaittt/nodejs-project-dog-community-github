@@ -3,24 +3,33 @@
 
         <body>
             <main class="board mt-4">
+                
                 <div class="container">
-                    <div class="d-flex">
-                        <a class="btn btn-warning ml-auto" href="/boardhealthAdd" role="button"
-                            style="color: white;"><b>สร้างคำถาม</b></a>
+                    <div class="d-inline-flex">
+                        <div class="p-2" style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
+                            <h3>บอร์ดสุขภาพสุนัข</h3>
+                        </div>
                     </div>
                     <div class="shadow p-3 mb-5 bg-white rounded">
                         <div class="text-with-lines">
                             <div class="text-top">
-                                <div class="title mt-2">
+                                <div class="title mt-2 text-center">
                                     <h1>บอร์ดสุขภาพสุนัข</h1>
                                 </div>
                             </div>
                         </div>
 
                         <div class="container">
+                            <% if(levelS > 0) { %>
+                            <div class="d-flex">
+                                <a class="btn ml-auto" href="/boardhealthAdd" role="button"style="color: rgb(255, 255, 255); background-color: coral;" class="btn btn-lg btn-block mb-2">
+                                    <b>สร้างคำถาม</b>
+                                </a>
+                            </div>
+                            <% } %>
                             <!-- Control the column width, and how they should appear on different devices -->
                             <div class="row">
-
+                                
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto ">
                                     <div class="container">
                                         <% if(data.length) { %>
@@ -29,21 +38,21 @@
                                             <% for(let i=0; i < data.length; i++) { %>
                                                     <div class="row justify-content-start mt-2 mb-2" >
                                                         <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 col-lg-12 col-sm-12 col-xs-12">
-                                                            <div class="col-lg-2 col-sm-2 col-xs-2 ">
+                                                            <div class="col-lg-2 col-sm-2 col-xs-2 d-flex flex-wrap align-content-center">
                                                                 <img class="mr-3 img-fluid" style="max-width: 80px; max-height: 120px;" src="img/<%= data[i].photo %>" alt="Generic placeholder image">
                                                             </div>
                                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
                                                                 <h5 class="mt-3"><%= data[i].title %></h5>
-                                                                เมื่อ <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br>ผู้ชม (<%= data[i].view %>) -o- ความคิดเห็น (0) จาก
+                                                                เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br>ผู้ชม (<%= data[i].view %>) -o- ความคิดเห็น (0) จาก
                                                                 คุณ <%= data[i].username %>
                                                             </div>
                                                             <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                                <p><%= new Intl.DateTimeFormat('en-GB').format(data[i].created_at) %></p>
-                                                                <p><%= new Intl.DateTimeFormat('en-GB', { timeStyle: 'medium'}).format(data[i].created_at) %> AM</p>
+                                                                <p><%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at) %></p>
+                                                                <p><%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'medium'}).format(data[i].created_at) %> น.</p>
                                                                 <p>ดู <%= data[i].view %></p>
                                                             </div>
                                                         </div>
-                                                        <a type="button" class="btn btn-warning btn-lg btn-block mb-2" href="/boardhealthDetail/<%= data[i].boardhealth_id %>">รายละเอียด</a>
+                                                        <a type="button" style="color: rgb(255, 255, 255); background-color: coral;" class="btn btn-lg btn-block mb-2" href="/boardhealthDetail/<%= data[i].boardhealth_id %>">รายละเอียด</a>
                                                     </div>
                                                 
                                                 
@@ -54,122 +63,10 @@
                                         <% } %>
 
                                         <% if(!data.length) { %>
-                                            <p class="text-center">ไม่พบข้อมูลผู้ใช้</p>
+                                            <p class="text-center">ไม่พบข้อมูล</p>
                                         <% } %>
 
-                                        <h5><span class="underline"> >บอร์ดสุขภาพยอดนิยม </span></h5>
-                                        
-                                        <div class="row justify-content-start">
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <img class="mr-3 img-fluid" src="img/dog1.jpg"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2 ">
-                                                    <img class="mr-3 img-fluid" src="img/doctor.png"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2 ">
-                                                    <img class="mr-3 img-fluid" src="img/doctor.png"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-
-
-                                        <h5><span class="underline">>บอร์ดสุขภาพล่าสุด</span></h5>
-                                        <div class="row justify-content-start">
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <img class="mr-3 img-fluid" src="img/dog1.jpg"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2 ">
-                                                    <img class="mr-3 img-fluid" src="img/doctor.png"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2">
-                                                <div class="col-lg-2 col-sm-2 col-xs-2 ">
-                                                    <img class="mr-3 img-fluid" src="img/doctor.png"
-                                                        alt="Generic placeholder image">
-                                                </div>
-                                                <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                    <h5 class="mt-3">Media heading</h5>
-                                                    เมื่อ 12/02/2566 เวลา 09:00 น.<br>ผู้ชม (0) -o- ความคิดเห็น (0) จาก
-                                                    คุณ John doe
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-xs-2">
-                                                    <p>12/02/2566</p>
-                                                    <p>10.00 AM</p>
-                                                    <p>5,000</p>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
+                                
                                     </div>
                                 </div>
                             </div>

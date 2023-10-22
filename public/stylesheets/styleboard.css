@@ -44,3 +44,9 @@ iframe {
     width: 100%;
     height: 500px;
 }
+
+.limited-text {
+    white-space: nowrap; /* ไม่ขึ้นบรรทัดใหม่ */
+    overflow: hidden; /* ซ่อนข้อความเกินเขต */
+    text-overflow: ellipsis; /* แสดงเครื่องหมาย ellipsis (...) ถ้าข้อความเกินเขต */
+}

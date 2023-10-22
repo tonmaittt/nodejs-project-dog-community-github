@@ -1,0 +1,118 @@
+<%- include('partials/head') -%>
+    <%- include('partials/header') -%>
+
+        <body>
+            <main class="board mt-4">
+                <div class="container">
+                    <div class="d-inline-flex">
+                        <div class="p-2"
+                            style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
+                            <h3>ชุมชน - บทความ</h3>
+                        </div>
+                    </div>
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        <div class="text-with-lines">
+                            <div class="text-top">
+                                <div class="title mt-2">
+                                    <h1>บทความชุมชน</h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <!-- Control the column width, and how they should appear on different devices -->
+                            <div class="row">
+                                <div class="col-sm-3 mx-auto">
+                                    <% if(levelS>= 2) { %>
+                                        <a type="button" class="btn col-sm-12 mt-2"
+                                            style="color: #ffffff; background-color: coral;"
+                                            href="/articleAdd">สร้างบทความ</a>
+                                        <% } %>
+                                            <div class="row py-3 px-3 mx-auto">
+                                                <a type="button" class="btn col-sm-5 mr-auto"
+                                                    style="color: #ffffff; background-color: coral;">ล่างสุด</a>
+
+                                                <a type="button" class="btn col-sm-5"
+                                                    style="color: #ffffff; background-color: coral;">ยอดฮิต</a>
+                                            </div>
+                                            <a type="button" class="btn col-sm-12 mt-2"
+                                                style="color: #ffffff; background-color: coral;">ทั้งหมด</a>
+                                            <a type="button" class="btn col-sm-12 mt-2"
+                                                style="color: #ffffff; background-color: coral;">ทั่วไป</a>
+                                            <a type="button" class="btn col-sm-12 mt-2"
+                                                style="color: #ffffff; background-color: coral;">เรื่องน่ารู้</a>
+                                            <a type="button" class="btn col-sm-12 mt-2"
+                                                style="color: #ffffff; background-color: coral;">เรื่องน่ารัก</a>
+                                            <a type="button" class="btn col-sm-12 mt-2"
+                                                style="color: #ffffff; background-color: coral;">การดูแล</a>
+                                </div>
+
+
+                                <div class="col-sm-9 mx-auto mt-auto">
+                                    <h5><span class="underline"> > บทความชุมชนทั้งหมด</span></h5>
+                                    <div class="container">
+                                        <% if(data.length) { %>
+
+                                            <div class="row justify-content-start">
+                                                <% for(let i=0; i < data.length; i++) { %>
+                                                    <div class="col-lg-3 col-md-6 col-sm-12 mt-4" style="height: 20;">
+                                                        <div class="card p-2">
+                                                            <a href="/articleDetail/<%= data[i].article_id %>">
+                                                                <img src="img/<%= data[i].photo %>" height="170px"
+                                                                    class="card-img-top" alt="Image 1">
+                                                            </a>
+
+                                                            <div class="mt-2">
+                                                                <a href="/articleDetail/<%= data[i].article_id %>"
+                                                                    style="text-decoration:none; color: black;">
+                                                                    <h5 class="card-title limited-text">
+                                                                        <%= data[i].title %>
+                                                                    </h5>
+                                                                    <!-- <p class="card-text limited-text">Some example text for Card 1.</p> -->
+                                                                    <hr>
+                                                                    <p class="card-text limited-text">
+                                                                        <%= new
+                                                                            Intl.DateTimeFormat('th-GB').format(data[i].created_at)
+                                                                            %> ดู (<%= data[i].view %>)
+                                                                    </p>
+                                                                </a>
+                                                                <p class="card-text limited-text">โดย <a
+                                                                        class="text-primary">
+                                                                        <%= data[i].username %>
+                                                                    </a></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
+                                            </div>
+
+                                            <% } %>
+                                                <% if(!data.length) { %>
+                                                    <p class="text-center" style="height: 270px;">ไม่พบข้อมูล</p>
+                                                    <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="justify-content-center mt-4 mx-auto">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-end">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </main>
+        </body>
+        <%- include('partials/footer') -%>
