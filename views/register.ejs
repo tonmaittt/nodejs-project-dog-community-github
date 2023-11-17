@@ -1,83 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  
-</head>
-
+<%- include('partials/heads') -%>
+<%- include('partials/headers') -%>
 <body>
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>ยินดีต้อนรับ</p>
+						<h1>สมัครสมาชิก</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
 
-  <section class="vh-100" style="background-color: #FF6633;">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-2-strong" style="border-radius: 1rem;">
-            
-              <class class="card-body p-5 text-center">
-                <% if (messages.error) { %>
-                  <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-                <% } %>
-                <h3 class="mb-5">Register</h3>
-                <hr class="my-5">
-                <form action="/register/add" method="post">
-                  <div class="form-outline mb-4">
-                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="<%= email %>" autocomplete="off" />
-                    <label class="form-label" for="typeEmailX-2">Email</label>
-                  </div>
-                  
-                  <div class="form-outline mb-4">
-                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="username" value="<%= username %>" autocomplete="off"/>
-                    <label class="form-label" for="typeEmailX-2">User Name</label>
-                  </div>
+	<!-- contact form -->
+	<div class="contact-from-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 mb-0 mb-lg-0">
+					<div class="form-title">
+						<h2>Register</h2>
+					</div>
+				 	<div id="form_status"></div>
+					<div class="contact-form">
+            <% if (messages.success) { %>
+              <div class="alert alert-success" role="alert"><%= messages.success %></div>
+            <% } %>
+            <% if (messages.error) { %>
+              <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+            <% } %>
+            <form action="/register/add" method="post">
+              <div class="form-outline mb-4">
+                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="<%= email %>" autocomplete="off" required />
+                <label class="form-label" for="typeEmailX-2">Email</label>
+              </div>
+              
+              <div class="form-outline mb-4">
+                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="username" value="<%= username %>" autocomplete="off" required/>
+                <label class="form-label" for="typeEmailX-2">User Name</label>
+              </div>
 
-                  <div class="form-outline mb-4">
-                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="fname" value="<%= fname %>" autocomplete="off"/>
-                    <label class="form-label" for="typeEmailX-2">First Name</label>
-                  </div>
-    
-                  <div class="form-outline mb-4">
-                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="sname" value="<%= sname %>" autocomplete="off"/>
-                    <label class="form-label" for="typeEmailX-2">Last Name</label>
-                  </div>
-    
-                  <div class="form-outline mb-4">
-                    <input type="password" id="password" class="form-control form-control-lg" name="password" value="<%= password %>" autocomplete="off" onkeyup='check();'/>
-                    <label class="form-label" for="typePasswordX-2">Password</label>
-                  </div>
-    
-                  <div class="form-outline mb-4">
-                    <span id='message'></span>
-                    <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();'/>
-                    <label class="form-label" for="typePasswordX-2">Confirm Password</label>
-                    
-                  </div>
-                  
-                 <!-- dropdown -->
-                 <!-- <label class="form-label" for="typePasswordX-2">ประเภทผู้ใช้งาน</label>
-                 <select name="level" id="level" class="form-control form-control-lg">
-                  <option value="1">ผู้ใช้งานทั่วไป</option>
-                  <option value="2">ร้านค้า</option>
-                  <option value="3">สัตวแพทย์</option>
-                </select> -->
-                <br><br>
-                  <!-- Checkbox -->
-                  <button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button>
-                  <p>Have already an account?<a href="/login">Login</a></p>
-    
-                  <hr class="my-4">
-                </form>
-                
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </section>
+              <div class="form-outline mb-4">
+                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="fname" value="<%= fname %>" autocomplete="off" required/>
+                <label class="form-label" for="typeEmailX-2">First Name</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="sname" value="<%= sname %>" autocomplete="off" required/>
+                <label class="form-label" for="typeEmailX-2">Last Name</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="password" id="password" class="form-control form-control-lg" name="password" value="<%= password %>" autocomplete="off" onkeyup='check();' required/>
+                <label class="form-label" for="typePasswordX-2">Password</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <span id='message'></span>
+                <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();' required/>
+                <label class="form-label" for="typePasswordX-2">Confirm Password</label>
+              </div>
+            <br><br>
+              <!-- Checkbox -->
+              <button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button>
+              <p>Have already an account?<a href="/login">Login</a></p>
+
+              <hr class="my-4">
+            </form>
+					</div>
+				</div>
+        
+				<div class="col-lg-4">
+					<div class="contact-form-wrap">
+						<div class="contact-form-box">
+							<h4><i class="fas fa-map"></i> สร้างบัญชี</h4>
+							<p><a href="/register" class="coloraaa">สมัครสมาชิก</a></p>
+						</div>
+						<div class="contact-form-box">
+							<h4><i class="far fa-clock"></i> ลืมรหัสผ่านใช่หรือไม่</h4>
+							<p><a href="" class="coloraaa">ลืมอีเมล</a></p>
+              <p><a href="" class="coloraaa">ลืมรหัสผ่าน</a></p>
+						</div>
+						<div class="contact-form-box">
+							<h4><i class="fas fa-address-book"></i> Contact</h4>
+							<p>Phone: +00 111 222 3333 <br> Email: Aksadath_ru64@live.rmutl.ac.th</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end contact form -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script>
     var check = function() {
@@ -91,7 +107,8 @@
       }
     }
   </script>
-  
-</body>
 
+  <%- include('partials/footers') -%>
+	
+</body>
 </html>

@@ -1,0 +1,89 @@
+	<!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+	
+	<!-- header -->
+	<div class="top-header-area" id="sticker">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 text-center">
+					<div class="main-menu-wrap">
+						<!-- logo -->
+						<div class="site-logo">
+							<a href="/">
+								<img src="img/LOGO_V.2.png" alt="">
+							</a>
+						</div>
+						<!-- logo -->
+
+						<!-- menu start -->
+						<nav class="main-menu">
+							<ul>
+								<li <% if (title === "Home") { %> class="current-list-item" <% } %>><a href="/" >Home</a></li>
+								<li><a href="/boardhealth">บอร์ดสุขภาพสุนัข</a></li>
+								<li><a href="#">ชุมชน</a>
+									<ul class="sub-menu">
+										<li><a href="/boardcommunity">บทความ</a></li>
+										<li><a href="/board">บอร์ด</a></li>
+									</ul>
+								</li>
+                				<li><a href="/shop">ร้านค้า</a></li>
+                <% if (emailS === "0"){ %>
+								<li>
+									<div class="header-icons">
+										<a class="shopping-cart" href="/login"><i class="fas fa-user-circle"></i> LOGIN</a>
+										<!-- <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a> -->
+									</div>
+								</li>
+                <% } %>
+                <% if (emailS !== "0") { %>
+                  <li>
+                    <a href="#">
+                    <img src="/img/doctor.png" alt="Profile Picture" class="img-fluid rounded-circle" width="40"height="40" />
+                     | <%= username %>
+                    </a>
+                    <ul class="sub-menu">
+                      <li><a href="#">แต้มทั้งหมด : 100</a></li>
+                      <li><a href="#">ตั้งค่าผู้ใช้</a></li>
+                      <hr>
+                      <li><a href="/user">Admin</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                    </ul>
+                  </li>
+                <% } %>
+							</ul>
+						</nav>
+            <% if (emailS === "0"){ %>
+						<a class="mobile-show search-bar-icon" href="/login"><i class="fas fa-user-circle"></i></a>
+						<% } %>
+            <div class="mobile-menu"></div>
+						<!-- menu end -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end header -->
+	
+	<!-- search area -->
+	<div class="search-area">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<span class="close-btn"><i class="fas fa-window-close"></i></span>
+					<div class="search-bar">
+						<div class="search-bar-tablecell">
+							<h3>Search For:</h3>
+							<input type="text" placeholder="Keywords">
+							<button type="submit">Search <i class="fas fa-search"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end search area -->

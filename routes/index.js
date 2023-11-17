@@ -698,6 +698,7 @@ router.get("/login", function (req, res, next) {
       title: "Login",
       email: "",
       password: "",
+      emailS: "0",
     });
   }
   res.render("index", {
@@ -719,10 +720,13 @@ router.post("/login/submit", (req, res, next) => {
     // set flash message
     req.flash("error", "โปรดกรอกข้อมูลให้ครบถ้วน");
     // render to add.ejs with flash message
-    res.render("login", {
-      email: email,
-      password: password,
-    });
+    res.redirect("/login");
+    // res.render("login", {
+    //   title: "Login",
+    //   emailS: "0",
+    //   email: email,
+    //   password: password,
+    // });
   } else {
     // email เช็ค
     dbCon.query(
@@ -730,11 +734,13 @@ router.post("/login/submit", (req, res, next) => {
       (err, rows) => {
         if (rows.length == 0) {
           errors = true;
-          req.flash("error", "ไม่ข้อมูลผู้ใช้ " + email);
-          res.render("login", {
-            email: email,
-            password: password,
-          });
+          // req.flash("error", "ไม่ข้อมูลผู้ใช้ " + email);
+          req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+          res.redirect("/login");
+          // res.render("login", {
+          //   email: email,
+          //   password: password,
+          // });
         } else {
           dbCon.query(
             "SELECT * FROM tb_user WHERE email = " + '"' + email + '"',
@@ -757,11 +763,12 @@ router.post("/login/submit", (req, res, next) => {
                   //   levelS: levelS
                   // });
                 } else {
-                  req.flash("error", "อีเมล์หรือรหัสผ่านไม่ถูกต้อง" + email);
-                  res.render("login", {
-                    email: email,
-                    password: password,
-                  });
+                  req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+                  res.redirect("/login");
+                  // res.render("login", {
+                  //   email: email,
+                  //   password: password,
+                  // });
                 }
               }
             }
@@ -776,6 +783,7 @@ router.post("/login/submit", (req, res, next) => {
 router.get("/register", function (req, res, next) {
   res.render("register", {
     title: "Register",
+    emailS: "0",
     email: "",
     username: "",
     fname: "",
@@ -809,6 +817,7 @@ router.post("/register/add", (req, res, next) => {
     req.flash("error", "โปรดกรอกข้อมูลให้ครบถ้วน");
     // render to add.ejs with flash message
     res.render("register", {
+      emailS: "0",
       email: email,
       username: username,
       fname: fname,
@@ -823,7 +832,7 @@ router.post("/register/add", (req, res, next) => {
       (err, rows) => {
         if (rows.length !== 0) {
           errors = true;
-          req.flash("error", "อีเมล์นี้มีผู้ใช้งานแล้ว " + email);
+          req.flash("error", "อีเมลนี้มีผู้ใช้งานแล้ว " + email);
           res.render("register", {
             email: email,
             username: username,
@@ -839,6 +848,7 @@ router.post("/register/add", (req, res, next) => {
             req.flash("error", "รหัสผ่านยืนยันไม่ตรงกัน");
             // render กลับ
             res.render("register", {
+              emailS: "0",
               email: email,
               username: username,
               fname: fname,
@@ -858,6 +868,7 @@ router.post("/register/add", (req, res, next) => {
                 email: email,
                 password: hash,
                 level: level,
+                img: "user-icon.jpg",
                 status: 1,
               };
 
@@ -870,6 +881,7 @@ router.post("/register/add", (req, res, next) => {
                     req.flash("error", err);
 
                     res.render("register", {
+                      emailS: "0",
                       email: email,
                       username: username,
                       fname: fname,

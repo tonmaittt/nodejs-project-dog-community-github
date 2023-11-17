@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+</head>
+
+<body>
+
+  <section class="vh-100" style="background-color: #FF6633;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            
+              <class class="card-body p-5 text-center">
+                <% if (messages.error) { %>
+                  <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                <% } %>
+                <h3 class="mb-5">Register</h3>
+                <hr class="my-5">
+                <form action="/register/add" method="post">
+                  <div class="form-outline mb-4">
+                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg" name="email" value="<%= email %>" autocomplete="off" />
+                    <label class="form-label" for="typeEmailX-2">Email</label>
+                  </div>
+                  
+                  <div class="form-outline mb-4">
+                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="username" value="<%= username %>" autocomplete="off"/>
+                    <label class="form-label" for="typeEmailX-2">User Name</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="fname" value="<%= fname %>" autocomplete="off"/>
+                    <label class="form-label" for="typeEmailX-2">First Name</label>
+                  </div>
+    
+                  <div class="form-outline mb-4">
+                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="sname" value="<%= sname %>" autocomplete="off"/>
+                    <label class="form-label" for="typeEmailX-2">Last Name</label>
+                  </div>
+    
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password" class="form-control form-control-lg" name="password" value="<%= password %>" autocomplete="off" onkeyup='check();'/>
+                    <label class="form-label" for="typePasswordX-2">Password</label>
+                  </div>
+    
+                  <div class="form-outline mb-4">
+                    <span id='message'></span>
+                    <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();'/>
+                    <label class="form-label" for="typePasswordX-2">Confirm Password</label>
+                    
+                  </div>
+                  
+                 <!-- dropdown -->
+                 <!-- <label class="form-label" for="typePasswordX-2">ประเภทผู้ใช้งาน</label>
+                 <select name="level" id="level" class="form-control form-control-lg">
+                  <option value="1">ผู้ใช้งานทั่วไป</option>
+                  <option value="2">ร้านค้า</option>
+                  <option value="3">สัตวแพทย์</option>
+                </select> -->
+                <br><br>
+                  <!-- Checkbox -->
+                  <button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button>
+                  <p>Have already an account?<a href="/login">Login</a></p>
+    
+                  <hr class="my-4">
+                </form>
+                
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
+  
+</body>
+
+</html>
