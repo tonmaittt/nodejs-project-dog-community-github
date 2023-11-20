@@ -64,8 +64,137 @@ router.get("/", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
   });
 });
+
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ ------------------------------------------------------------------------------------------------------ */
+
+router.get("/userInformation", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("userInformation", {
+          title: "User Information",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          username2: "",
+          fname: "",
+          lname: "",
+          email: "",
+          gender: "",
+          birthday: "",
+        });      
+      } else {
+        console.log(rows);
+        res.render("userInformation", {
+          title: "User Information",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+          username2: rows[0].username,
+          fname: rows[0].fname,
+          lname: rows[0].lname,
+          email: rows[0].email,
+          gender: rows[0].gender,
+          birthday: rows[0].birthday,
+        });      
+      }
+    }
+  );
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์ ------------------------------------------------------------------------------------------------------ */
+router.get("/editProfile", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT tb_user.img AS img FROM tb_user WHERE tb_user.id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editProfile", {
+          title: "Edit Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      } else {
+        console.log(rows);
+        res.render("editProfile", {
+          title: "Edit Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      }
+    }
+  );
+});
+
+// add a new รูปโปรไฟล์
+router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      img: photo,
+    };
+
+    // insert query
+    dbCon.query(
+      "UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data,
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.redirect("/userInformation");
+        } else {
+          dbCon.query(
+            "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+            async (err, rows) => {
+              if (err) {
+                req.flash("error", err);
+                res.redirect("/userInformation");
+              } else {
+                req.session.userImg = rows[0].img;
+                req.flash("success", "แก้ไขรูปโปรไฟล์สำเร็จ");
+                res.redirect("/userInformation");
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+});
+
 
 /* -------------------------------------------------------------- หน้าบอร์ดสุขภาพสุนัข ------------------------------------------------------------------------------------------------------ */
 
@@ -106,6 +235,7 @@ router.get("/boardhealth", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: "",
         });
       } else {
@@ -114,6 +244,7 @@ router.get("/boardhealth", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: rows,
         });
       }
@@ -137,6 +268,7 @@ router.get("/boardhealthAdd", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
     titleboard: "",
     photo: "",
     details: "",
@@ -160,6 +292,7 @@ router.post("/boardhealthAdd", upload.single("photo"), (req, res, next) => {
       username: req.session.userName,
       emailS: req.session.emailUser,
       levelS: req.session.level,
+      userImg: req.session.userImg,
       titleboard: titleboard,
       photo: "",
       details: details,
@@ -188,6 +321,7 @@ router.post("/boardhealthAdd", upload.single("photo"), (req, res, next) => {
             username: req.session.userName,
             emailS: req.session.emailUser,
             levelS: req.session.level,
+            userImg: req.session.userImg,
             titleboard: titleboard,
             photo: "",
             details: details,
@@ -224,6 +358,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
                   username: "0",
                   emailS: "0",
                   levelS: 0,
+                  userImg: req.session.userImg,
                   id: rows[0].boardhealth_id,
                   titletext: rows[0].title,
                   photo: rows[0].photo,
@@ -255,6 +390,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
                 username: req.session.userName,
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
+                userImg: req.session.userImg,
                 id: rows[0].boardhealth_id,
                 titletext: rows[0].title,
                 photo: rows[0].photo,
@@ -310,6 +446,7 @@ router.get("/board", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: "",
         });
       } else {
@@ -318,6 +455,7 @@ router.get("/board", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: rows,
         });
       }
@@ -335,6 +473,7 @@ router.get("/boardAdd", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
     titleboard: "",
     photo: "",
     details: "",
@@ -358,6 +497,7 @@ router.post("/boardAdd", upload.single("photo"), (req, res, next) => {
       username: req.session.userName,
       emailS: req.session.emailUser,
       levelS: req.session.level,
+      userImg: req.session.userImg,
       titleboard: titleboard,
       photo: "",
       details: details,
@@ -386,6 +526,7 @@ router.post("/boardAdd", upload.single("photo"), (req, res, next) => {
             username: req.session.userName,
             emailS: req.session.emailUser,
             levelS: req.session.level,
+            userImg: req.session.userImg,
             titleboard: titleboard,
             photo: "",
             details: details,
@@ -453,6 +594,7 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                 username: req.session.userName,
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
+                userImg: req.session.userImg,
                 id: rows[0].boardhealth_id,
                 titletext: rows[0].title,
                 photo: rows[0].photo,
@@ -509,6 +651,7 @@ router.get("/boardcommunity", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: "",
         });
       } else {
@@ -517,6 +660,7 @@ router.get("/boardcommunity", function (req, res, next) {
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
+          userImg: req.session.userImg,
           data: rows,
         });
       }
@@ -534,6 +678,7 @@ router.get("/articleAdd", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
     titleboard: "",
     photo: "",
     details: "",
@@ -557,6 +702,7 @@ router.post("/articleAdd", upload.single("photo"), (req, res, next) => {
       username: req.session.userName,
       emailS: req.session.emailUser,
       levelS: req.session.level,
+      userImg: req.session.userImg,
       titleboard: titleboard,
       photo: "",
       details: details,
@@ -585,6 +731,7 @@ router.post("/articleAdd", upload.single("photo"), (req, res, next) => {
             username: req.session.userName,
             emailS: req.session.emailUser,
             levelS: req.session.level,
+            userImg: req.session.userImg,
             titleboard: titleboard,
             photo: "",
             details: details,
@@ -652,6 +799,7 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
                 username: req.session.userName,
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
+                userImg: req.session.userImg,
                 id: rows[0].boardhealth_id,
                 titletext: rows[0].title,
                 photo: rows[0].photo,
@@ -686,6 +834,7 @@ router.get("/shop", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
   });
 });
 
@@ -706,6 +855,7 @@ router.get("/login", function (req, res, next) {
     username: req.session.userName,
     emailS: req.session.emailUser,
     levelS: req.session.level,
+    userImg: req.session.userImg,
   });
 });
 
@@ -758,6 +908,7 @@ router.post("/login/submit", (req, res, next) => {
                   req.session.emailUser = rows[0].email;
                   req.session.level = rows[0].level;
                   req.session.userName = rows[0].username;
+                  req.session.userImg = rows[0].img;
                   res.redirect("../");
                   // res.render("index", {
                   //   title: "Home",
