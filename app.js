@@ -25,9 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'assets')));
 // path รูป img
 app.use("/img",express.static('img'));
-app.use("/assets",express.static('assets'));
+// app.use("/assets",express.static('assets'));
 
 app.use(session({
   cookie: { maxAge: 7200000},
