@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>แก้ไขข้อมูลผู้ใช้ รูปโปรไฟล์</h1>
+								<h1>ข้อมูลผู้ใช้</h1>
 							</div>
 						</div>
 					</div>
@@ -39,14 +39,39 @@
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/editProfileSubmit" method="post" enctype="multipart/form-data">
-														<div class="client-avater text-center">
-															<img id="output" src="../img/<%= img %>" alt="" width="140" height="140">
-															<div class="client-meta">
-															</div>
-															<label for="image">รูปโปรไฟล์</label><br>
-                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
-														</div>
+													<form action="/editUserData1Submit" method="post">
+														<% if (messages.success) { %>
+															<div class="alert alert-success" role="alert"><%= messages.success %></div>
+														  <% } %>
+														  <% if (messages.error) { %>
+															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
+														  <% } %>
+														
+														
+														<label for="typefname">ชื่อ :</label>
+														<p><input type="text" placeholder="First name" id="typefname" name="fname" value="<%= fname %>" required></p>
+														<label for="fname">นามสกุล :</label>
+														<p><input type="text" placeholder="Last Name" id="typelname" name="lname" value="<%= lname %>" required></p>
+														<label for="fname">อีเมล :</label>
+														<p><input type="email" placeholder="Email" id="typeEmail" name="email" value="<%= email %>" required></p>
+														<label for="fname">ชื่อที่ใช้แสดง :</label>
+														<p><input type="text" placeholder="Show Name" id="typeusername" name="username" value="<%= username2 %>" required></p>
+														<label for="fname">เพศ :</label>
+														<p>
+															<select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="genders" required>
+																<option value="<%= gender_num %>" selected><% if(gender === null){ %> โปรดเลือก <% } else{ %> <%= gender %> <% }%></option>
+																<option value="1">ชาย</option>
+																<option value="2">หญิง</option>
+																<option value="3">ไม่ระบุ</option>
+															</select>
+														</p>
+														<!-- <p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>"></p> -->
+														<label for="fname">วันเกิด :</label>
+														<% if(birthday === null){ %>
+														<p><input type="date" placeholder="Birthday" id="typebirthday" name="birthday" value="" required></p>
+														<% } else{ %>
+														<p><input type="date" placeholder="Birthday" id="typebirthday" name="birthday" value="<%= new Intl.DateTimeFormat('en-CA').format(birthday) %>" required></p>
+														<% } %>
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
 													</form>
@@ -100,7 +125,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<a href="#" class="boxed-btn">Place Order</a>
+								<!-- <a href="#" class="boxed-btn">Place Order</a> -->
 							</div>
 						</div>
 					</div>

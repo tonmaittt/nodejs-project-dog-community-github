@@ -99,7 +99,6 @@ router.get("/userInformation", function (req, res, next) {
           birthday: "",
         });      
       } else {
-        console.log(rows);
         res.render("userInformation", {
           title: "User Information",
           username: req.session.userName,
@@ -143,7 +142,6 @@ router.get("/editProfile", function (req, res, next) {
           img: rows[0].img,
         });      
       } else {
-        console.log(rows);
         res.render("editProfile", {
           title: "Edit Profile",
           username: req.session.userName,
@@ -157,7 +155,7 @@ router.get("/editProfile", function (req, res, next) {
   );
 });
 
-// add a new รูปโปรไฟล์
+// add a แก้ไข รูปโปรไฟล์
 router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
   let photo = req.file.filename;
   let errors = false;
@@ -167,7 +165,6 @@ router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
     let form_data = {
       img: photo,
     };
-
     // insert query
     dbCon.query(
       "UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data,
@@ -189,6 +186,163 @@ router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
               }
             }
           );
+        }
+      }
+    );
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลสมาชิก ------------------------------------------------------------------------------------------------------ */
+router.get("/editUserData1", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.gender AS gender_num,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editUserData1", {
+          title: "แก้ไขข้อมูลผู้ใช้",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          username2: "",
+          fname: "",
+          lname: "",
+          email: "",
+          gender: "",
+          gender_num: "",
+          birthday: "",
+        });      
+      } else {
+        res.render("editUserData1", {
+          title: "User Information",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+          username2: rows[0].username,
+          fname: rows[0].fname,
+          lname: rows[0].lname,
+          email: rows[0].email,
+          gender: rows[0].gender,
+          gender_num: rows[0].gender_num,
+          birthday: rows[0].birthday,
+        });      
+      }
+    }
+  );
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/editUserData1Submit", (req, res, next) => {
+  let username2 = req.body.username;
+  let fname = req.body.fname;
+  let lname = req.body.lname;
+  let email = req.body.email;
+  let gender_num = req.body.genders;
+  let birthday = req.body.birthday;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      username: username2,
+      fname: fname,
+      sname: lname,
+      email: email
+    }
+    let form_data2 = {
+        user_id: req.session.idUser,
+        gender: gender_num,
+        Birthday: birthday
+    }
+    dbCon.query(
+      "SELECT * FROM tb_user_data_1 WHERE user_id = " + req.session.idUser,
+      (err, rows) => {
+        if (err) {
+          console.log("ERRO 1");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+        } else {
+          // มีข้อมูลอยู่แล้ว
+          if (rows.length == 1) {
+            // update query
+            dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_id = " + req.session.idUser, form_data2, (err, result) => {
+              if (err) {
+                  console.log("ERRO 2");
+                  req.flash('error', err);
+                  res.redirect('/userInformation')
+              } else {
+                dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
+                  if (err) {
+                      console.log("ERRO 3");
+                      req.flash('error', err);
+                      res.redirect('/userInformation')
+                  } else {
+                    dbCon.query(
+                      "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+                      async (err, rows3) => {
+                        if (err) {
+                          req.flash("error", err);
+                          console.log("ERRO 4");
+                          res.redirect("/userInformation");
+                        } else {
+                          req.session.emailUser = rows3[0].email;
+                          req.session.userName = rows3[0].username;
+                          req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+                          res.redirect('/userInformation')
+                        }
+                      }
+                    );
+                  }
+                })
+              }
+            })
+          }
+          //ยังไม่มีข้อมูล
+          // update query
+          dbCon.query("INSERT INTO tb_user_data_1 SET ?", form_data2, (err, result) => {
+            if (err) {
+                console.log("ERRO 2/");
+                req.flash('error', err);
+                res.redirect('/userInformation')
+            } else {
+              dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
+                if (err) {
+                    console.log("ERRO 3/");
+                    req.flash('error', err);
+                    res.redirect('/userInformation')
+                } else {
+                  dbCon.query(
+                    "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+                    async (err, rows3) => {
+                      if (err) {
+                        req.flash("error", err);
+                        console.log("ERRO 4/");
+                        res.redirect("/userInformation");
+                      } else {
+                        req.session.emailUser = rows3[0].email;
+                        req.session.userName = rows3[0].username;
+                        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+                        res.redirect('/userInformation')
+                      }
+                    }
+                  );
+                }
+              })
+            }
+          })
+
+
         }
       }
     );

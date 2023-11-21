@@ -62,9 +62,10 @@
 										<label for="fname">เพศ :</label>
 										<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
 										<label for="fname">วันเกิด :</label>
-										<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<%= new Intl.DateTimeFormat('th-GB').format(birthday) %>" disabled></p>
+										<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
+										
 										<div class="text-right">
-											<a href="#" class="boxed-btn">แก้ไข</a>
+											<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
 										</div>
 									</form>
 						        </div>
@@ -150,7 +151,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<a href="#" class="boxed-btn">Place Order</a>
+						<!-- <a href="#" class="boxed-btn">Place Order</a> -->
 					</div>
 				</div>
 			</div>
