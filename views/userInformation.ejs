@@ -24,54 +24,54 @@
 					<div class="checkout-accordion-wrap">
 						<div class="accordion" id="accordionExample">
 
-						  <div class="card single-accordion">
-						    <div class="card-header" id="headingOne">
-						      <h5 class="mb-0">
-						        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-						          ข้อมูลผู้ใช้
-						        </button>
-						      </h5>
-						    </div>
+							<div class="card single-accordion">
+								<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									ข้อมูลผู้ใช้
+									</button>
+								</h5>
+								</div>
 
-						    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-						      <div class="card-body">
-						        <div class="billing-address-form">
-						        	<form action="#">
-										<% if (messages.success) { %>
-											<div class="alert alert-success" role="alert"><%= messages.success %></div>
-										  <% } %>
-										  <% if (messages.error) { %>
-											<div class="alert alert-danger" role="alert"><%= messages.error %></div>
-										  <% } %>
-										<div class="client-avater text-center">
-											<img src="../img/<%= img %>" alt="" width="140" height="140">
-											<div class="client-meta">
-												<a href="editProfile">
-													<h3><span>เปลี่ยนรูปโปรไฟล์</span></h3>
-												</a>
+								<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<div class="card-body">
+									<div class="billing-address-form">
+										<form action="#">
+											<% if (messages.success) { %>
+												<div class="alert alert-success" role="alert"><%= messages.success %></div>
+											<% } %>
+											<% if (messages.error) { %>
+												<div class="alert alert-danger" role="alert"><%= messages.error %></div>
+											<% } %>
+											<div class="client-avater text-center">
+												<img src="../img/<%= img %>" alt="" width="140" height="140">
+												<div class="client-meta">
+													<a href="editProfile">
+														<h3><span>เปลี่ยนรูปโปรไฟล์</span></h3>
+													</a>
+												</div>
 											</div>
-										</div>
-										
-										<label for="typefname">ชื่อ :</label>
-						        		<p><input type="text" placeholder="First name" id="typefname" name="fname" value="<%= fname %>" disabled></p>
-										<label for="fname">นามสกุล :</label>
-										<p><input type="text" placeholder="Last Name" id="typelname" name="lname" value="<%= lname %>" disabled></p>
-										<label for="fname">อีเมล :</label>
-										<p><input type="email" placeholder="Email" id="typeEmail" name="email" value="<%= email %>" disabled></p>
-										<label for="fname">ชื่อที่ใช้แสดง :</label>
-										<p><input type="text" placeholder="Show Name" id="typeusername" name="username" value="<%= username2 %>" disabled></p>
-										<label for="fname">เพศ :</label>
-										<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
-										<label for="fname">วันเกิด :</label>
-										<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
-										
-										<div class="text-right">
-											<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
-										</div>
-									</form>
-						        </div>
-						      </div>
-						    </div>
+											
+											<label for="typefname">ชื่อ :</label>
+											<p><input type="text" placeholder="First name" id="typefname" name="fname" value="<%= fname %>" disabled></p>
+											<label for="fname">นามสกุล :</label>
+											<p><input type="text" placeholder="Last Name" id="typelname" name="lname" value="<%= lname %>" disabled></p>
+											<label for="fname">อีเมล :</label>
+											<p><input type="email" placeholder="Email" id="typeEmail" name="email" value="<%= email %>" disabled></p>
+											<label for="fname">ชื่อที่ใช้แสดง :</label>
+											<p><input type="text" placeholder="Show Name" id="typeusername" name="username" value="<%= username2 %>" disabled></p>
+											<label for="fname">เพศ :</label>
+											<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
+											<label for="fname">วันเกิด :</label>
+											<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
+											
+											<div class="text-right">
+												<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
+											</div>
+										</form>
+									</div>
+								</div>
+								</div>
 							</div>
 
 						  
