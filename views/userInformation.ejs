@@ -22,49 +22,102 @@
 			<div class="row">
 				<div class="col-lg-8">
 					<div class="checkout-accordion-wrap">
+
 						<div class="accordion" id="accordionExample">
 
+							<% if(levelS == 1) { %>
+								<div class="alert alert-primary" role="alert">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<strong>อยากโฆษณาร้านค้าของคุณ!</strong> ส่งข้อมูลเพื่อยืนยันเพื่อโฆษณากับเรา <a href="">คลิกเลย!</a> 
+								</div>
+							<% } %>
+							<% if(levelS < 3 ) { %>
+								<div class="alert alert-info" role="alert">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<strong>หากคุณเป็นผู้เชี่ยวชาญ รวมตอบปัญหาสุขภาพกับเรา!</strong> ส่งข้อมูลเพื่อยืนยัน <a href="">คลิกเลย!</a> 
+								</div>
+							<% } %>
+
+							<% if (messages.success) { %>
+								<div class="alert alert-success" role="alert">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<%= messages.success %>
+								</div>
+							<% } %>
+							<% if (messages.error) { %>
+								<div class="alert alert-danger" role="alert">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<%= messages.error %>
+								</div>
+							<% } %>
 							<div class="card single-accordion">
 								<div class="card-header" id="headingOne">
-								<h5 class="mb-0">
-									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									ข้อมูลผู้ใช้
-									</button>
-								</h5>
+									<h5 class="mb-0">
+										<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										ข้อมูลผู้ใช้
+										</button>
+									</h5>
 								</div>
 
 								<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+									<div class="card-body">
+										<div class="billing-address-form">
+											<form action="#">
+												<div class="client-avater text-center">
+													<img src="../img/<%= img %>" alt="" width="140" height="140">
+													<div class="client-meta">
+														<a href="editProfile">
+															<h3><span>เปลี่ยนรูปโปรไฟล์</span></h3>
+														</a>
+													</div>
+												</div>
+												
+												<label for="typefname">ชื่อ :</label>
+												<p><input type="text" placeholder="First name" id="typefname" name="fname" value="<%= fname %>" disabled></p>
+												<label for="fname">นามสกุล :</label>
+												<p><input type="text" placeholder="Last Name" id="typelname" name="lname" value="<%= lname %>" disabled></p>
+												<label for="fname">อีเมล :</label>
+												<p><input type="email" placeholder="Email" id="typeEmail" name="email" value="<%= email %>" disabled></p>
+												<label for="fname">ชื่อที่ใช้แสดง :</label>
+												<p><input type="text" placeholder="Show Name" id="typeusername" name="username" value="<%= username2 %>" disabled></p>
+												<label for="fname">เพศ :</label>
+												<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
+												<label for="fname">วันเกิด :</label>
+												<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
+												
+												<div class="text-right">
+													<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						<% if(levelS != 1) { %>
+						  <div class="card single-accordion">
+								<div class="card-header" id="headingTwo">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									ข้อมูลผู้ใช้ - ยืนยันแล้ว
+									</button>
+								</h5>
+								</div>
+								<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 								<div class="card-body">
 									<div class="billing-address-form">
 										<form action="#">
-											<% if (messages.success) { %>
-												<div class="alert alert-success" role="alert"><%= messages.success %></div>
-											<% } %>
-											<% if (messages.error) { %>
-												<div class="alert alert-danger" role="alert"><%= messages.error %></div>
-											<% } %>
-											<div class="client-avater text-center">
-												<img src="../img/<%= img %>" alt="" width="140" height="140">
-												<div class="client-meta">
-													<a href="editProfile">
-														<h3><span>เปลี่ยนรูปโปรไฟล์</span></h3>
-													</a>
-												</div>
-											</div>
-											
-											<label for="typefname">ชื่อ :</label>
-											<p><input type="text" placeholder="First name" id="typefname" name="fname" value="<%= fname %>" disabled></p>
-											<label for="fname">นามสกุล :</label>
-											<p><input type="text" placeholder="Last Name" id="typelname" name="lname" value="<%= lname %>" disabled></p>
-											<label for="fname">อีเมล :</label>
-											<p><input type="email" placeholder="Email" id="typeEmail" name="email" value="<%= email %>" disabled></p>
-											<label for="fname">ชื่อที่ใช้แสดง :</label>
-											<p><input type="text" placeholder="Show Name" id="typeusername" name="username" value="<%= username2 %>" disabled></p>
-											<label for="fname">เพศ :</label>
-											<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
-											<label for="fname">วันเกิด :</label>
-											<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
-											
+											<label for="fname">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
+											<p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="" disabled></p>
+											<label for="typeaddress">ที่อยู่ :</label>
+											<p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" disabled></textarea></p>
+											<label for="fname">เบอร์โทรศัพท์ :</label>
+											<p><input type="tel" placeholder="tel." id="typetel" name="tel" value="" disabled></p>
+											<label for="fname">FaceBook :</label>
+											<p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="" disabled></p>
+											<label for="fname">Line :</label>
+											<p><input type="text" placeholder="Line" id="typeline" name="line" value="" disabled></p>
+
 											<div class="text-right">
 												<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
 											</div>
@@ -72,40 +125,24 @@
 									</div>
 								</div>
 								</div>
-							</div>
-
-						  
-						  <div class="card single-accordion">
-						    <div class="card-header" id="headingTwo">
-						      <h5 class="mb-0">
-						        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-						          Shipping Address
-						        </button>
-						      </h5>
-						    </div>
-						    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-						      <div class="card-body">
-						        <div class="shipping-address-form">
-						        	<p>Your shipping address form is here.</p>
-						        </div>
-						      </div>
-						    </div>
 						  </div>
+						<% } %>
+
 						  <div class="card single-accordion">
-						    <div class="card-header" id="headingThree">
-						      <h5 class="mb-0">
-						        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-						          Card Details
-						        </button>
-						      </h5>
-						    </div>
-						    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-						      <div class="card-body">
-						        <div class="card-details">
-						        	<p>Your card details goes here.</p>
-						        </div>
-						      </div>
-						    </div>
+								<div class="card-header" id="headingThree">
+									<h5 class="mb-0">
+										<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										Card Details
+										</button>
+									</h5>
+								</div>
+								<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+									<div class="card-body">
+										<div class="card-details">
+											<p>Your card details goes here.</p>
+										</div>
+									</div>
+								</div>
 						  </div>
 						</div>
 

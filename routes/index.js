@@ -308,41 +308,42 @@ router.post("/editUserData1Submit", (req, res, next) => {
               }
             })
           }
-          //ยังไม่มีข้อมูล
-          // update query
-          dbCon.query("INSERT INTO tb_user_data_1 SET ?", form_data2, (err, result) => {
-            if (err) {
-                console.log("ERRO 2/");
-                req.flash('error', err);
-                res.redirect('/userInformation')
-            } else {
-              dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
-                if (err) {
-                    console.log("ERRO 3/");
-                    req.flash('error', err);
-                    res.redirect('/userInformation')
-                } else {
-                  dbCon.query(
-                    "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
-                    async (err, rows3) => {
-                      if (err) {
-                        req.flash("error", err);
-                        console.log("ERRO 4/");
-                        res.redirect("/userInformation");
-                      } else {
-                        req.session.emailUser = rows3[0].email;
-                        req.session.userName = rows3[0].username;
-                        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
-                        res.redirect('/userInformation')
+          else{
+            //ยังไม่มีข้อมูล
+            // update query
+            dbCon.query("INSERT INTO tb_user_data_1 SET ?", form_data2, (err, result) => {
+              if (err) {
+                  console.log("ERRO 2/");
+                  req.flash('error', err);
+                  res.redirect('/userInformation')
+              } else {
+                dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
+                  if (err) {
+                      console.log("ERRO 3/");
+                      req.flash('error', err);
+                      res.redirect('/userInformation')
+                  } else {
+                    dbCon.query(
+                      "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+                      async (err, rows3) => {
+                        if (err) {
+                          req.flash("error", err);
+                          console.log("ERRO 4/");
+                          res.redirect("/userInformation");
+                        } else {
+                          req.session.emailUser = rows3[0].email;
+                          req.session.userName = rows3[0].username;
+                          req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+                          res.redirect('/userInformation')
+                        }
                       }
-                    }
-                  );
-                }
-              })
-            }
-          })
-
-
+                    );
+                  }
+                })
+              }
+            })
+          }
+          
         }
       }
     );
