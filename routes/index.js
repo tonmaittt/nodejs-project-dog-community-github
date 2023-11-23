@@ -350,6 +350,62 @@ router.post("/editUserData1Submit", (req, res, next) => {
   }
 });
 
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - ส่งข้อมูลยืนยันผู้ใช้ ------------------------------------------------------------------------------------------------------ */
+router.get("/userVerified", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect('/')
+  }
+  if (req.session.level > 1) {
+    return res.redirect('/')
+  }
+  res.render("userVerified", {
+    title: "ส่งข้อมูลยืนยันผู้ใช้",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+    id_card: "",
+    address: "",
+    tel: "",
+    facebook: "",
+    line: "",
+  }); 
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/userVerifiedSubmit", (req, res, next) => {
+  let id_card = req.body.id_card;
+  let address = req.body.address;
+  let tel = req.body.tel;
+  let facebook = req.body.facebook;
+  let line = req.body.line;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        card_id: id_card,
+        address: address,
+        tel: tel,
+        facebook: facebook,
+        line: line,
+        status: 0
+    }
+    // insert query
+    dbCon.query("INSERT INTO tb_user_verified SET ?", form_data, (err, result) => {
+      if (err) {
+          console.log("ERRO 2/");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'ส่งข้อมูลยืนยันสำเร็จ โปรดรอการตอบกลับในอีเมล');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
 
 /* -------------------------------------------------------------- หน้าบอร์ดสุขภาพสุนัข ------------------------------------------------------------------------------------------------------ */
 
