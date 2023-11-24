@@ -99,20 +99,69 @@ router.get("/userInformation", function (req, res, next) {
           birthday: "",
         });      
       } else {
-        res.render("userInformation", {
-          title: "User Information",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          img: rows[0].img,
-          username2: rows[0].username,
-          fname: rows[0].fname,
-          lname: rows[0].lname,
-          email: rows[0].email,
-          gender: rows[0].gender,
-          birthday: rows[0].birthday,
-        });      
+        dbCon.query(
+          "SELECT * FROM tb_user_verified WHERE user_id = " + req.session.idUser,
+          (err, rowsVerified) => {
+            if (err) {
+              req.flash("error", err);
+              res.redirect('/')
+            } else {
+              dbCon.query(
+                "SELECT * FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+                (err, rowsShop) => {
+                  if (err) {
+                    req.flash("error", err);
+                    res.redirect('/')
+                  } else {
+                    dbCon.query(
+                      "SELECT * FROM tb_dog WHERE user_id = " + req.session.idUser,
+                      (err, rowsDog) => {
+                        if (err) {
+                          req.flash("error", err);
+                          res.redirect('/')
+                        } else {
+                          dbCon.query(
+                            "SELECT * FROM tb_vets WHERE user_id = " + req.session.idUser,
+                            (err, rowsVets) => {
+                              if (err) {
+                                req.flash("error", err);
+                                res.redirect('/')
+                              } else {
+                                res.render("userInformation", {
+                                  title: "User Information",
+                                  username: req.session.userName,
+                                  emailS: req.session.emailUser,
+                                  levelS: req.session.level,
+                                  userImg: req.session.userImg,
+                                  img: rows[0].img,
+                                  username2: rows[0].username,
+                                  fname: rows[0].fname,
+                                  lname: rows[0].lname,
+                                  email: rows[0].email,
+                                  gender: rows[0].gender,
+                                  birthday: rows[0].birthday,
+                                  rowsVerified: rowsVerified,
+                                  rowsShop: rowsShop,
+                                  rowsDog: rowsDog,
+                                  rowsVets: rowsVets,
+                                });    
+                                  
+                              }
+                            }
+                          );      
+                            
+                        }
+                      }
+                    );  
+                      
+                  }
+                }
+              );  
+
+            }
+          }
+        );
+
       }
     }
   );
@@ -265,6 +314,12 @@ router.post("/editUserData1Submit", (req, res, next) => {
         gender: gender_num,
         Birthday: birthday
     }
+    let form_data3 = {
+      user_id: req.session.idUser,
+      gender: gender_num,
+      Birthday: birthday,
+      status: 1
+  }
     dbCon.query(
       "SELECT * FROM tb_user_data_1 WHERE user_id = " + req.session.idUser,
       (err, rows) => {
@@ -311,7 +366,7 @@ router.post("/editUserData1Submit", (req, res, next) => {
           else{
             //ยังไม่มีข้อมูล
             // update query
-            dbCon.query("INSERT INTO tb_user_data_1 SET ?", form_data2, (err, result) => {
+            dbCon.query("INSERT INTO tb_user_data_1 SET ?", form_data3, (err, result) => {
               if (err) {
                   console.log("ERRO 2/");
                   req.flash('error', err);
