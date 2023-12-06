@@ -66,11 +66,11 @@
 									<a class="nav-link text-secondary active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">ข้อมูลผู้ใช้</a>
 									</li>
 									<% if(levelS != 1) { %>
-										
+										<% if(rowsVerified.length >= 1) { %>
 									<li class="nav-item">
 									<a class="nav-link text-secondary" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ข้อมูลยืนยันผู้ใช้</a>
 									</li>
-										
+										<% } %>
 									<% } %>
 									<% if(levelS >= 2) { %>
 									<li class="nav-item">
@@ -83,9 +83,11 @@
 									</li>
 									<% } %>
 									<% if(levelS >= 3) { %>
+										<% if(rowsVets.length >= 1) { %>
 									<li class="nav-item">
 										<a class="nav-link text-secondary" id="vets-tab" data-toggle="tab" href="#vets" role="tab" aria-controls="vets" aria-selected="false">สัตวแพทย์</a>
 									</li>
+										<% } %>
 									<% } %>
 								</ul>
 							  <div class="tab-content" id="myTabContent">
@@ -140,7 +142,7 @@
 
 								<!-- ข้อมูลยืนยันผู้ใช้ เปิด-->
 								<% if(levelS != 1) { %>
-								
+									<% if(rowsVerified.length >= 1) { %>
 								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 										<div class="card single-accordion">
 												<div class="card-header" id="headingTwo">
@@ -155,15 +157,15 @@
 													<div class="billing-address-form">
 														<form action="#">
 															<label for="fname">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-															<p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="" disabled></p>
+															<p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="<%= rowsVerified[0].card_id %>" disabled></p>
 															<label for="typeaddress">ที่อยู่ :</label>
-															<p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" disabled></textarea></p>
+															<p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" disabled><%= rowsVerified[0].address %></textarea></p>
 															<label for="fname">เบอร์โทรศัพท์ :</label>
-															<p><input type="tel" placeholder="tel." id="typetel" name="tel" value="" disabled></p>
+															<p><input type="tel" placeholder="tel." id="typetel" name="tel" value="<%= rowsVerified[0].tel %>" disabled></p>
 															<label for="fname">FaceBook :</label>
-															<p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="" disabled></p>
+															<p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="<%= rowsVerified[0].facebook %>" disabled></p>
 															<label for="fname">Line :</label>
-															<p><input type="text" placeholder="Line" id="typeline" name="line" value="" disabled></p>
+															<p><input type="text" placeholder="Line" id="typeline" name="line" value="<%= rowsVerified[0].line %>" disabled></p>
 			
 															<div class="text-right">
 																<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
@@ -174,7 +176,7 @@
 												</div>
 										</div>
 								</div>
-								
+									<% } %>
 								<% } %>
 								<!-- ข้อมูลยืนยันผู้ใช้ ปิด-->
 
@@ -240,6 +242,7 @@
 
 								<!-- ข้อมูลสัตวแพทย์ เปิด-->
 								<% if(levelS >= 3) { %>
+									<% if(rowsVets.length >= 1) { %>
 								<div class="tab-pane fade" id="vets" role="tabpanel" aria-labelledby="vets-tab">
 									<div class="card single-accordion">
 										<div class="card-header" id="headingThree">
@@ -258,6 +261,7 @@
 										</div>
 								  </div>
 								</div>
+									<% } %>
 								<% } %>
 								<!-- ข้อมูลสัตวแพทย์ ปิด-->
 
