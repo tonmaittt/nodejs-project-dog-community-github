@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>เพิ่มข้อมูลสุนัข</h1>
+								<h1>แก้ไขข้อมูลผู้ใช้</h1>
 							</div>
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 												<button class="btn btn-link" type="button" data-toggle="collapse"
 													data-target="#collapseOne" aria-expanded="true"
 													aria-controls="collapseOne">
-													ข้อมูลสุนัข
+													แก้ไขข้อมูลผู้ใช้
 												</button>
 											</h5>
 										</div>
@@ -40,36 +40,39 @@
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/dogAddSubmit" method="post" enctype="multipart/form-data">
+													<form action="/editDogDataSubmit" method="post">
 														<% if (messages.success) { %>
 															<div class="alert alert-success" role="alert"><%= messages.success %></div>
 														  <% } %>
 														  <% if (messages.error) { %>
 															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
 														  <% } %>
-														  <div class="client-avater text-center">
-															<img id="output" src="../img/dog_2396600.png" alt="" class="border" width="140" height="140">
-															<div class="client-meta"></div>
-															<label for="image">รูปโปรไฟล์</label><br>
-                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
-														  </div>
-														  <label for="dogName">ชื่อสุนัข :</label>
-														  <p><input type="text" placeholder="Dog Name" id="dogName" name="dogName" value="" required></p>
-														  <label for="dogBreed">พันธุ์ของสุนัข :</label>
-														  <p><input type="text" placeholder="Dog breed" id="dogBreed" name="dogBreed" value="" required></p>
-														  <label for="dogBirthday">วันเกิด :</label>
-														  <p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="" required></p>
-														  <label for="dogGender">เพศ :</label>
-															<p>
-																<select class="custom-select mr-sm-2" id="dogGender" name="dogGender" required>
-																	<option value="1">ชาย</option>
-																	<option value="2">หญิง</option>
-																	<option value="3">ไม่ระบุ</option>
-																</select>
-															</p>
-														  <label for="dogIntroduce">แนะนำตัวสุนัข :</label>
-														  <p><textarea name="dogIntroduce" id="dogIntroduce" cols="30" rows="10" placeholder="dogIntroduce"></textarea></p>
+														
+														
+														<label for="dogName">ชื่อสุนัข :</label>
+															<p><input type="text" placeholder="Dog Name" id="dogName" name="dogName" value="<%= dogName %>" required></p>
+														<label for="dogBreed">พันธุ์ของสุนัข :</label>
+															<p><input type="text" placeholder="Dog breed" id="dogBreed" name="dogBreed" value="<%= dogBreed %>" required></p>
+														<label for="dogBirthday">วันเกิด :</label>
+															<% if(dogBirthday === null){ %>
+															<p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="" required></p>
+															<% } else{ %>
+															<p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="<%= new Intl.DateTimeFormat('en-CA').format(dogBirthday) %>" required></p>
+															<% } %>
+														<label for="dogGender">เพศ :</label>
+														<p>
+															<select class="custom-select mr-sm-2" id="dogGender" name="dogGender" required>
+																<option value="<%= dogGender %>" selected><% if(dogGender === null){ %> โปรดเลือก <% } else{ %> <%= dogGenderName %> <% }%></option>
+																<option value="1">ชาย</option>
+																<option value="2">หญิง</option>
+																<option value="3">ไม่ระบุ</option>
+															</select>
+														</p>
+														
+														<label for="dogIntroduce">แนะนำตัวสุนัข :</label>
+														  <p><textarea name="dogIntroduce" id="dogIntroduce" cols="30" rows="10" placeholder="dogIntroduce"><%= dogIntroduce %></textarea></p>
 
+														
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
 													</form>
@@ -82,7 +85,7 @@
 						</div>
 
 						<div class="col-lg-4">
-							<div class="order-details-wrap">
+							<!-- <div class="order-details-wrap">
 								<table class="order-details">
 									<thead>
 										<tr>
@@ -123,8 +126,8 @@
 										</tr>
 									</tbody>
 								</table>
-								<!-- <a href="#" class="boxed-btn">Place Order</a> -->
-							</div>
+								<a href="#" class="boxed-btn">Place Order</a>
+							</div> -->
 						</div>
 					</div>
 				</div>

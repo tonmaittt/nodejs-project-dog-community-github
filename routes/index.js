@@ -577,6 +577,85 @@ router.post("/editDogProfileSubmit", upload.single("photo"), (req, res, next) =>
   }
 });
 
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลสุนัข ------------------------------------------------------------------------------------------------------ */
+router.get("/editDogData", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          dogName: "",
+          dogBreed: "",
+          dogBirthday: "",
+          dogGender: "",
+          dogGenderName: "",
+          dogIntroduce: "",
+        });      
+      } else {
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          dogName: rows[0].dog_name,
+          dogBreed: rows[0].dog_breed,
+          dogBirthday: rows[0].dog_birthday,
+          dogGender: rows[0].dog_gender,
+          dogGenderName: rows[0].name,
+          dogIntroduce: rows[0].dog_introduce,
+        });
+      }
+    }
+  );
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/editDogDataSubmit", (req, res, next) => {
+  let dogName = req.body.dogName;
+  let dogBreed = req.body.dogBreed;
+  let dogBirthday = req.body.dogBirthday;
+  let dogGender = req.body.dogGender;
+  let dogIntroduce = req.body.dogIntroduce;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      dog_name: dogName,
+      dog_breed: dogBreed,
+      dog_birthday: dogBirthday,
+      dog_gender: dogGender,
+      dog_introduce: dogIntroduce
+    }
+    dbCon.query("UPDATE tb_dog SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
+
 /* -------------------------------------------------------------- หน้าบอร์ดสุขภาพสุนัข ------------------------------------------------------------------------------------------------------ */
 
 /* GET boardhealth page. */
