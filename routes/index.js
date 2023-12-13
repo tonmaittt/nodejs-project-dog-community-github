@@ -461,6 +461,80 @@ router.post("/userVerifiedSubmit", (req, res, next) => {
   }
 });
 
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลยืนยันผู้ใช้ ------------------------------------------------------------------------------------------------------ */
+router.get("/editUserVerified", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT * FROM tb_user_verified WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editUserVerified", {
+          title: "แก้ไขข้อมูลยืนยันผู้ใช้",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          id_card: "",
+          address: "",
+          tel: "",
+          facebook: "",
+          line: "",
+        });      
+      } else {
+        res.render("editUserVerified", {
+          title: "แก้ไขข้อมูลยืนยันผู้ใช้",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          id_card: rows[0].	card_id,
+          address: rows[0].address,
+          tel: rows[0].tel,
+          facebook: rows[0].facebook,
+          line: rows[0].line,
+        });
+      }
+    }
+  );
+});
+
+// add a แก้ไข แก้ไขข้อมูลยืนยันผู้ใช้
+router.post("/editUserVerifiedSubmit", (req, res, next) => {
+  let address = req.body.address;
+  let tel = req.body.tel;
+  let facebook = req.body.facebook;
+  let line = req.body.line;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      address: address,
+      tel: tel,
+      facebook: facebook,
+      line: line
+    }
+    dbCon.query("UPDATE tb_user_verified SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
 /* -------------------------------------------------------------- ข้อมูลผู้ใช้ - เพิ่มข้อมูลสุนัข ------------------------------------------------------------------------------------------------------ */
 router.get("/dogAdd", function (req, res, next) {
   if (!req.session.ifNotLogIn) {

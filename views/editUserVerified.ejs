@@ -40,7 +40,7 @@
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/userVerifiedSubmit" method="post">
+													<form action="/editUserVerifiedSubmit" method="post">
 														<% if (messages.success) { %>
 															<div class="alert alert-success" role="alert"><%= messages.success %></div>
 														  <% } %>
@@ -49,15 +49,15 @@
 														  <% } %>
 														
 														  <label for="fname">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-														  <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="" required></p>
+														  <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="<%= id_card %>" required disabled></p>
 														  <label for="typeaddress">ที่อยู่ :</label>
-														  <p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" required></textarea></p>
+														  <p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" required><%= address %></textarea></p>
 														  <label for="fname">เบอร์โทรศัพท์ :</label>
-														  <p><input type="tel" placeholder="tel." id="typetel" name="tel" value="" minlength="10" maxlength="10" required></p>
+														  <p><input type="tel" placeholder="tel." id="typetel" name="tel" minlength="10" maxlength="10" value="<%= tel %>" required></p>
 														  <label for="fname">FaceBook :</label>
-														  <p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="" required></p>
+														  <p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="<%= facebook %>" required></p>
 														  <label for="fname">Line :</label>
-														  <p><input type="text" placeholder="Line" id="typeline" name="line" value="" required></p>
+														  <p><input type="text" placeholder="Line" id="typeline" name="line" value="<%= line %>" required></p>
 
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
