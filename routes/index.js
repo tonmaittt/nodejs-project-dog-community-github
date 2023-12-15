@@ -114,7 +114,7 @@ router.get("/userInformation", function (req, res, next) {
                     res.redirect('/')
                   } else {
                     dbCon.query(
-                      "SELECT * FROM tb_dog WHERE user_id = " + req.session.idUser,
+                      "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
                       (err, rowsDog) => {
                         if (err) {
                           req.flash("error", err);
@@ -455,6 +455,274 @@ router.post("/userVerifiedSubmit", (req, res, next) => {
           res.redirect('/userInformation')
       } else {
         req.flash('success', 'ส่งข้อมูลยืนยันสำเร็จ โปรดรอการตอบกลับในอีเมล');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลยืนยันผู้ใช้ ------------------------------------------------------------------------------------------------------ */
+router.get("/editUserVerified", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT * FROM tb_user_verified WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editUserVerified", {
+          title: "แก้ไขข้อมูลยืนยันผู้ใช้",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          id_card: "",
+          address: "",
+          tel: "",
+          facebook: "",
+          line: "",
+        });      
+      } else {
+        res.render("editUserVerified", {
+          title: "แก้ไขข้อมูลยืนยันผู้ใช้",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          id_card: rows[0].	card_id,
+          address: rows[0].address,
+          tel: rows[0].tel,
+          facebook: rows[0].facebook,
+          line: rows[0].line,
+        });
+      }
+    }
+  );
+});
+
+// add a แก้ไข แก้ไขข้อมูลยืนยันผู้ใช้
+router.post("/editUserVerifiedSubmit", (req, res, next) => {
+  let address = req.body.address;
+  let tel = req.body.tel;
+  let facebook = req.body.facebook;
+  let line = req.body.line;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      address: address,
+      tel: tel,
+      facebook: facebook,
+      line: line
+    }
+    dbCon.query("UPDATE tb_user_verified SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - เพิ่มข้อมูลสุนัข ------------------------------------------------------------------------------------------------------ */
+router.get("/dogAdd", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect('/')
+  }
+  if (req.session.level < 2) {
+    return res.redirect('/')
+  }
+  res.render("dogAdd", {
+    title: "เพิ่มข้อมูลสุนัข",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+    id_card: "",
+    address: "",
+    tel: "",
+    facebook: "",
+    line: "",
+  }); 
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/dogAddSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let dogName = req.body.dogName;
+  let dogBreed = req.body.dogBreed;
+  let dogBirthday = req.body.dogBirthday;
+  let dogGender = req.body.dogGender;
+  let dogIntroduce = req.body.dogIntroduce;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        dog_name: dogName,
+        dog_breed: dogBreed,
+        dog_gender: dogGender,
+        dog_birthday: dogBirthday,
+        dog_introduce	: dogIntroduce,
+        dog_img	: photo,
+        status: 1
+    }
+    // insert query
+    dbCon.query("INSERT INTO tb_dog SET ?", form_data, (err, result) => {
+      if (err) {
+          console.log("ERRO");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'เพิ่มข้อมูลสุนัขสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์สุนัข ------------------------------------------------------------------------------------------------------ */
+router.get("/editDogProfile", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT tb_dog.dog_img AS img FROM tb_dog WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editDogProfile", {
+          title: "Edit Dog Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      } else {
+        res.render("editDogProfile", {
+          title: "Edit Dog Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      }
+    }
+  );
+});
+
+// add a แก้ไข รูปโปรไฟล์สุนัข
+router.post("/editDogProfileSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      dog_img: photo,
+    };
+    // insert query
+    dbCon.query(
+      "UPDATE tb_dog SET ? WHERE user_id = " + req.session.idUser, form_data,
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.redirect("/userInformation");
+        } else {
+          req.flash("success", "แก้ไขรูปโปรไฟล์สำเร็จ");
+          res.redirect("/userInformation");
+        }
+      }
+    );
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลสุนัข ------------------------------------------------------------------------------------------------------ */
+router.get("/editDogData", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  dbCon.query(
+    "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          dogName: "",
+          dogBreed: "",
+          dogBirthday: "",
+          dogGender: "",
+          dogGenderName: "",
+          dogIntroduce: "",
+        });      
+      } else {
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          dogName: rows[0].dog_name,
+          dogBreed: rows[0].dog_breed,
+          dogBirthday: rows[0].dog_birthday,
+          dogGender: rows[0].dog_gender,
+          dogGenderName: rows[0].name,
+          dogIntroduce: rows[0].dog_introduce,
+        });
+      }
+    }
+  );
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/editDogDataSubmit", (req, res, next) => {
+  let dogName = req.body.dogName;
+  let dogBreed = req.body.dogBreed;
+  let dogBirthday = req.body.dogBirthday;
+  let dogGender = req.body.dogGender;
+  let dogIntroduce = req.body.dogIntroduce;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      dog_name: dogName,
+      dog_breed: dogBreed,
+      dog_birthday: dogBirthday,
+      dog_gender: dogGender,
+      dog_introduce: dogIntroduce
+    }
+    dbCon.query("UPDATE tb_dog SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
         res.redirect('/userInformation')
       }
     })

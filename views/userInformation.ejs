@@ -127,7 +127,7 @@
 														<label for="fname">เพศ :</label>
 														<p><input type="text" placeholder="Gender" id="typegender" name="gender" value="<%= gender %>" disabled></p>
 														<label for="fname">วันเกิด :</label>
-														<p><input type="text" placeholder="Birthday" id="typebirthday" name="birthday" value="<% if(birthday === null){ %> Birthday <% } else{ %> <%= new Intl.DateTimeFormat('th-GB').format(birthday) %> <% }%>" disabled></p>
+														<p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="<% if(birthday === null){ %> Birthday <% } else{ %><%= new Intl.DateTimeFormat('en-CA').format(birthday) %><% }%>" disabled></p>
 														
 														<div class="text-right">
 															<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
@@ -168,7 +168,7 @@
 															<p><input type="text" placeholder="Line" id="typeline" name="line" value="<%= rowsVerified[0].line %>" disabled></p>
 			
 															<div class="text-right">
-																<a href="/editUserData1" class="boxed-btn">แก้ไข</a>
+																<a href="/editUserVerified" class="boxed-btn">แก้ไข</a>
 															</div>
 														</form>
 													</div>
@@ -197,10 +197,36 @@
 													<% if(!rowsDog.length) { %>
 														<p>ยังไม่มีข้อมูลสุนัข</p>
 														<div class="text-center">
-															<a href="#" class="boxed-btn">เพิ่มเลย!</a>
+															<a href="/dogAdd" class="boxed-btn">เพิ่มเลย!</a>
 														</div>
 													<% } else {%>	
-														<p>ข้อมูลสุนัข</p>
+														<div class="billing-address-form">
+															<form action="#">
+																<div class="client-avater text-center">
+																	<img src="../img/<%= rowsDog[0].dog_img %>" alt="" width="140" height="140">
+																	<div class="client-meta">
+																		<a href="editDogProfile">
+																			<h3><span>เปลี่ยนรูปสุนัข</span></h3>
+																		</a>
+																	</div>
+																</div>
+																
+																<label for="dogName">ชื่อสุนัข :</label>
+																<p><input type="text" placeholder="Dog Name" id="dogName" name="dogName" value="<%= rowsDog[0].dog_name %>" disabled></p>
+																<label for="dogBreed">พันธุ์ของสุนัข :</label>
+																<p><input type="text" placeholder="Dog breed" id="dogBreed" name="dogBreed" value="<%= rowsDog[0].dog_breed %>" disabled></p>
+																<label for="dogBirthday">วันเกิด :</label>
+																<p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="<%= new Intl.DateTimeFormat('en-CA').format(rowsDog[0].dog_birthday) %>" disabled></p>
+																<label for="dogGender">เพศ :</label>
+																<p><input type="text" placeholder="Dog gender" id="dogGender" name="dogGender" value="<%= rowsDog[0].name %>" disabled></p>
+																<label for="dogIntroduce">แนะนำตัวสุนัข :</label>
+																<p><textarea name="dogIntroduce" id="dogIntroduce" cols="30" rows="10" placeholder="dogIntroduce" disabled><%= rowsDog[0].dog_introduce %></textarea></p>
+
+																<div class="text-right">
+																	<a href="/editDogData" class="boxed-btn">แก้ไข</a>
+																</div>
+															</form>
+														</div>
 													<% } %>	
 												</div>
 											</div>

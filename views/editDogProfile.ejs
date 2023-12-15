@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>ข้อมูลผู้ใช้</h1>
+								<h1>แก้ไขข้อมูลผู้ใช้ รูปโปรไฟล์</h1>
 							</div>
 						</div>
 					</div>
@@ -24,7 +24,6 @@
 						<div class="col-lg-8">
 							<div class="checkout-accordion-wrap">
 								<div class="accordion" id="accordionExample">
-								
 									<div class="card single-accordion">
 										<div class="card-header" id="headingOne">
 											<h5 class="mb-0">
@@ -35,30 +34,19 @@
 												</button>
 											</h5>
 										</div>
-										
+
 										<div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/userVerifiedSubmit" method="post">
-														<% if (messages.success) { %>
-															<div class="alert alert-success" role="alert"><%= messages.success %></div>
-														  <% } %>
-														  <% if (messages.error) { %>
-															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
-														  <% } %>
-														
-														  <label for="fname">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-														  <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="typeid_card" name="id_card" minlength="13" maxlength="13" value="" required></p>
-														  <label for="typeaddress">ที่อยู่ :</label>
-														  <p><textarea name="address" id="bill" cols="30" rows="10" placeholder="Address" required></textarea></p>
-														  <label for="fname">เบอร์โทรศัพท์ :</label>
-														  <p><input type="tel" placeholder="tel." id="typetel" name="tel" value="" minlength="10" maxlength="10" required></p>
-														  <label for="fname">FaceBook :</label>
-														  <p><input type="text" placeholder="FaceBook" id="typefacebook" name="facebook" value="" required></p>
-														  <label for="fname">Line :</label>
-														  <p><input type="text" placeholder="Line" id="typeline" name="line" value="" required></p>
-
+													<form action="/editDogProfileSubmit" method="post" enctype="multipart/form-data">
+														<div class="client-avater text-center">
+															<img id="output" class="border" src="../img/<%= img %>" alt="" width="140" height="140">
+															<div class="client-meta">
+															</div>
+															<label for="image">รูปโปรไฟล์</label><br>
+                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+														</div>
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
 													</form>
@@ -112,7 +100,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<!-- <a href="#" class="boxed-btn">Place Order</a> -->
+								<a href="#" class="boxed-btn">Place Order</a>
 							</div>
 						</div>
 					</div>
