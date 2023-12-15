@@ -1,115 +1,173 @@
-<%- include('partials/head') -%>
-    <%- include('partials/header') -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <title>บอร์ดชุมชน</title>
 
-        <body>
-            <main class="board mt-4">
-                <div class="container">
-                    <div class="d-inline-flex">
-                        <div class="p-2"
-                            style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
-                            <h3>ชุมชน - บอร์ด</h3>
-                        </div>
-                    </div>
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        <div class="text-with-lines">
-                            <div class="text-top">
-                                <div class="title mt-2 text-center">
-                                    <h1>ชุมชน</h1>
-                                </div>
-                            </div>
-                        </div>
+    <!-- favicon -->
+	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="assets/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="assets/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="assets/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<%- include('partials/heads') -%>
+<%- include('partials/headers') -%>
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
 
-                        <div class="container">
-                            <!-- Control the column width, and how they should appear on different devices -->
-                            <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mx-auto">
-                                    <% if(levelS> 0) { %>
-                                        <a type="button" class="btn btn-warning col-sm-12 mt-2" href="/boardAdd"
-                                            style="color: #ffffff; background-color: coral;">สร้างบทความ</a>
-                                        <% } %>
-                                            <div class="row py-3 px-3 mx-auto">
-                                                <a type="button" class="btn btn-warning col-sm-5 mr-auto"
-                                                    style="color: #ffffff; background-color: coral;">ล่างสุด</a>
+    <!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg hero-bg-cm">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p class="subtitle">LOVE DOGS TH</p>
+							<h1>บอร์ด</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
 
-                                                <a type="button" class="btn btn-warning col-sm-5"
-                                                    style="color: #ffffff; background-color: coral;">ยอดฮิต</a>
-                                            </div>
-                                            <a type="button" class="btn btn-warning col-sm-12 mt-2"
-                                                style="color: #ffffff; background-color: coral;">ทั้งหมด</a>
-                                            <a type="button" class="btn btn-warning col-sm-12 mt-2"
-                                                style="color: #ffffff; background-color: coral;">ทั่วไป</a>
-                                            <a type="button" class="btn btn-warning col-sm-12 mt-2"
-                                                style="color: #ffffff; background-color: coral;">หาบ้าน</a>
-                                            <a type="button" class="btn btn-warning col-sm-12 mt-2"
-                                                style="color: #ffffff; background-color: coral;">ตามหา</a>
-                                </div>
+   	<!-- products -->
+	<div class="product-section mt-150 mb-150">
+		<div class="container">
 
-
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto">
-                                    <div class="container">
-                                        <% if(data.length) { %>
-                                            <h5><span class="underline"> > บทความชุมชนทั้งหมด</span></h5>
-                                            <% for(let i=0; i < data.length; i++) { %>
-                                                <div class="row justify-content-start">
-                                                    <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 w-100">
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 d-flex flex-wrap align-content-center">
-                                                            <a href="/boardDetail/<%= data[i].communityboard_id %>">
-                                                                <img class="mr-3 img-fluid"
-                                                                style="max-width: 80px; max-height: 120px;"
-                                                                src="img/<%= data[i].photo %>"
-                                                                alt="Generic placeholder image">
-                                                            </a>
-                                                            
-                                                        </div>
-                                                        <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
-                                                            <a href="/boardDetail/<%= data[i].communityboard_id %>" style="text-decoration:none; color: black;">
-                                                                <h5 class="mt-3">                                                               
-                                                                    <b><%= data[i].title %></b>
-                                                                </h5>
-                                                                เมื่อ <%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at) %>
-                                                                เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'medium'}).format(data[i].created_at) %> น.
-                                                                <br>ผู้ชม (<%= data[i].view %>) -o- ความคิดเห็น (0)
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                                            <div class="row">
-                                                                <p>จากคุณ &nbsp;<div class="text-primary"><%= data[i].username %></div></p>
-                                                                <img class="mr-3 img-fluid rounded-circle"
-                                                                style="width: 100px; height: 100px;"
-                                                                src="img/<%= data[i].img %>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <% } %>
-                                                    <% } %>
-                                                        <% if(!data.length) { %>
-                                                            <p class="text-center">ไม่พบข้อมูล</p>
-                                                        <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="justify-content-center mt-4 mx-auto">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+            <% if(levelS > 0) { %>
+        
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product-filters">
+                            <ul>
+                                <li class="active" data-filter="*" style="width: 90%;">สร้างบทความ</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                </div>
+    
+            <% } %>
 
-        </body>
-        <%- include('partials/footer') -%>
+			<div class="row">
+                <div class="col-md-12">
+                    <div class="product-filters">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li data-filter=".strawberry">Strawberry</li>
+                            <li data-filter=".berry">Berry</li>
+                            <li data-filter=".lemon">Lemon</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+			<div class="row product-lists">
+				<div class="col-lg-4 col-md-6 text-center strawberry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article1.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Strawberry</h3>
+						<p class="product-price"><span>Per Kg</span> 85$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center berry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article2.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Berry</h3>
+						<p class="product-price"><span>Per Kg</span> 70$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center lemon">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article3.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Lemon</h3>
+						<p class="product-price"><span>Per Kg</span> 35$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article4.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Avocado</h3>
+						<p class="product-price"><span>Per Kg</span> 50$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article5.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Green Apple</h3>
+						<p class="product-price"><span>Per Kg</span> 45$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center strawberry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article6.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Strawberry</h3>
+						<p class="product-price"><span>Per Kg</span> 80$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="pagination-wrap">
+						<ul>
+							<li><a href="#">Prev</a></li>
+							<li><a href="#">1</a></li>
+							<li><a class="active" href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">Next</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end products -->
+
+
+
+    
+</body>
+</html>

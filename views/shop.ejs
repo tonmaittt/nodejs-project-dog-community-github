@@ -1,183 +1,171 @@
-<%- include('partials/head') -%>
-    <%- include('partials/header') -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <title>ร้านค้า</title>
 
-        <body>
-            <main class="board mt-4">
-                <div class="container">
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        <div class="text-with-lines">
-                            <div class="text-top">
-                                <div class="title mt-2">
-                                    <h1>ร้านค้า</h1>
-                                </div>
-                            </div>
+    <!-- favicon -->
+	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="assets/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="assets/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="assets/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<%- include('partials/heads') -%>
+<%- include('partials/headers') -%>
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg hero-bg-shop">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p class="subtitle">LOVE DOGS TH</p>
+							<h1>ร้านค้า</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+   	<!-- products -->
+	<div class="product-section mt-150 mb-150">
+		<div class="container">
+
+            <% if(levelS > 0) { %>
+        
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product-filters">
+                            <ul>
+                                <li class="active" data-filter="*" style="width: 90%;">สร้างบทความ</li>
+                            </ul>
                         </div>
-
-                        <div class="container">
-                            <!-- Control the column width, and how they should appear on different devices -->
-                            <div class="row">
-
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto">
-                                    <div class="container">
-                                        <h5 class="text-center"><span class="underline">โปรโมชั่น</span></h5>
-                                        <div class="row mx-auto">
-                                            <!-- box1 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid mt-auto"
-                                                                alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box2 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box3 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box4 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box3 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box4 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box3 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- box4 -->
-                                            <div class="card w-50">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <img src="img/dog1.jpg" class="img-fluid" alt="Image 1">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p class="card-text">
-                                                            <h5>Lorem, ipsum.</h5>
-                                                            </p>
-                                                            <p class="card-text">Text 1 Row 2</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="justify-content-center mt-4 mx-auto">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
-
                     </div>
                 </div>
-                </div>
-            </main>
+    
+            <% } %>
 
-        </body>
-        <%- include('partials/footer') -%>
+			<div class="row">
+                <div class="col-md-12">
+                    <div class="product-filters">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li data-filter=".strawberry">Strawberry</li>
+                            <li data-filter=".berry">Berry</li>
+                            <li data-filter=".lemon">Lemon</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+			<div class="row product-lists">
+				<div class="col-lg-4 col-md-6 text-center strawberry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article1.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Strawberry</h3>
+						<p class="product-price"><span>Per Kg</span> 85$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center berry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article2.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Berry</h3>
+						<p class="product-price"><span>Per Kg</span> 70$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center lemon">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article3.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Lemon</h3>
+						<p class="product-price"><span>Per Kg</span> 35$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article4.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Avocado</h3>
+						<p class="product-price"><span>Per Kg</span> 50$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article5.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Green Apple</h3>
+						<p class="product-price"><span>Per Kg</span> 45$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 text-center strawberry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="#"><img src="../img/article6.jpg" alt="" class="img-pro"></a>
+						</div>
+						<h3>Strawberry</h3>
+						<p class="product-price"><span>Per Kg</span> 80$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="pagination-wrap">
+						<ul>
+							<li><a href="#">Prev</a></li>
+							<li><a href="#">1</a></li>
+							<li><a class="active" href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">Next</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end products -->
+
+</body>
+<%- include('partials/footer') -%>
+</html>

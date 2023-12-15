@@ -26,8 +26,17 @@ body {
   line-height: 1.8;
   color: #051922;
   overflow-x: hidden;
+  
 }
 
+.bg-image {
+  background-image: url(../img/wallpaper4.jpg);
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 body img {
   max-width: 100%;
 }
@@ -1233,6 +1242,11 @@ div.owl-controls div.owl-nav div:hover {
   box-shadow: 0 0 20px #ddd;
 }
 
+.img-pro {
+  max-width: 250px;
+  max-height: 300px;
+}
+
 .product-image img {
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
@@ -1369,6 +1383,27 @@ a.mobile-show.search-bar-icon:hover {
 ----------------------------------------------------------------------------- */
 .hero-bg {
   background-image: url(../../../../img/dog1.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-bg2 {
+  background-image: url(../../../../img/Top2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-bg-shop {
+  background-image: url(../../../../img/shopdog.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-bg-cm {
+  background-image: url(../../../../img/dogcommunity.jpg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -1622,6 +1657,7 @@ div.owl-controls, .owl-controls div {
 
 .latest-news-bg {
   height: 200px;
+  width: 350px;
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -2383,6 +2419,7 @@ ul.social-link-team li a {
 ----------------------------------------------------------------------------- */
 .product-filters {
   margin-bottom: 80px;
+  filter: drop-shadow(0 0 0.20rem);
 }
 
 .product-filters ul {
