@@ -730,6 +730,97 @@ router.post("/editDogDataSubmit", (req, res, next) => {
 });
 
 
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - ส่งข้อมูลยืนยันผู้เชี่ยวชาญ ------------------------------------------------------------------------------------------------------ */
+router.get("/userVets", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect('/')
+  }
+  if (req.session.level > 2) {
+    return res.redirect('/')
+  }
+  res.render("userVets", {
+    title: "ส่งข้อมูลยืนยันผู้เชี่ยวชาญ",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+    vetsTitle: "",
+    vetsFname: "",
+    vetsSname: "",
+    vetsEmail: "",
+    vetsNameShow: "",
+    vetsGender: "",
+    vetsBirthday: "",
+    vetsAddress: "",
+    vetsCardId: "",
+    vetsTel: "",
+    vetsFacebook: "",
+    vetsLine: "",
+    vetsWorkplace: "",
+    vetsPosition: "",
+    vetsGraduated: "",
+    vetsIntroduce: "",
+  }); 
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let vetsTitle = req.body.vetsTitle;
+  let  vetsFname = req.body.vetsFname;
+  let  vetsSname = req.body.vetsSname;
+  let  vetsEmail = req.body.vetsEmail;
+  let  vetsNameShow = req.body.vetsNameShow;
+  let  vetsGender = req.body.vetsGender;
+  let  vetsBirthday = req.body.vetsBirthday;
+  let  vetsAddress = req.body.vetsAddress;
+  let  vetsCardId = req.body.vetsCardId;
+  let  vetsTel = req.body.vetsTel;
+  let  vetsFacebook = req.body.vetsFacebook;
+  let  vetsLine = req.body.vetsLine;
+  let  vetsWorkplace = req.body.vetsWorkplace;
+  let  vetsPosition = req.body.vetsPosition;
+  let  vetsGraduated = req.body.vetsGraduated;
+  let  vetsIntroduce = req.body.vetsIntroduce;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        vets_title: vetsTitle,
+        vets_fname: vetsFname,
+        vets_sname: vetsSname,
+        vets_email: vetsEmail,
+        vets_name_show: vetsNameShow,
+        vets_gender: vetsGender,
+        vets_birthday: vetsBirthday,
+        vets_address: vetsAddress,
+        vets_card_id: vetsCardId,
+        vets_tel: vetsTel,
+        vets_facebook: vetsFacebook,
+        vets_line: vetsLine,
+        vets_workplace: vetsWorkplace,
+        vets_position: vetsPosition,
+        vets_graduated: vetsGraduated,
+        vets_introduce: vetsIntroduce,
+        vets_img: photo,
+        status: 0
+    }
+    // insert query
+    dbCon.query("INSERT INTO tb_vets SET ?", form_data, (err, result) => {
+      if (err) {
+          console.log("ERRO 2/");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'ส่งข้อมูลยืนยันผู้เชี่ยวชาญสำเร็จ โปรดรอการตอบกลับในอีเมล');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
 /* -------------------------------------------------------------- หน้าบอร์ดสุขภาพสุนัข ------------------------------------------------------------------------------------------------------ */
 
 /* GET boardhealth page. */
