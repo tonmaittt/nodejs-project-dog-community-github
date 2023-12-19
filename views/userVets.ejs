@@ -1,0 +1,148 @@
+<%- include('partials/heads') -%>
+	<%- include('partials/headers') -%>
+
+		<body>
+			<!-- breadcrumb-section -->
+			<div class="breadcrumb-section breadcrumb-bg">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 offset-lg-2 text-center">
+							<div class="breadcrumb-text">
+								<p>ยินดีต้อนรับ</p>
+								<h1>เพิ่มข้อมูลสุนัข</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end breadcrumb section -->
+
+			<!-- check out section -->
+			<div class="checkout-section mt-150 mb-150">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8">
+							<div class="checkout-accordion-wrap">
+								<div class="accordion" id="accordionExample">
+								
+									<div class="card single-accordion">
+										<div class="card-header" id="headingOne">
+											<h5 class="mb-0">
+												<button class="btn btn-link" type="button" data-toggle="collapse"
+													data-target="#collapseOne" aria-expanded="true"
+													aria-controls="collapseOne">
+													ข้อมูลสุนัข
+												</button>
+											</h5>
+										</div>
+										
+										<div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+											data-parent="#accordionExample">
+											<div class="card-body">
+												<div class="billing-address-form">
+													<form action="/userVetsSubmit" method="post" enctype="multipart/form-data">
+														<% if (messages.success) { %>
+															<div class="alert alert-success" role="alert"><%= messages.success %></div>
+														  <% } %>
+														  <% if (messages.error) { %>
+															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
+														  <% } %>
+														  <div class="client-avater text-center">
+															<img id="output" src="../img/doctor.png" alt="" class="border" width="140" height="140">
+															<div class="client-meta"></div>
+															<label for="image">รูปโปรไฟล์</label><br>
+                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+														  </div>
+														  <label for="dogName">ชื่อสุนัข :</label>
+														  <p><input type="text" placeholder="Dog Name" id="dogName" name="dogName" value="" required></p>
+														  <label for="dogBreed">พันธุ์ของสุนัข :</label>
+														  <p><input type="text" placeholder="Dog breed" id="dogBreed" name="dogBreed" value="" required></p>
+														  <label for="dogBirthday">วันเกิด :</label>
+														  <p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="" required></p>
+														  <label for="dogGender">เพศ :</label>
+															<p>
+																<select class="custom-select mr-sm-2" id="dogGender" name="dogGender" required>
+																	<option value="1">ชาย</option>
+																	<option value="2">หญิง</option>
+																	<option value="3">ไม่ระบุ</option>
+																</select>
+															</p>
+														  <label for="dogIntroduce">แนะนำตัวสุนัข :</label>
+														  <p><textarea name="dogIntroduce" id="dogIntroduce" cols="30" rows="10" placeholder="dogIntroduce"></textarea></p>
+
+														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
+														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4">
+							<div class="order-details-wrap">
+								<table class="order-details">
+									<thead>
+										<tr>
+											<th>Your order Details</th>
+											<th>Price</th>
+										</tr>
+									</thead>
+									<tbody class="order-details-body">
+										<tr>
+											<td>Product</td>
+											<td>Total</td>
+										</tr>
+										<tr>
+											<td>Strawberry</td>
+											<td>$85.00</td>
+										</tr>
+										<tr>
+											<td>Berry</td>
+											<td>$70.00</td>
+										</tr>
+										<tr>
+											<td>Lemon</td>
+											<td>$35.00</td>
+										</tr>
+									</tbody>
+									<tbody class="checkout-details">
+										<tr>
+											<td>Subtotal</td>
+											<td>$190</td>
+										</tr>
+										<tr>
+											<td>Shipping</td>
+											<td>$50</td>
+										</tr>
+										<tr>
+											<td>Total</td>
+											<td>$240</td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- <a href="#" class="boxed-btn">Place Order</a> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end check out section -->
+
+			<script>
+				var loadFile = function (event) {
+					var output = document.getElementById('output');
+					output.src = URL.createObjectURL(event.target.files[0]);
+					output.onload = function () {
+						URL.revokeObjectURL(output.src) // free memory
+					}
+				};
+			</script>
+
+			<%- include('partials/footers') -%>
+
+		</body>
+
+		</html>
