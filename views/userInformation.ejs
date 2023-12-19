@@ -41,12 +41,19 @@
 								<% } %>	
 							<% } %>
 
-							<% if(levelS < 3 ) { %>
+							<% if(rowsVets.length > 0) { %>
+								<% if(rowsVets[0].status == 0) { %>
+									<div class="alert alert-primary" role="alert">
+										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<strong>กำลังรอการตรวจสอบการยืนยันผู้ใช้จาก ผู้ดูแลระบบ!</strong></a> 
+									</div>
+								<% } %>	
+							<% } else { %>	
 								<div class="alert alert-info" role="alert">
 									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 									<strong>หากคุณเป็นผู้เชี่ยวชาญ รวมตอบปัญหาสุขภาพกับเรา!</strong> ส่งข้อมูลเพื่อยืนยัน <a href="/userVets">คลิกเลย!</a> 
 								</div>
-							<% } %>
+							<% } %>	
 
 							<% if (messages.success) { %>
 								<div class="alert alert-success" role="alert">

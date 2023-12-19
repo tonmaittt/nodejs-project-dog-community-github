@@ -53,22 +53,44 @@
 															<label for="image">รูปโปรไฟล์</label><br>
                                                         	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
 														  </div>
-														  <label for="dogName">ชื่อสุนัข :</label>
-														  <p><input type="text" placeholder="Dog Name" id="dogName" name="dogName" value="" required></p>
-														  <label for="dogBreed">พันธุ์ของสุนัข :</label>
-														  <p><input type="text" placeholder="Dog breed" id="dogBreed" name="dogBreed" value="" required></p>
-														  <label for="dogBirthday">วันเกิด :</label>
-														  <p><input type="date" placeholder="Birthday" id="dogBirthday" name="dogBirthday" value="" required></p>
-														  <label for="dogGender">เพศ :</label>
+														  <label for="vetsTitle">คำนำหน้า :</label>
+														  <p><input type="text" placeholder="Title" id="vetsTitle" name="vetsTitle" value="" required></p>
+														  <label for="vetsFname">ชื่อ :</label>
+														  <p><input type="text" placeholder="Name" id="vetsFname" name="vetsFname" value="" required></p>
+														  <label for="vetsSname">นามสกุล :</label>
+														  <p><input type="text" placeholder="Last Name" id="vetsSname" name="vetsSname" value="" required></p>
+														  <label for="vetsEmail">อีเมล์ :</label>
+														  <p><input type="email" placeholder="Email" id="vetsEmail" name="vetsEmail" value="" required></p>
+														  <label for="vetsNameShow">ชื่อที่ใช้แสดง :</label>
+														  <p><input type="text" placeholder="Show Name" id="vetsNameShow" name="vetsNameShow" value="" required></p>
+														  <label for="vetsGender">เพศ :</label>
 															<p>
-																<select class="custom-select mr-sm-2" id="dogGender" name="dogGender" required>
+																<select class="custom-select mr-sm-2" id="vetsGender" name="vetsGender" required>
 																	<option value="1">ชาย</option>
 																	<option value="2">หญิง</option>
 																	<option value="3">ไม่ระบุ</option>
 																</select>
 															</p>
-														  <label for="dogIntroduce">แนะนำตัวสุนัข :</label>
-														  <p><textarea name="dogIntroduce" id="dogIntroduce" cols="30" rows="10" placeholder="dogIntroduce"></textarea></p>
+														   <label for="vetsBirthday">วันเกิด :</label>
+															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="" required></p>
+														  <label for="vetsAddress">ที่อยู่ :</label>
+														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" required></textarea></p>
+														  <label for="vetsCardId">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
+														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="" required></p>
+														  <label for="vetsTel">เบอร์โทรศัพท์ :</label>
+														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="" minlength="10" maxlength="10" required></p>
+														  <label for="vetsFacebook">FaceBook :</label>
+														  <p><input type="text" placeholder="FaceBook" id="vetsFacebook" name="vetsFacebook" value="" required></p>
+														  <label for="vetsLine">Line :</label>
+														  <p><input type="text" placeholder="Line" id="vetsLine" name="vetsLine" value="" required></p>
+														  <label for="vetsWorkplace">คลีนิคที่ทำงาน :</label>
+														  <p><input type="text" placeholder="Workplace" id="vetsWorkplace" name="vetsWorkplace" value="" required></p>
+														  <label for="vetsPosition">ตำแหน่งงาน :</label>
+														  <p><input type="text" placeholder="Position" id="vetsPosition" name="vetsPosition" value="" required></p>
+														  <label for="vetsGraduated">เรียนจบจาก :</label>
+														  <p><input type="text" placeholder="Position" id="vetsGraduated" name="vetsGraduated" value="" required></p>
+														  <label for="vetsIntroduce">แนะนำตัว :</label>
+														  <p><textarea name="vetsIntroduce" id="vetsIntroduce" cols="30" rows="10" placeholder="Introduce"></textarea></p>
 
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
