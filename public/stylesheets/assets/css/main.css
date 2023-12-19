@@ -1409,6 +1409,13 @@ a.mobile-show.search-bar-icon:hover {
   background-attachment: fixed;
 }
 
+.hero-bg-dt {
+  background-image: url(../../../../img/dogDT.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 .hero-text {
   display: table;
   height: 100%;
