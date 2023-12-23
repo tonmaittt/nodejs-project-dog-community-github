@@ -598,19 +598,15 @@ router.get("/editDogProfile", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return res.redirect("/");
   }
+  if (req.session.level < 2) {
+    return res.redirect('/')
+  }
   dbCon.query(
     "SELECT tb_dog.dog_img AS img FROM tb_dog WHERE user_id = " + req.session.idUser,
     (err, rows) => {
       if (err) {
         req.flash("error", err);
-        res.render("editDogProfile", {
-          title: "Edit Dog Profile",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          img: rows[0].img,
-        });      
+        res.redirect('/userInformation');  
       } else {
         res.render("editDogProfile", {
           title: "Edit Dog Profile",
@@ -660,6 +656,9 @@ router.get("/editDogData", function (req, res, next) {
       emailS: "0",
       levelS: 0,
     });
+  }
+  if (req.session.level < 2) {
+    return res.redirect('/')
   }
   dbCon.query(
     "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
@@ -728,6 +727,220 @@ router.post("/editDogDataSubmit", (req, res, next) => {
     })
   }
 });
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - เพิ่มข้อมูลร้าน ------------------------------------------------------------------------------------------------------ */
+router.get("/shopAdd", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect('/')
+  }
+  if (req.session.level < 2) {
+    return res.redirect('/')
+  }
+  res.render("shopAdd", {
+    title: "เพิ่มข้อมูลร้าน",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+    shopName: "",
+    shopType: "",
+    shopIntroduce: "",
+    shopTel: "",
+    shopShopee: "",
+    shopFacebook: "",
+    shopLine: "",
+    shopAddress: "",
+  }); 
+});
+
+// add a แก้ไข ข้อมูลร้าน
+router.post("/shopAddSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let shopName = req.body.shopName;
+  let shopType = req.body.shopType;
+  let shopIntroduce = req.body.shopIntroduce;
+  let shopTel = req.body.shopTel;
+  let shopShopee = req.body.shopShopee;
+  let shopFacebook = req.body.shopFacebook;
+  let shopLine = req.body.shopLine;
+  let shopAddress = req.body.shopAddress;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        shop_name: shopName,
+        shop_type: shopType,
+        shop_introduce: shopIntroduce,
+        shop_tel: shopTel,
+        shop_shopee	: shopShopee,
+        shop_facebook	: shopFacebook,
+        shop_line	: shopLine,
+        shop_address	: shopAddress,
+        shop_img	: photo,
+        status: 1
+    }
+    // insert query
+    dbCon.query("INSERT INTO tb_user_shop SET ?", form_data, (err, result) => {
+      if (err) {
+          console.log("ERRO");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'เพิ่มข้อมูลร้านค้าสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์สุนัข ------------------------------------------------------------------------------------------------------ */
+router.get("/editShopProfile", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  if (req.session.level < 2) {
+    return res.redirect('/')
+  }
+  dbCon.query(
+    "SELECT tb_user_shop.shop_img AS img FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect('/userInformation');
+      } else {
+        res.render("editShopProfile", {
+          title: "Edit Shop Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      }
+    }
+  );
+});
+
+// add a แก้ไข รูปโปรไฟล์สุนัข
+router.post("/editShopProfileSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      shop_img: photo,
+    };
+    // insert query
+    dbCon.query(
+      "UPDATE tb_user_shop SET ? WHERE user_id = " + req.session.idUser, form_data,
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.redirect("/userInformation");
+        } else {
+          req.flash("success", "แก้ไขรูปโปรไฟล์ร้ายค้าสำเร็จ");
+          res.redirect("/userInformation");
+        }
+      }
+    );
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลร้าน ------------------------------------------------------------------------------------------------------ */
+router.get("/editshopData", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  if (req.session.level < 2) {
+    return res.redirect('/')
+  }
+  dbCon.query(
+    "SELECT * FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          shopName: "",
+          shopType: "",
+          shopIntroduce: "",
+          shopTel: "",
+          shopShopee: "",
+          shopFacebook: "",
+          shopLine: "",
+          shopAddress: "",
+        });      
+      } else {
+        res.render("editDogData", {
+          title: "แก้ไขข้อมูลสุนัข",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          shopName: rows[0].shop_name,
+          shopType: rows[0].shop_type,
+          shopIntroduce: rows[0].shop_introduce,
+          shopTel: rows[0].shop_tel,
+          shopShopee: rows[0].shop_shopee,
+          shopFacebook: rows[0].shop_facebook,
+          shopLine: rows[0].shop_line,
+          shopAddress: rows[0].shop_address,
+        });
+      }
+    }
+  );
+});
+
+// add a แก้ไข ข้อมูลสมาชิก
+router.post("/editshopDataSubmit", (req, res, next) => {
+  let shopName = req.body.shopName;
+  let shopType = req.body.shopType;
+  let shopIntroduce = req.body.shopIntroduce;
+  let shopTel = req.body.shopTel;
+  let shopShopee = req.body.shopShopee;
+  let shopFacebook = req.body.shopFacebook;
+  let shopLine = req.body.shopLine;
+  let shopAddress = req.body.shopAddress;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      user_id: req.session.idUser,
+      shop_name: shopName,
+      shop_type: shopType,
+      shop_introduce: shopIntroduce,
+      shop_tel: shopTel,
+      shop_shopee	: shopShopee,
+      shop_facebook	: shopFacebook,
+      shop_line	: shopLine,
+      shop_address	: shopAddress,
+    }
+    dbCon.query("UPDATE tb_user_shop SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลร้านสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
 
 
 /* -------------------------------------------------------------- ข้อมูลผู้ใช้ - ส่งข้อมูลยืนยันผู้เชี่ยวชาญ ------------------------------------------------------------------------------------------------------ */
