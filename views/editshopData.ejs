@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>แก้ไขข้อมูลร้าน รูปโปรไฟล์</h1>
+								<h1>เพิ่มข้อมูลร้านค้า</h1>
 							</div>
 						</div>
 					</div>
@@ -24,29 +24,47 @@
 						<div class="col-lg-8">
 							<div class="checkout-accordion-wrap">
 								<div class="accordion" id="accordionExample">
+								
 									<div class="card single-accordion">
 										<div class="card-header" id="headingOne">
 											<h5 class="mb-0">
 												<button class="btn btn-link" type="button" data-toggle="collapse"
 													data-target="#collapseOne" aria-expanded="true"
 													aria-controls="collapseOne">
-													ข้อมูลผู้ร้านค้า
+													ข้อมูลร้านค้า
 												</button>
 											</h5>
 										</div>
-
+										
 										<div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/editShopProfileSubmit" method="post" enctype="multipart/form-data">
-														<div class="client-avater text-center">
-															<img id="output" class="border" src="../img/<%= img %>" alt="" width="140" height="140">
-															<div class="client-meta">
-															</div>
-															<label for="image">รูปโปรไฟล์</label><br>
-                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
-														</div>
+													<form action="/editshopDataSubmit" method="post">
+														<% if (messages.success) { %>
+															<div class="alert alert-success" role="alert"><%= messages.success %></div>
+														  <% } %>
+														  <% if (messages.error) { %>
+															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
+														  <% } %>
+
+														  <label for="shopName">ชื่อร้านค้า :</label>
+														  <p><input type="text" placeholder="Shop Name" id="shopName" name="shopName" value="<%= shopName %>" required></p>
+														  <label for="shopType">ประเภทของสินค้า :</label>
+														  <p><input type="text" placeholder="shop Type" id="shopType" name="shopType" value="<%= shopType %>" required></p>
+														  <label for="shopIntroduce">แนะนำตัวร้านค้า :</label>
+														  <p><textarea name="shopIntroduce" id="shopIntroduce" cols="30" rows="10" placeholder="Shop Introduce"><%= shopIntroduce %></textarea></p>
+														  <label for="shopTel">เบอร์โทรศัพท์ร้านค้า :</label>
+														  <p><input type="tel" placeholder="tel." id="shopTel" name="shopTel" value="<%= shopTel %>" minlength="10" maxlength="10" required></p>
+														  <label for="shopShopee">Shopee :</label>
+														  <p><input type="text" placeholder="Shop Shopee" id="shopShopee" name="shopShopee" value="<%= shopShopee %>" required></p>
+														  <label for="shopFacebook">FaceBook :</label>
+														  <p><input type="text" placeholder="Shop FaceBook" id="shopFacebook" name="shopFacebook" value="<%= shopFacebook %>" required></p>
+														  <label for="shopLine">Line :</label>
+														  <p><input type="text" placeholder="Shop Line" id="shopLine" name="shopLine" value="<%= shopLine %>" required></p>
+														  <label for="shopAddress">ที่อยู่ร้านค้า :</label>
+														  <p><textarea name="shopAddress" id="shopAddress" cols="30" rows="10" placeholder="Shop Address"><%= shopAddress %></textarea></p>
+
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">
 													</form>
@@ -100,7 +118,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<a href="#" class="boxed-btn">Place Order</a>
+								<!-- <a href="#" class="boxed-btn">Place Order</a> -->
 							</div>
 						</div>
 					</div>
