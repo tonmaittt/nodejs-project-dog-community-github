@@ -16,6 +16,7 @@ html {
   font-weight: 400;
   line-height: 28px;
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
