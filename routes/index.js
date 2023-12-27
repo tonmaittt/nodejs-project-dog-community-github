@@ -121,7 +121,7 @@ router.get("/userInformation", function (req, res, next) {
                           res.redirect('/')
                         } else {
                           dbCon.query(
-                            "SELECT * FROM tb_vets WHERE user_id = " + req.session.idUser,
+                            "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
                             (err, rowsVets) => {
                               if (err) {
                                 req.flash("error", err);
@@ -608,14 +608,20 @@ router.get("/editDogProfile", function (req, res, next) {
         req.flash("error", err);
         res.redirect('/userInformation');  
       } else {
-        res.render("editDogProfile", {
-          title: "Edit Dog Profile",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          img: rows[0].img,
-        });      
+        if (rows.length == 0) {
+          req.flash("ไม่พบข้อมูล", err);
+          console.log(rows.length);
+          res.redirect("/userInformation");
+        }else{
+          res.render("editDogProfile", {
+            title: "Edit Dog Profile",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            img: rows[0].img,
+          });      
+        }
       }
     }
   );
@@ -679,19 +685,26 @@ router.get("/editDogData", function (req, res, next) {
           dogIntroduce: "",
         });      
       } else {
-        res.render("editDogData", {
-          title: "แก้ไขข้อมูลสุนัข",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          dogName: rows[0].dog_name,
-          dogBreed: rows[0].dog_breed,
-          dogBirthday: rows[0].dog_birthday,
-          dogGender: rows[0].dog_gender,
-          dogGenderName: rows[0].name,
-          dogIntroduce: rows[0].dog_introduce,
-        });
+        if (rows.length == 0) {
+          req.flash("ไม่พบข้อมูล", err);
+          console.log(rows.length);
+          res.redirect("/userInformation");
+        }else{
+          res.render("editDogData", {
+            title: "แก้ไขข้อมูลสุนัข",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            dogName: rows[0].dog_name,
+            dogBreed: rows[0].dog_breed,
+            dogBirthday: rows[0].dog_birthday,
+            dogGender: rows[0].dog_gender,
+            dogGenderName: rows[0].name,
+            dogIntroduce: rows[0].dog_introduce,
+          });
+        }
+        
       }
     }
   );
@@ -795,7 +808,7 @@ router.post("/shopAddSubmit", upload.single("photo"), (req, res, next) => {
   }
 });
 
-/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์สุนัข ------------------------------------------------------------------------------------------------------ */
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์ลร้าน ------------------------------------------------------------------------------------------------------ */
 router.get("/editShopProfile", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return res.redirect("/");
@@ -810,14 +823,21 @@ router.get("/editShopProfile", function (req, res, next) {
         req.flash("error", err);
         res.redirect('/userInformation');
       } else {
-        res.render("editShopProfile", {
-          title: "Edit Shop Profile",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          img: rows[0].img,
-        });      
+        if (rows.length == 0) {
+          req.flash("ไม่พบข้อมูล", err);
+          console.log(rows.length);
+          res.redirect("/userInformation");
+        }else{
+          res.render("editShopProfile", {
+            title: "Edit Shop Profile",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            img: rows[0].img,
+          });  
+        }
+            
       }
     }
   );
@@ -859,6 +879,7 @@ router.get("/editshopData", function (req, res, next) {
       levelS: 0,
     });
   }
+
   if (req.session.level < 2) {
     return res.redirect('/')
   }
@@ -883,21 +904,27 @@ router.get("/editshopData", function (req, res, next) {
           shopAddress: "",
         });      
       } else {
-        res.render("editshopData", {
-          title: "แก้ไขข้อมูลร้านค้า",
-          username: req.session.userName,
-          emailS: req.session.emailUser,
-          levelS: req.session.level,
-          userImg: req.session.userImg,
-          shopName: rows[0].shop_name,
-          shopType: rows[0].shop_type,
-          shopIntroduce: rows[0].shop_introduce,
-          shopTel: rows[0].shop_tel,
-          shopShopee: rows[0].shop_shopee,
-          shopFacebook: rows[0].shop_facebook,
-          shopLine: rows[0].shop_line,
-          shopAddress: rows[0].shop_address,
-        });
+        if (rows.length == 0) {
+          req.flash("ไม่พบข้อมูล", err);
+          console.log(rows.length);
+          res.redirect("/userInformation");
+        }else{
+          res.render("editshopData", {
+            title: "แก้ไขข้อมูลร้านค้า",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            shopName: rows[0].shop_name,
+            shopType: rows[0].shop_type,
+            shopIntroduce: rows[0].shop_introduce,
+            shopTel: rows[0].shop_tel,
+            shopShopee: rows[0].shop_shopee,
+            shopFacebook: rows[0].shop_facebook,
+            shopLine: rows[0].shop_line,
+            shopAddress: rows[0].shop_address,
+          });
+        }
       }
     }
   );

@@ -282,7 +282,7 @@
 																<label for="shopTel">เบอร์โทรศัพท์ร้านค้า :</label>
 																<p><input type="tel" placeholder="tel." id="shopTel" name="shopTel" value="<%= rowsShop[0].shop_tel %>" minlength="10" maxlength="10" disabled></p>
 																<label for="shopShopee">Shopee :</label>
-																<p><input type="text" placeholder="Shop Shopee" id="shopShopee" name="shopShopee" value="<%= rowsShop[0].shop_shopee %>" required></p>
+																<p><input type="text" placeholder="Shop Shopee" id="shopShopee" name="shopShopee" value="<%= rowsShop[0].shop_shopee %>" disabled></p>
 																<label for="shopFacebook">FaceBook :</label>
 																<p><input type="text" placeholder="Shop FaceBook" id="shopFacebook" name="shopFacebook" value="<%= rowsShop[0].shop_facebook %>" disabled></p>
 																<label for="shopLine">Line :</label>
@@ -324,50 +324,51 @@
 															<div class="client-avater text-center">
 																<img src="../img/<%= rowsVets[0].vets_img %>" alt="" width="140" height="140">
 																<div class="client-meta">
-																	<a href="editShopProfile">
-																		<h3><span>เปลี่ยนรูปสุนัข</span></h3>
+																	<a href="editUserVetsProfile">
+																		<h3><span>เปลี่ยนสัตวแพทย์</span></h3>
 																	</a>
 																</div>
 															</div>
 
 															<label for="vetsTitle">คำนำหน้า :</label>
-														  <p><input type="text" placeholder="Title" id="vetsTitle" name="vetsTitle" value="" required></p>
+														  <p><input type="text" placeholder="Title" id="vetsTitle" name="vetsTitle" value="<%= rowsVets[0].vets_title %>" disabled></p>
 														  <label for="vetsFname">ชื่อ :</label>
-														  <p><input type="text" placeholder="Name" id="vetsFname" name="vetsFname" value="" required></p>
+														  <p><input type="text" placeholder="Name" id="vetsFname" name="vetsFname" value="<%= rowsVets[0].vets_fname %>" disabled></p>
 														  <label for="vetsSname">นามสกุล :</label>
-														  <p><input type="text" placeholder="Last Name" id="vetsSname" name="vetsSname" value="" required></p>
+														  <p><input type="text" placeholder="Last Name" id="vetsSname" name="vetsSname" value="<%= rowsVets[0].	vets_sname %>" disabled></p>
 														  <label for="vetsEmail">อีเมล์ :</label>
-														  <p><input type="email" placeholder="Email" id="vetsEmail" name="vetsEmail" value="" required></p>
+														  <p><input type="email" placeholder="Email" id="vetsEmail" name="vetsEmail" value="<%= rowsVets[0].vets_email %>" disabled></p>
 														  <label for="vetsNameShow">ชื่อที่ใช้แสดง :</label>
-														  <p><input type="text" placeholder="Show Name" id="vetsNameShow" name="vetsNameShow" value="" required></p>
+														  <p><input type="text" placeholder="Show Name" id="vetsNameShow" name="vetsNameShow" value="<%= rowsVets[0].vets_name_show	 %>" disabled></p>
 														  <label for="vetsGender">เพศ :</label>
 															<p>
-																<select class="custom-select mr-sm-2" id="vetsGender" name="vetsGender" required>
+																<select class="custom-select mr-sm-2" id="vetsGender" name="vetsGender" disabled>
+																	<option value="<%= rowsVets[0].vets_gender %>"><%= rowsVets[0].name %></option>
 																	<option value="1">ชาย</option>
 																	<option value="2">หญิง</option>
 																	<option value="3">ไม่ระบุ</option>
 																</select>
 															</p>
 														   <label for="vetsBirthday">วันเกิด :</label>
-															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="" required></p>
+															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="<%= new Intl.DateTimeFormat('en-CA').format(rowsVets[0].vets_birthday) %>" disabled></p>
 														  <label for="vetsAddress">ที่อยู่ :</label>
-														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" required></textarea></p>
+														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" disabled><%= rowsVets[0].vets_address %></textarea></p>
 														  <label for="vetsCardId">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="" required></p>
+														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="<%= rowsVets[0].vets_card_id %>" disabled></p>
 														  <label for="vetsTel">เบอร์โทรศัพท์ :</label>
-														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="" minlength="10" maxlength="10" required></p>
+														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="<%= rowsVets[0].vets_tel %>" minlength="10" maxlength="10" disabled></p>
 														  <label for="vetsFacebook">FaceBook :</label>
-														  <p><input type="text" placeholder="FaceBook" id="vetsFacebook" name="vetsFacebook" value="" required></p>
+														  <p><input type="text" placeholder="FaceBook" id="vetsFacebook" name="vetsFacebook" value="<%= rowsVets[0].vets_facebook %>" disabled></p>
 														  <label for="vetsLine">Line :</label>
-														  <p><input type="text" placeholder="Line" id="vetsLine" name="vetsLine" value="" required></p>
+														  <p><input type="text" placeholder="Line" id="vetsLine" name="vetsLine" value="<%= rowsVets[0].vets_line %>" disabled></p>
 														  <label for="vetsWorkplace">คลีนิคที่ทำงาน :</label>
-														  <p><input type="text" placeholder="Workplace" id="vetsWorkplace" name="vetsWorkplace" value="" required></p>
+														  <p><input type="text" placeholder="Workplace" id="vetsWorkplace" name="vetsWorkplace" value="<%= rowsVets[0].vets_workplace %>" disabled></p>
 														  <label for="vetsPosition">ตำแหน่งงาน :</label>
-														  <p><input type="text" placeholder="Position" id="vetsPosition" name="vetsPosition" value="" required></p>
+														  <p><input type="text" placeholder="Position" id="vetsPosition" name="vetsPosition" value="<%= rowsVets[0].vets_position %>" disabled></p>
 														  <label for="vetsGraduated">เรียนจบจาก :</label>
-														  <p><input type="text" placeholder="Position" id="vetsGraduated" name="vetsGraduated" value="" required></p>
+														  <p><input type="text" placeholder="Position" id="vetsGraduated" name="vetsGraduated" value="<%= rowsVets[0].vets_graduated %>" disabled></p>
 														  <label for="vetsIntroduce">แนะนำตัว :</label>
-														  <p><textarea name="vetsIntroduce" id="vetsIntroduce" cols="30" rows="10" placeholder="Introduce"></textarea></p>
+														  <p><textarea name="vetsIntroduce" id="vetsIntroduce" cols="30" rows="10" placeholder="Introduce" disabled><%= rowsVets[0].vets_introduce %></textarea></p>
 
 															<div class="text-right">
 																<a href="/editshopData" class="boxed-btn">แก้ไข</a>
