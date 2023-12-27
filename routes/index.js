@@ -1129,7 +1129,7 @@ router.get("/editUserVetsData", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT * FROM tb_vets WHERE user_id = " + req.session.idUser,
+    "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -1145,6 +1145,7 @@ router.get("/editUserVetsData", function (req, res, next) {
           vetsEmail: "",
           vetsNameShow: "",
           vetsGender: "",
+          vetsGenderName: "",
           vetsBirthday: "",
           vetsAddress: "",
           vetsCardId: "",
@@ -1169,6 +1170,7 @@ router.get("/editUserVetsData", function (req, res, next) {
           vetsEmail: rows[0].vets_email,
           vetsNameShow: rows[0].vets_name_show,
           vetsGender: rows[0].vets_gender,
+          vetsGenderName: rows[0].name,
           vetsBirthday: rows[0].vets_birthday,
           vetsAddress: rows[0].vets_address,
           vetsCardId: rows[0].vets_card_id,
