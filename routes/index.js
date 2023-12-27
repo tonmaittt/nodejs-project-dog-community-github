@@ -753,7 +753,7 @@ router.get("/shopAdd", function (req, res, next) {
   }); 
 });
 
-// add a แก้ไข ข้อมูลร้าน
+// add  ข้อมูลร้าน
 router.post("/shopAddSubmit", upload.single("photo"), (req, res, next) => {
   let photo = req.file.filename;
   let shopName = req.body.shopName;
@@ -841,7 +841,7 @@ router.post("/editShopProfileSubmit", upload.single("photo"), (req, res, next) =
           req.flash("error", err);
           res.redirect("/userInformation");
         } else {
-          req.flash("success", "แก้ไขรูปโปรไฟล์ร้ายค้าสำเร็จ");
+          req.flash("success", "แก้ไขรูปโปรไฟล์ร้านค้าสำเร็จ");
           res.redirect("/userInformation");
         }
       }
@@ -867,8 +867,8 @@ router.get("/editshopData", function (req, res, next) {
     (err, rows) => {
       if (err) {
         req.flash("error", err);
-        res.render("editDogData", {
-          title: "แก้ไขข้อมูลสุนัข",
+        res.render("editshopData", {
+          title: "แก้ไขข้อมูลร้านค้า",
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
@@ -883,8 +883,8 @@ router.get("/editshopData", function (req, res, next) {
           shopAddress: "",
         });      
       } else {
-        res.render("editDogData", {
-          title: "แก้ไขข้อมูลสุนัข",
+        res.render("editshopData", {
+          title: "แก้ไขข้อมูลร้านค้า",
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
@@ -976,7 +976,7 @@ router.get("/userVets", function (req, res, next) {
   }); 
 });
 
-// add a แก้ไข ข้อมูลสมาชิก
+// add
 router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
   let photo = req.file.filename;
   let vetsTitle = req.body.vetsTitle;
@@ -1033,6 +1033,184 @@ router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
     })
   }
 });
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขรูปโปรไฟล์ผู้เชี่ยวชาญ ------------------------------------------------------------------------------------------------------ */
+router.get("/editUserVetsProfile", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  if (req.session.level < 3) {
+    return res.redirect('/')
+  }
+  dbCon.query(
+    "SELECT tb_vets.vets_img AS img FROM tb_vets WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect('/userInformation');
+      } else {
+        res.render("editUserVetsProfile", {
+          title: "Edit UserVets Profile",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      }
+    }
+  );
+});
+
+// add a แก้ไข รูปโปรไฟล์
+router.post("/editUserVetsProfileSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      vets_img: photo,
+    };
+    // insert query
+    dbCon.query(
+      "UPDATE tb_vets SET ? WHERE user_id = " + req.session.idUser, form_data,
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.redirect("/userInformation");
+        } else {
+          req.flash("success", "แก้ไขรูปโปรไฟล์ผู้เชี่ยวชาญสำเร็จ");
+          res.redirect("/userInformation");
+        }
+      }
+    );
+  }
+});
+
+/* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลผู้เชี่ยวชาญ ------------------------------------------------------------------------------------------------------ */
+router.get("/editUserVetsData", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("index", {
+      title: "Home",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  if (req.session.level < 3) {
+    return res.redirect('/')
+  }
+  dbCon.query(
+    "SELECT * FROM tb_vets WHERE user_id = " + req.session.idUser,
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editUserVetsData", {
+          title: "แก้ไขข้อมูลผู้เชี่ยวชาญ",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          vetsTitle: "",
+          vetsFname: "",
+          vetsSname: "",
+          vetsEmail: "",
+          vetsNameShow: "",
+          vetsGender: "",
+          vetsBirthday: "",
+          vetsAddress: "",
+          vetsCardId: "",
+          vetsTel: "",
+          vetsFacebook: "",
+          vetsLine: "",
+          vetsWorkplace: "",
+          vetsPosition: "",
+          vetsGraduated: "",
+          vetsIntroduce: "",
+        });      
+      } else {
+        res.render("editUserVetsData", {
+          title: "แก้ไขข้อมูลผู้เชี่ยวชาญ",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          vetsTitle: rows[0].vets_title,
+          vetsFname: rows[0].vets_fname,
+          vetsSname: rows[0].vets_sname,
+          vetsEmail: rows[0].vets_email,
+          vetsNameShow: rows[0].vets_name_show,
+          vetsGender: rows[0].vets_gender,
+          vetsBirthday: rows[0].vets_birthday,
+          vetsAddress: rows[0].vets_address,
+          vetsCardId: rows[0].vets_card_id,
+          vetsTel: rows[0].vets_tel,
+          vetsFacebook: rows[0].vets_facebook,
+          vetsLine: rows[0].vets_line,
+          vetsWorkplace: rows[0].vets_workplace,
+          vetsPosition: rows[0].vets_position,
+          vetsGraduated: rows[0].vets_graduated,
+          vetsIntroduce: rows[0].vets_introduce,
+        });
+      }
+    }
+  );
+});
+
+// add
+router.post("/editUserVetsDataSubmit", (req, res, next) => {
+  let vetsTitle = req.body.vetsTitle;
+  let vetsFname = req.body.vetsFname;
+  let vetsSname = req.body.vetsSname;
+  let vetsEmail = req.body.vetsEmail;
+  let vetsNameShow = req.body.vetsNameShow;
+  let vetsGender = req.body.vetsGender;
+  let vetsBirthday = req.body.vetsBirthday;
+  let vetsAddress = req.body.vetsAddress;
+  let vetsCardId = req.body.vetsCardId;
+  let vetsTel = req.body.vetsTel;
+  let vetsFacebook = req.body.vetsFacebook;
+  let vetsLine = req.body.vetsLine;
+  let vetsWorkplace = req.body.vetsWorkplace;
+  let vetsPosition = req.body.vetsPosition;
+  let vetsGraduated = req.body.vetsGraduated;
+  let vetsIntroduce = req.body.vetsIntroduce;
+  let errors = false;
+  
+  // if no error
+  if (!errors) {
+    let form_data1 = {
+      vets_title: vetsTitle,
+      vets_fname: vetsFname,
+      vets_sname: vetsSname,
+      vets_email: vetsEmail,
+      vets_name_show: vetsNameShow,
+      vets_gender: vetsGender,
+      vets_birthday: vetsBirthday,
+      vets_address: vetsAddress,
+      vets_card_id: vetsCardId,
+      vets_tel: vetsTel,
+      vets_facebook: vetsFacebook,
+      vets_line: vetsLine,
+      vets_workplace: vetsWorkplace,
+      vets_position: vetsPosition,
+      vets_graduated: vetsGraduated,
+      vets_introduce: vetsIntroduce,
+    }
+    dbCon.query("UPDATE tb_vets SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+      if (err) {
+          console.log("ERRO 3");
+          req.flash('error', err);
+          res.redirect('/userInformation')
+      } else {
+        req.flash('success', 'แก้ไขข้อมูลผู้เชี่ยวชาญสำเร็จ');
+        res.redirect('/userInformation')
+      }
+    })
+  }
+});
+
 
 /* -------------------------------------------------------------- หน้าบอร์ดสุขภาพสุนัข ------------------------------------------------------------------------------------------------------ */
 

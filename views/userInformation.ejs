@@ -263,7 +263,38 @@
 															<a href="shopAdd" class="boxed-btn">เพิ่มเลย!</a>
 														</div>
 													<% } else {%>	
-														<p>ข้อมูลร้านค้า</p>
+														<div class="billing-address-form">
+															<form action="#">
+																<div class="client-avater text-center">
+																	<img src="../img/<%= rowsShop[0].shop_img %>" alt="" width="140" height="140">
+																	<div class="client-meta">
+																		<a href="editShopProfile">
+																			<h3><span>เปลี่ยนรูปสุนัข</span></h3>
+																		</a>
+																	</div>
+																</div>
+																<label for="shopName">ชื่อร้านค้า :</label>
+																<p><input type="text" placeholder="Shop Name" id="shopName" name="shopName" value="<%= rowsShop[0].shop_name %>" disabled></p>
+																<label for="shopType">ประเภทของสินค้า :</label>
+																<p><input type="text" placeholder="shop Type" id="shopType" name="shopType" value="<%= rowsShop[0].shop_type %>" disabled></p>
+																<label for="shopIntroduce">แนะนำตัวร้านค้า :</label>
+																<p><textarea name="shopIntroduce" id="shopIntroduce" cols="30" rows="10" placeholder="Shop Introduce" disabled><%= rowsShop[0].shop_introduce %></textarea></p>
+																<label for="shopTel">เบอร์โทรศัพท์ร้านค้า :</label>
+																<p><input type="tel" placeholder="tel." id="shopTel" name="shopTel" value="<%= rowsShop[0].shop_tel %>" minlength="10" maxlength="10" disabled></p>
+																<label for="shopShopee">Shopee :</label>
+																<p><input type="text" placeholder="Shop Shopee" id="shopShopee" name="shopShopee" value="<%= rowsShop[0].shop_shopee %>" required></p>
+																<label for="shopFacebook">FaceBook :</label>
+																<p><input type="text" placeholder="Shop FaceBook" id="shopFacebook" name="shopFacebook" value="<%= rowsShop[0].shop_facebook %>" disabled></p>
+																<label for="shopLine">Line :</label>
+																<p><input type="text" placeholder="Shop Line" id="shopLine" name="shopLine" value="<%= rowsShop[0].shop_line %>" disabled></p>
+																<label for="shopAddress">ที่อยู่ร้านค้า :</label>
+																<p><textarea name="shopAddress" id="shopAddress" cols="30" rows="10" placeholder="Shop Address" disabled><%= rowsShop[0].shop_address %></textarea></p>
+
+																<div class="text-right">
+																	<a href="/editshopData" class="boxed-btn">แก้ไข</a>
+																</div>
+															</form>
+														</div>
 													<% } %>	
 												</div>
 											</div>
@@ -288,7 +319,61 @@
 										<div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="card-details">
-													<p>สัตวแพทย์</p>
+													<div class="billing-address-form">
+														<form action="#">
+															<div class="client-avater text-center">
+																<img src="../img/<%= rowsVets[0].vets_img %>" alt="" width="140" height="140">
+																<div class="client-meta">
+																	<a href="editShopProfile">
+																		<h3><span>เปลี่ยนรูปสุนัข</span></h3>
+																	</a>
+																</div>
+															</div>
+
+															<label for="vetsTitle">คำนำหน้า :</label>
+														  <p><input type="text" placeholder="Title" id="vetsTitle" name="vetsTitle" value="" required></p>
+														  <label for="vetsFname">ชื่อ :</label>
+														  <p><input type="text" placeholder="Name" id="vetsFname" name="vetsFname" value="" required></p>
+														  <label for="vetsSname">นามสกุล :</label>
+														  <p><input type="text" placeholder="Last Name" id="vetsSname" name="vetsSname" value="" required></p>
+														  <label for="vetsEmail">อีเมล์ :</label>
+														  <p><input type="email" placeholder="Email" id="vetsEmail" name="vetsEmail" value="" required></p>
+														  <label for="vetsNameShow">ชื่อที่ใช้แสดง :</label>
+														  <p><input type="text" placeholder="Show Name" id="vetsNameShow" name="vetsNameShow" value="" required></p>
+														  <label for="vetsGender">เพศ :</label>
+															<p>
+																<select class="custom-select mr-sm-2" id="vetsGender" name="vetsGender" required>
+																	<option value="1">ชาย</option>
+																	<option value="2">หญิง</option>
+																	<option value="3">ไม่ระบุ</option>
+																</select>
+															</p>
+														   <label for="vetsBirthday">วันเกิด :</label>
+															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="" required></p>
+														  <label for="vetsAddress">ที่อยู่ :</label>
+														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" required></textarea></p>
+														  <label for="vetsCardId">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
+														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="" required></p>
+														  <label for="vetsTel">เบอร์โทรศัพท์ :</label>
+														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="" minlength="10" maxlength="10" required></p>
+														  <label for="vetsFacebook">FaceBook :</label>
+														  <p><input type="text" placeholder="FaceBook" id="vetsFacebook" name="vetsFacebook" value="" required></p>
+														  <label for="vetsLine">Line :</label>
+														  <p><input type="text" placeholder="Line" id="vetsLine" name="vetsLine" value="" required></p>
+														  <label for="vetsWorkplace">คลีนิคที่ทำงาน :</label>
+														  <p><input type="text" placeholder="Workplace" id="vetsWorkplace" name="vetsWorkplace" value="" required></p>
+														  <label for="vetsPosition">ตำแหน่งงาน :</label>
+														  <p><input type="text" placeholder="Position" id="vetsPosition" name="vetsPosition" value="" required></p>
+														  <label for="vetsGraduated">เรียนจบจาก :</label>
+														  <p><input type="text" placeholder="Position" id="vetsGraduated" name="vetsGraduated" value="" required></p>
+														  <label for="vetsIntroduce">แนะนำตัว :</label>
+														  <p><textarea name="vetsIntroduce" id="vetsIntroduce" cols="30" rows="10" placeholder="Introduce"></textarea></p>
+
+															<div class="text-right">
+																<a href="/editshopData" class="boxed-btn">แก้ไข</a>
+															</div>
+														</form>
+													</div>
 												</div>
 											</div>
 										</div>
