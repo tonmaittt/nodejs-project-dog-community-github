@@ -55,7 +55,7 @@
 	</div>
 	<!-- end breadcrumb section -->
 
-<div class="bg-image">
+<!-- <div class="bg-image"> -->
     <br><br><br>
     <!-- latest news -->
 	<div class="container">
@@ -74,21 +74,25 @@
         <% } %>
         <!-- Control the column width, and how they should appear on different devices -->
         <div class="row">
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto ">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto">
                 <div class="container">
                     <% if(data.length) { %>
                     <h5><span class="underline mt-2" style="font-size: large;"> >บอร์ดสุขภาพล่าสุด </span></h5>
 
                         <% for(let i=0; i < data.length; i++) { %>
                                 <div class="row justify-content-start mt-2 mb-2" >
+                                    <a href="/boardhealthDetail/<%= data[i].boardhealth_id %>">
                                     <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 col-lg-12 col-sm-12 col-xs-12" style="background-color: aqua;">
                                         <div class="col-lg-2 col-sm-2 col-xs-2 d-flex flex-wrap align-content-center">
-                                            <img class="mr-3 img-fluid latest-news-bg" style="max-width: 80px; max-height: 120px;" src="img/<%= data[i].photo %>" alt="Generic placeholder image">
+                                            <img class="mr-3 img-fluid latest-news-bg" style="max-width: 90px; max-height: 100px;" src="img/<%= data[i].photo %>" alt="Generic placeholder image">
                                         </div>
+                                    </a>
                                         <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
+                                            <a href="/boardhealthDetail/<%= data[i].boardhealth_id %>">
                                             <h5 class="mt-3"><%= data[i].title %></h5>
                                             เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br>ผู้ชม (<%= data[i].view %>) -o- ความคิดเห็น (0) จาก
                                             คุณ <%= data[i].username %>
+                                            </a>
                                         </div>
                                         <div class="col-lg-2 col-sm-2 col-xs-2">
                                             <p><%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at) %></p>
@@ -96,11 +100,9 @@
                                             <p>ดู <%= data[i].view %></p>
                                         </div>
                                     </div>
-                                    <a type="button" style="color: rgb(255, 255, 255); background-color: #F28123;" class="btn btn-lg btn-block mb-2" href="/boardhealthDetail/<%= data[i].boardhealth_id %>">รายละเอียด</a>
+                                    <!-- <a type="button" style="color: rgb(255, 255, 255); background-color: #F28123;" class="btn btn-lg btn-block mb-2" href="/boardhealthDetail/<%= data[i].boardhealth_id %>">รายละเอียด</a> -->
                                 </div>
-                            
-                            
-
+                                <hr class="line1">
                         <% } %>
 
                     </div>
@@ -135,8 +137,23 @@
         </div>
         <!-- number page -->
 
+        <!-- new list -->
+        <div class="container">
+            <div class="list">
+              <div class="list-item">
+                <div class="list-item-title">
+                    <img src="img/<%= data[11].photo %>" alt="Generic placeholder image">
+                </div>
+                <div class="list-item-content-name">
+                    <span>Bernard Romin Ltd</span>
+                        <span>Bernard Romin Ltd</span>
+                </div>
+            </div>    
+        </div>  
+         <!-- new list -->      
+
     </div> 
-</div>
+<!-- </div> -->
 	<!-- end latest news -->
 
     
