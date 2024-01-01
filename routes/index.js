@@ -2112,6 +2112,62 @@ router.post("/register/add", (req, res, next) => {
   }
 });
 
+
+/* ปุ่มถูกใจ บอร์ดสุขภาพ */
+// add a document to the DB collection recording the click event
+router.post("/clicked/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        boardhealth_id: boardhealth_id,
+        status: 1,
+    }
+
+    dbCon.query(
+      "SELECT * FROM tb_like_boardhealth WHERE user_id = ? AND boardhealth_id = ?" , [req.session.idUser,boardhealth_id],
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          if (rows1.length == 1) {
+            return console.log("ถูกใจไว้อยู่แล้ว");
+          }else{
+            dbCon.query("INSERT INTO tb_like_boardhealth SET ?", form_data, (err, result) => {
+              if (err) {
+                  return console.log(err);
+              } else {
+                console.log('click added to db');
+                res.sendStatus(201);
+              }
+            })
+          }
+        }
+      }
+    );
+ }
+});
+
+// get the click data from the database
+router.get("/clicks/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_like_boardhealth WHERE boardhealth_id = ?" , [boardhealth_id],
+    (err, rows) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
+
+
+
+
 /* userData page. */
 router.get("/user", ifNotLogIn, function (req, res, next) {
   dbCon.query("SELECT * FROM tb_user ORDER BY id asc", (err, rows) => {

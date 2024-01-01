@@ -68,7 +68,8 @@
                                             </div>
                                             
                                         </div>
-                                        <button class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
+                                        <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
+                                        <p id="counter">จำนวนการถูกใจทั้งหมด</p>
                                     </div>
 
 
@@ -138,3 +139,35 @@
         </main>
 
         <%- include('partials/footers') -%>
+
+        <script>
+            const button = document.getElementById('myButton');
+            button.addEventListener('click', function(e) {
+            console.log('button was clicked');
+            fetch('/clicked/<%- id %>', {method: 'POST'})
+                .then(function(response) {
+                if(response.ok) {
+                    console.log('click was recorded');
+                    return;
+                }
+                throw new Error('Request failed.');
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            });
+    
+            setInterval(function() {
+            fetch('/clicks/<%- id %>', {method: 'GET'})
+                .then(function(response) {
+                if(response.ok) return response.json();
+                throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                document.getElementById('counter').innerHTML = `จำนวนการถูกใจทั้งหมด ${data.length} คน`;
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            }, 1000);
+        </script>
