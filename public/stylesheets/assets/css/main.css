@@ -174,7 +174,7 @@ p:last-child {
 
 /* test new list */
 .list {
-  width: 480px;
+  width: 60%;
   float: left;
   margin: 0 50px;
 }
@@ -183,7 +183,7 @@ p:last-child {
   box-shadow: 0px 0px 5px 1px #ccc;
   width: 100%;
   border-radius: 4px;
-  max-height: 70px;
+  max-height: 100%;
   background: #fff;
   text-overflow: hidden;
   margin-bottom: 30px;
@@ -201,6 +201,9 @@ p:last-child {
   color: #fff;
   text-transform: uppercase;
   border-radius: 4px 0 0 4px;
+  margin-left: 40px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   float: left;
   overflow: hidden;
   transition: width 0.1s linear 0.2s;
@@ -213,7 +216,13 @@ p:last-child {
   color: #a4a5a8;
 }
 .list-item-content-name span {
-  margin-left: 30px;
+  margin-left: 50px;
+}
+.list-item-content-name p {
+  margin-left: 50px;
+}
+.time-left p{
+  margin-top: 20px;
 }
 
 /* -----------------------------------------------------------------------------
