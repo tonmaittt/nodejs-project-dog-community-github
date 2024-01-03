@@ -1,78 +1,107 @@
-<%- include('partials/headboard') -%>
-    <%- include('partials/header') -%>
+<%- include('partials/heads') -%>
+    <%- include('partials/headers') -%>
+    
+        <!--PreLoader-->
+        <div class="loader">
+            <div class="loader-inner">
+                <div class="circle"></div>
+            </div>
+        </div>
+        <!--PreLoader Ends-->
 
-        <body>
-            <main class="board mt-4">
-                <% if (messages.error) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= messages.error %>
+        <!-- breadcrumb-section -->
+        <div class="breadcrumb-section breadcrumb-bg hero-bg-dt">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 text-center">
+                        <div class="breadcrumb-text">
+                            <p class="subtitle">LOVE DOGS TH</p>
+                            <h1>บอร์ดสุขภาพสุนัข</h1>
+                        </div>
                     </div>
-                <% } %>
-                        <div class="container">
-                            <div class="d-inline-flex">
-                                <div class="p-2" style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
-                                    <h3>บอร์ดสุขภาพสุนัข</h3>
-                                </div>
+                </div>
+            </div>
+        </div>
+        <!-- end breadcrumb section -->
+        
+        <main class="board mt-5">
+            <div class="container">
+
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <main class="board mt-4">
+                        <% if (messages.error) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= messages.error %>
                             </div>
-                            <div class="shadow p-3 mb-5 pb-5 bg-white rounded">
-                                <div class="text-with-lines d-flex justify-content-center">
-                                    <div class="text-top">
-                                        <div class="title mt-2">
-                                            <h1>ตั้งกระทู้ถามปัญหา</h1>
+                            <% } %>
+                                <div class="container">
+                                    <div class="d-inline-flex">
+                                        <div class="p-2"
+                                            style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
+                                            <h3>บอร์ดสุขภาพสุนัข</h3>
                                         </div>
                                     </div>
-                                </div>
-                                <hr width="100%">
-                                <div class="container">
-                                    <!-- Control the column width, and how they should appear on different devices -->
-                                    <div class="row">
-                                        <div class="col-sm-3 mx-auto">
-                                            <button type="button"
-                                                class="btn btn-warning col-sm-12 mt-2" style="color: #ffffff; background-color: coral;">ประวัติการโพสต์</button>
-
-                                        </div>
-                                        <div class="col-sm-9 mx-auto mt-auto">
-                                            <div class="container">
-                                                <form action="/boardhealthAdd" method="post" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label for="titleboard">หัวข้อ</label>
-                                                        <input type="text" class="form-control" id="titleboard"
-                                                            name="titleboard" value="<%= titleboard %>" required>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="image">รูปภาพประกอบ</label><br>
-                                                        <input type="file" accept="image/*" onchange="loadFile(event)"name="photo" required>
-                                                        <img id="output" class="col-lg-5 mt-4 mx-auto" />
-                                                    </div>
-
-                                                    <p>รายละเอียด</p>
-
-                                                    <div id="quill_editor">
-                                                        <div id="myText"></div>
-                                                    </div>
-                                                    <input type="hidden" id="quill_html" name="details"></input>
-                                                    <br>
-                                                    <button type="submit"
-                                                        class="btn btn-warning btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
-                                                </form>
+                                    <div class="shadow p-3 mb-5 pb-5 bg-white rounded">
+                                        <div class="text-with-lines d-flex justify-content-center">
+                                            <div class="text-top">
+                                                <div class="title mt-2">
+                                                    <h1>ตั้งกระทู้ถามปัญหา</h1>
+                                                </div>
                                             </div>
                                         </div>
+                                        <hr width="100%">
+                                        <div class="container">
+                                            <!-- Control the column width, and how they should appear on different devices -->
+                                            <div class="row">
+                                                <div class="col-sm-3 mx-auto">
+                                                    <button type="button" class="btn btn-warning col-sm-12 mt-2"
+                                                        style="color: #ffffff; background-color: coral;">ประวัติการโพสต์</button>
+
+                                                </div>
+                                                <div class="col-sm-9 mx-auto mt-auto">
+                                                    <div class="container">
+                                                        <form action="/boardhealthAdd" method="post"
+                                                            enctype="multipart/form-data">
+                                                            <div class="form-group">
+                                                                <label for="titleboard">หัวข้อ</label>
+                                                                <input type="text" class="form-control" id="titleboard"
+                                                                    name="titleboard" value="<%= titleboard %>"
+                                                                    required>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="image">รูปภาพประกอบ</label><br>
+                                                                <input type="file" accept="image/*"
+                                                                    onchange="loadFile(event)" name="photo" required>
+                                                                <img id="output" class="col-lg-5 mt-4 mx-auto" />
+                                                            </div>
+
+                                                            <p>รายละเอียด</p>
+                                                            <div id="quill_editor">
+                                                                <div id="myText"></div>
+                                                            </div>
+
+                                                            <input type="hidden" id="quill_html" name="details"></input>
+                                                            <br>
+                                                            <button type="submit"
+                                                                class="btn btn-warning btn-lg btn-block"
+                                                                style="color: #ffffff; background-color: coral;">ยืนยัน</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
-
-
-                            </div>
-                        </div>
-                        </div>
-            </main>
-
-            <!-- Include Bootstrap JS and jQuery -->
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-            <!-- Include the Quill library -->
-            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        </body>
+                
+                    </main>
+                </div>
+            </div>
+        </main>
+        <!-- Include the Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <script>
             var textToStore = '<%- details %>';
             var myTextElement = document.getElementById("myText");
@@ -85,6 +114,8 @@
                 document.getElementById("quill_html").value = quill.root.innerHTML;
             });
         </script>
+
+        <!-- แสดงรูปตัวอย่าง -->
         <script>
             var loadFile = function (event) {
                 var output = document.getElementById('output');
@@ -95,4 +126,6 @@
             };
         </script>
 
-        <%- include('partials/footer') -%>
+
+
+        <%- include('partials/footers') -%>
