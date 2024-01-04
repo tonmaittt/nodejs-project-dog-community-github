@@ -92,10 +92,12 @@
                                     </a>
                                         <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto text-ti">
                                             <a href="/boardhealthDetail/<%= data[i].boardhealth_id %>">
-                                            <h5 class="mt-3"><%= data[i].title %></h5>
-                                            เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br>ผู้ชม (<%= data[i].view %>) -o- ความคิดเห็น (0) จาก
-                                            คุณ <%= data[i].username %>
+                                            <h5 class="mt-3 text-title"><%= data[i].title %></h5>
                                             </a>
+                                            <div class="text-date">
+                                            <p><i class="fas fa-calendar-week"></i> เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br><i class="fas fa-eye"></i> (<%= data[i].view %>) <i class="fas fa-comments"></i> (0) จาก
+                                            คุณ <%= data[i].username %></p>
+                                            </div>
                                         </div>
                                         <!-- <div class="col-lg-2 col-sm-2 col-xs-2">
                                             <p><%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at) %></p>
@@ -146,7 +148,7 @@
                 <div class="list-item">
                     <div class="row justify-content-start">
                             <div class="list-item-title">
-                                <img src="img/<%= data[18].photo %>" alt="Generic placeholder image">
+                                <img src="img/<%= data[11].photo %>" alt="Generic placeholder image">
                             </div>
                             <div class="list-item-content-name">
                                 <span>Bernard Romin Ltd</span>

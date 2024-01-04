@@ -56,9 +56,9 @@
                                                     alt="Generic placeholder image">
                                                 <h5 class="mt-3 mx-4"><%= namehead %></h5>
                                                 <hr class="w-100">
-                                                <p class="mx-2">เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
+                                                <p class="mx-2"><i class="fas fa-calendar-week"></i> เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
                                                     เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'short'}).format(createdP) %> น</p>
-                                                    <p class="mt-0">คนดู(0) ความคิดเห็น(0)
+                                                    <p class="mt-0 ml-2"><i class="fas fa-eye"></i> (0) <i class="fas fa-comments"></i> (0)
                                                     </p>
                                             </div>
                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
