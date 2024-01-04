@@ -276,6 +276,10 @@ p:last-child {
  margin-top: 25px;
 }
 
+.img-mini {
+  margin-left: 20px;
+}
+
 .name-user {
   text-align: center;
 }
