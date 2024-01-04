@@ -91,20 +91,37 @@
 
 			<div class="row product-lists">
 				<% for(let i=0; i < data.length; i++) { %>
-				<div class="col-lg-4 col-md-6 text-center">
+					<div class="col-lg-4 col-md-6">
+						<div class="single-latest-news">
+							<a href="/articleDetail/<%= data[i].article_id %>"><div class="latest-news-bg" style="background-image: url(img/<%= data[i].photo %>);"></div></a>
+							<div class="news-text-box">
+								<a href="/articleDetail/<%= data[i].article_id %>">
+								<h3 class="text-title"><%= data[i].title %></h3>
+								</a>
+								<p class="blog-meta mt-2">
+									<span class="author"><i class="fas fa-user"></i> <%= data[i].username %></span>
+									<span class="date"><i class="fas fa-calendar"></i> <%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%></span>
+								</p>
+								<p class="excerpt"></p>
+								<a href="/articleDetail/<%= data[i].article_id %>" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				<!-- <div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
 							<a href="/articleDetail/<%= data[i].article_id %>">
 								<img src="img/<%= data[i].photo %>" alt="" class="img-pro">
 							</a>
 						</div>
-						
-						<h3><%= data[i].title %></h3>
-						<span><%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%> ดู (<%= data[i].view %>)</span>
+						<a href="/articleDetail/<%= data[i].article_id %>">
+						<h3 class="text-title"><%= data[i].title %></h3>
+						</a>
+						<span><i class="fas fa-calendar-week"></i> <%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%> <br> <i class="fas fa-eye"></i> (<%= data[i].view %>)</span>
 						<p style="display: inline;"><div style="color: coral;">โดย</div> <%= data[i].username %></p>
-						<a href="/articleDetail/<%= data[i].article_id %>" class="cart-btn"><i class="fas fa-shopping-cart"></i> รายละเอียด</a>
+						<a href="/articleDetail/<%= data[i].article_id %>" class="cart-btn"><i class="fas fa-info"></i> รายละเอียด</a>
 					</div>
-				</div>
+				</div> -->
 				<% } %>
 				<!-- <div class="col-lg-4 col-md-6 text-center berry">
 					<div class="single-product-item">

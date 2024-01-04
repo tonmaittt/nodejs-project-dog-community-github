@@ -72,7 +72,7 @@
                                             
                                         </div>
                                         <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
-                                        <p id="counter">จำนวนการถูกใจทั้งหมด</p>
+                                        <p id="counter">ถูกใจทั้งหมด</p>
                                     </div>
 
 
@@ -167,7 +167,7 @@
                 throw new Error('Request failed.');
                 })
                 .then(function(data) {
-                document.getElementById('counter').innerHTML = `จำนวนการถูกใจทั้งหมด ${data.length} คน`;
+                document.getElementById('counter').innerHTML = `ถูกใจทั้งหมด ${data.length} คน`;
                 })
                 .catch(function(error) {
                 console.log(error);
