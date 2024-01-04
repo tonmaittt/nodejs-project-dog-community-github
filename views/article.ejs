@@ -29,6 +29,7 @@
 	<!-- responsive -->
 	<link rel="stylesheet" href="assets/css/responsive.css">
 </head>
+
 <%- include('partials/heads') -%>
 <%- include('partials/headers') -%>
 <body>
@@ -65,7 +66,9 @@
                     <div class="col-md-12">
                         <div class="product-filters">
                             <ul>
-                                <li class="active" data-filter="*" style="width: 90%;">สร้างบทความ</li>
+								<a href="/articleAdd">
+                                	<li class="active" data-filter="*" style="width: 90%;">สร้างบทความ</li>
+								</a>
                             </ul>
                         </div>
                     </div>
@@ -73,7 +76,7 @@
     
             <% } %>
 
-			<div class="row">
+			<!-- <div class="row">
                 <div class="col-md-12">
                     <div class="product-filters">
                         <ul>
@@ -84,20 +87,26 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 			<div class="row product-lists">
-				<div class="col-lg-4 col-md-6 text-center strawberry">
+				<% for(let i=0; i < data.length; i++) { %>
+				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="#"><img src="../img/article1.jpg" alt="" class="img-pro"></a>
+							<a href="/articleDetail/<%= data[i].article_id %>">
+								<img src="img/<%= data[i].photo %>" alt="" class="img-pro">
+							</a>
 						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> 85$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						
+						<h3><%= data[i].title %></h3>
+						<span><%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%> ดู (<%= data[i].view %>)</span>
+						<p style="display: inline;"><div style="color: coral;">โดย</div> <%= data[i].username %></p>
+						<a href="/articleDetail/<%= data[i].article_id %>" class="cart-btn"><i class="fas fa-shopping-cart"></i> รายละเอียด</a>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 text-center berry">
+				<% } %>
+				<!-- <div class="col-lg-4 col-md-6 text-center berry">
 					<div class="single-product-item">
 						<div class="product-image">
 							<a href="#"><img src="../img/article2.jpg" alt="" class="img-pro"></a>
@@ -146,7 +155,8 @@
 						<p class="product-price"><span>Per Kg</span> 80$ </p>
 						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 					</div>
-				</div>
+				</div> -->
+
 			</div>
 
 			<div class="row">
@@ -167,7 +177,7 @@
 	<!-- end products -->
 
 
-
+	<%- include('partials/footers') -%>
     
 </body>
 </html>

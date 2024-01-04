@@ -1359,9 +1359,15 @@ div.owl-controls div.owl-nav div:hover {
   box-shadow: 0 0 20px #ddd;
 }
 
+div.details-img img{
+  width: auto;
+  height: auto;
+}
+
+
 .img-pro {
-  max-width: 250px;
-  max-height: 300px;
+  width: 250px;
+  height: 300px;
 }
 
 .product-image img {
