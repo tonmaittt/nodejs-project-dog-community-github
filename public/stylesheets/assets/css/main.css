@@ -286,6 +286,17 @@ p:last-child {
   text-align: center;
 }
 
+.name-shop-title h4{
+  margin-left: 25px;
+}
+
+.more-tel span{
+  margin-left: 70px;
+}
+
+.text-more p {
+  margin-left: 25px;
+}
 /* -----------------------------------------------------------------------------
 
 # All Common Styles
