@@ -1603,6 +1603,7 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                 req.flash("error", "ไม่พบกระทู้ = " + id);
                 res.redirect("/board");
               } else {
+
                 res.render("boardDetail", {
                   title: "รายละเอียดบอร์ดสุขภาพสุนัช",
                   username: "0",
@@ -1616,6 +1617,7 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                   namehead: rows2[0].username,
                   imghead: rows2[0].img,
                 });
+                
               }
             }
           );

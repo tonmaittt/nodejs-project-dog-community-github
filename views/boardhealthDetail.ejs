@@ -61,8 +61,13 @@
                                                 <hr class="w-100">
                                                 <p class="mx-2"><i class="fas fa-calendar-week"></i> เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
                                                     เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'short'}).format(createdP) %> น</p>
-                                                    <p class="mt-0 ml-2"><i class="fas fa-eye"></i> (0) <i class="fas fa-comments"></i> (0)
-                                                    </p>
+                                                    <p class="mt-0 ml-2">
+                                                        <i class="fas fa-eye"></i> (0) 
+                                                        <i class="fas fa-comments"></i> (0) 
+                                                        <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
+                                                        <p id="counter">ถูกใจทั้งหมด</p>
+                                                    </p> 
+                                                    
                                             </div>
                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
                                                 <img class="mr-3 img-fluid w-100 shadow-sm" style="border-radius: 15px 15px 15px 15px;" src="../img/<%= photo %>"
@@ -71,8 +76,7 @@
                                             </div>
                                             
                                         </div>
-                                        <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
-                                        <p id="counter">ถูกใจทั้งหมด</p>
+                                        
                                     </div>
 
 
