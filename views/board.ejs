@@ -65,7 +65,9 @@
                     <div class="col-md-12">
                         <div class="product-filters">
                             <ul>
+								<a href="/boardAdd">
                                 <li class="active" data-filter="*" style="width: 90%;">สร้างบทความ</li>
+								</a>
                             </ul>
                         </div>
                     </div>
@@ -73,20 +75,28 @@
     
             <% } %>
 
-			<div class="row">
-                <div class="col-md-12">
-                    <div class="product-filters">
-                        <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".strawberry">Strawberry</li>
-                            <li data-filter=".berry">Berry</li>
-                            <li data-filter=".lemon">Lemon</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
 			<div class="row product-lists">
+				<% for(let i=0; i < data.length; i++) { %>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-latest-news" >
+							<a href="/boardDetail/<%= data[i].communityboard_id %>"><div class="latest-news-bg" style="background-image: url(img/<%= data[i].photo %>)"></div></a>
+							<div class="news-text-box">
+								<a href="/boardDetail/<%= data[i].communityboard_id %>">
+								<h3 class="text-title"><%= data[i].title %></h3>
+								</a>
+								<p class="blog-meta mt-2">
+									<span class="author"><i class="fas fa-user"></i> <%= data[i].username %></span>
+									<span class="date"><i class="fas fa-calendar"></i> <%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%></span>
+								</p>
+								<p class="excerpt"></p>
+								<a href="/boardDetail/<%= data[i].communityboard_id %>" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				<% } %>
+			</div>		
+
+			<!-- <div class="row product-lists">
 				<div class="col-lg-4 col-md-6 text-center strawberry">
 					<div class="single-product-item">
 						<div class="product-image">
@@ -147,7 +157,7 @@
 						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
 				<div class="col-lg-12 text-center">

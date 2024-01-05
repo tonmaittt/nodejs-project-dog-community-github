@@ -1,21 +1,37 @@
-<%- include('partials/head') -%>
-    <%- include('partials/header') -%>
+<%- include('partials/heads') -%>
+    <%- include('partials/headers') -%>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg hero-bg-cm">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p class="subtitle">LOVE DOGS TH</p>
+							<h1>บอร์ด</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- end breadcrumb section -->
         <main class="board mt-4">
             <div class="container">
-                <div class="d-inline-flex">
-                    <div class="p-2" style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
-                        <h3>ชุมชน - บอร์ด</h3>
-                    </div>
-                </div>
-
                 <div class="shadow p-3 mb-5 bg-white rounded">
-                    <div class="text-with-lines">
+                    <!-- <div class="text-with-lines">
                         <div class="text-top">
                             <div class="title mt-2 text-center">
-                                <h1>บอร์ด</h1>
+                                <h2>บอร์ด</h2>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="container">
                         <!-- Control the column width, and how they should appear on different devices -->
@@ -26,21 +42,24 @@
                                     <div class="row justify-content-start">
                                         <div class="col-lg-12 col-sm-12 col-xs-12">
                                             <b>
-                                                <h4 style="color: coral;"><%= titletext %></h4>
+                                                <h2 style="color: coral; text-align: center;">
+                                                    <br>
+                                                    <%= titletext %>
+                                                </h2>
                                                 <hr style="border-color: coral;">
-                                                <p class="mt-0">คนดู(0) ความคิดเห็น(0)
                                                 </p>
                                             </b>
                                         </div>
                                         <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 w-100">
                                             <div class="col-lg-3 col-sm-3 col-xs-3">
-                                                <img class="mr-3 img-fluid rounded-circle"
+                                                <img class="mr-3 img-fluid rounded-circle img-mini"
                                                     style="width: 150px; height: 150px;" src="../img/<%= imghead %>"
                                                     alt="Generic placeholder image">
-                                                <h5 class="mt-3 mx-4"><%= namehead %></h5>
+                                                <h5 class="mt-3 mx-4 name-user"><%= namehead %></h5>
                                                 <hr class="w-100">
-                                                <p class="mx-2">เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
+                                                <p class="mx-2"><i class="fas fa-calendar-week"></i> เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
                                                     เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'short'}).format(createdP) %> น</p>
+                                                    <p class="mt-0 ml-2"><i class="fas fa-eye"></i> (0) <i class="fas fa-comments"></i> (0)
                                             </div>
                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
                                                 <img class="mr-3 img-fluid w-100 shadow-sm" style="border-radius: 15px 15px 15px 15px;" src="../img/<%= photo %>"
@@ -116,4 +135,4 @@
                         </div>
         </main>
 
-                        <%- include('partials/footer') -%>
+        <%- include('partials/footers') -%>
