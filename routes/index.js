@@ -1617,7 +1617,7 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                   namehead: rows2[0].username,
                   imghead: rows2[0].img,
                 });
-                
+
               }
             }
           );
@@ -1885,9 +1885,107 @@ router.get("/shop", function (req, res, next) {
   });
 });
 
+// display article add page
+router.get("/shopDetailAdd", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/shop");
+  }
+  res.render("shopDetailAdd", {
+    title: "สร้างโฆษณา ร้านค้า",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+  });
+});
+
+// // add a new article
+// router.post("/articleAdd", upload.single("photo"), (req, res, next) => {
+//   let titleboard = req.body.titleboard;
+//   let photo = req.file.filename;
+//   let details = req.body.details;
+//   let errors = false;
+
+//   if (titleboard.length === 0) {
+//     errors = true;
+//     // set flash message
+//     req.flash("error", "โปรดใส่หัวข้อกระทู้");
+//     // render to add.ejs with flash message
+//     res.render("articleAdd", {
+//       title: "สร้างบทความ Article",
+//       username: req.session.userName,
+//       emailS: req.session.emailUser,
+//       levelS: req.session.level,
+//       userImg: req.session.userImg,
+//       titleboard: titleboard,
+//       photo: "",
+//       details: details,
+//     });
+//   }
+
+//   // if no error
+//   if (!errors) {
+//     let form_data = {
+//       user_id: req.session.idUser,
+//       title: titleboard,
+//       photo: photo,
+//       details: details,
+//       status: 1,
+//     };
+
+//     // insert query
+//     dbCon.query(
+//       "INSERT INTO tb_article SET ?",
+//       form_data,
+//       (err, result) => {
+//         if (err) {
+//           req.flash("error", err);
+//           res.render("articleAdd", {
+//             title: "สร้างบทความ Article",
+//             username: req.session.userName,
+//             emailS: req.session.emailUser,
+//             levelS: req.session.level,
+//             userImg: req.session.userImg,
+//             titleboard: titleboard,
+//             photo: "",
+//             details: details,
+//           });
+//         } else {
+//           req.flash("success", "สร้างบทความสำเร็จ");
+//           res.redirect("/boardcommunity");
+//         }
+//       }
+//     );
+//   }
+// });
+
+// display articleDetail page
+router.get("/shopDetail/(:id)", (req, res, next) => {
+  let id = req.params.id;
+  if (!req.session.ifNotLogIn) {
+    res.render("shopDetail", {
+                    title: "รายละเอียดบทความ",
+                    username: "0",
+                    emailS: "0",
+                    levelS: 0,
+    })
+  }
+  res.render("shopDetail", {
+                  title: "รายละเอียดบทความ",
+                  username: req.session.userName,
+                  emailS: req.session.emailUser,
+                  levelS: req.session.level,
+                  userImg: req.session.userImg,
+
+  })
+});
 
 
-/* login page. */
+
+
+
+
+/* login page. -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 router.get("/login", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     res.render("login", {
