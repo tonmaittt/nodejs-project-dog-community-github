@@ -52,22 +52,24 @@
                                                
                                             </b>
                                         </div>
-                                        <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 w-100">
+                                        <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-row py-2 w-100 align-content-start flex-wrap">
                                             <div class="col-lg-3 col-sm-3 col-xs-3">
                                                 <img class="mr-3 img-fluid rounded-circle img-mini"
                                                     style="width: 150px; height: 150px;" src="../img/<%= imghead %>"
                                                     alt="Generic placeholder image">
                                                 <h5 class="mt-3 mx-4 name-user"><%= namehead %></h5>
                                                 <hr class="w-100">
+
                                                 <p class="mx-2"><i class="fas fa-calendar-week"></i> เมื่อวันที่ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(createdP) %>
                                                     เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'short'}).format(createdP) %> น</p>
                                                     <p class="mt-0 ml-2">
                                                         <i class="fas fa-eye"></i> (0) 
                                                         <i class="fas fa-comments"></i> (0) 
-                                                        <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2" style="background: coral;color: white; border-color: coral;">ถูกใจ</button>
-                                                        <p id="counter">ถูกใจทั้งหมด</p>
-                                                    </p> 
-                                                    
+                                                        <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton" style="background: white;color: black; border-color: coral;"> 
+                                                            <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter"></span>)
+                                                        </button>
+                                                        
+                                                    </p>
                                             </div>
                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
                                                 <img class="mr-3 img-fluid w-100 shadow-sm" style="border-radius: 15px 15px 15px 15px;" src="../img/<%= photo %>"
@@ -171,7 +173,7 @@
                 throw new Error('Request failed.');
                 })
                 .then(function(data) {
-                document.getElementById('counter').innerHTML = `ถูกใจทั้งหมด ${data.length} คน`;
+                document.getElementById('counter').innerHTML = ` ${data.length} `;
                 })
                 .catch(function(error) {
                 console.log(error);

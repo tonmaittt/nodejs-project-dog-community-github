@@ -225,6 +225,12 @@ p:last-child {
   margin-top: 20px;
 }
 
+.myButton:hover{
+  color: white;
+  box-shadow: 4px 4px 5px lightblue;
+}
+
+
 /* .list-post {
   display: inline-block;
   box-shadow: 0px 0px 5px 1px #ccc;
