@@ -303,6 +303,32 @@ p:last-child {
 .text-more p {
   margin-left: 25px;
 }
+
+.center h4 {
+  padding-left: 25px;
+}
+
+.box-product {
+  margin-left: 200px;
+}
+
+.img-product img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.img-product-mini img{
+  border: #000;
+  background-color: #555;
+  width: 100px;
+  height: 80px;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
 /* -----------------------------------------------------------------------------
 
 # All Common Styles
