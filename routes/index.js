@@ -2325,6 +2325,20 @@ router.get("/clicks/(:id)", (req, res, next) => {
   );
 });
 
+router.get("/api/user", (req, res, next) => {
+  const users = [{
+    id: '123',
+    name: 'ko',
+    },{
+      id: '456',
+      name: 'as',
+    },{
+      id: '987',
+      name: 'er',
+    },
+  ];
+  res.json(users);
+});
 
 
 
