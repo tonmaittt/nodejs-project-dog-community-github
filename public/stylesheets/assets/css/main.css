@@ -329,6 +329,12 @@ p:last-child {
   margin-top: 10px;
 }
 
+.bg-bg {
+  background-color: orange;
+  
+}
+
+
 /* -----------------------------------------------------------------------------
 
 # All Common Styles
@@ -1558,6 +1564,13 @@ a.mobile-show.search-bar-icon:hover {
 
 .hero-bg2 {
   background-image: url(../../../../img/Top2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-edit-profile {
+  background-image: url(../../../../img/editPro.jpg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
