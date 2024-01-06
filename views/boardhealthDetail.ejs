@@ -143,28 +143,56 @@
         </script>
         <script>
 
-                fetch('/api/user', {method: 'GET'})
+                fetch('/api/user/<%- id %>', {method: 'GET'})
                     .then(function(response) {
                     if(response.ok) return response.json();
                     throw new Error('Request failed.');
                     })
                     .then(function(data) {
                     console.log(data);
+                    
+                    function timeSince(date) {
+
+                    var seconds = Math.floor((new Date() - date) / 1000);
+
+                    var interval = seconds / 31536000;
+
+                    if (interval > 1) {
+                    return Math.floor(interval) + " years";
+                    }
+                    interval = seconds / 2592000;
+                    if (interval > 1) {
+                    return Math.floor(interval) + " months";
+                    }
+                    interval = seconds / 86400;
+                    if (interval > 1) {
+                    return Math.floor(interval) + " days";
+                    }
+                    interval = seconds / 3600;
+                    if (interval > 1) {
+                    return Math.floor(interval) + " hours";
+                    }
+                    interval = seconds / 60;
+                    if (interval > 1) {
+                    return Math.floor(interval) + " minutes";
+                    }
+                    return Math.floor(seconds) + " seconds";
+                    }
+                    // var aDay = 24*60*60*1000;
+                    // console.log(timeSince(new Date(Date.now()-aDay)));
+                    // console.log(timeSince(new Date(Date.now()-aDay*2)));
+
                     for (let i = 0; i < data.length; i++) {
                     document.getElementById('commentShow').innerHTML += `
                                                     <li class="list-group-item">
                                                         <div class="media">
-                                                            <img src="https://via.placeholder.com/64" class="mr-3"
-                                                                alt="User Image" style="width: 64px;">
+                                                            <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64;">
                                                             <div class="media-body">
-                                                                <h5 class="mt-0">${data[i]["name"]}</h5>
-                                                                Nullam tincidunt urna sed justo efficitur, vel luctus
-                                                                justo
-                                                                bibendum.
+                                                                <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
+                                                                ${data[i]["comments"]}
                                                                 <div class="mt-2">
-                                                                    <small class="text-muted">30 นาทีที่แล้ว</small>
-                                                                    <button
-                                                                        class="btn btn-sm btn-outline-primary ml-2">ถูกใจ</button>
+                                                                    <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
