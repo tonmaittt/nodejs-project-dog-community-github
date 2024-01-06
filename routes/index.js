@@ -2213,6 +2213,66 @@ router.post("/register/add", (req, res, next) => {
 });
 
 
+/* แสดงหน้า โปรไฟล์ --------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* แสดงหน้า โปรไฟล์ร้านค้า --------------------------------------------------------------------------------------------------------------------------------------------------------- */
+router.get("/showProfileShop", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("showProfileShop", {
+      title: "Profile Shop",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  res.render("showProfileShop", {
+    title: "Profile Shop",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+  });
+});
+
+/* แสดงหน้า โปรไฟล์ผู้ใช้ --------------------------------------------------------------------------------------------------------------------------------------------------------- */
+router.get("/showProfileUser", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("showProfileUser", {
+      title: "Profile User",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  res.render("showProfileUser", {
+    title: "Profile User",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+  });
+});
+
+/* แสดงหน้า โปรไฟล์ผู้เชียวชาญ --------------------------------------------------------------------------------------------------------------------------------------------------------- */
+router.get("/showProfileVets", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.render("showProfileVets", {
+      title: "Profile Vets",
+      username: "0",
+      emailS: "0",
+      levelS: 0,
+    });
+  }
+  res.render("showProfileVets", {
+    title: "Profile Vets",
+    username: req.session.userName,
+    emailS: req.session.emailUser,
+    levelS: req.session.level,
+    userImg: req.session.userImg,
+  });
+});
+
+
+
 /* ปุ่มถูกใจ บอร์ดสุขภาพ */
 // add a document to the DB collection recording the click event
 router.post("/clicked/(:id)", (req, res, next) => {
@@ -2264,6 +2324,9 @@ router.get("/clicks/(:id)", (req, res, next) => {
     }
   );
 });
+
+
+
 
 
 
