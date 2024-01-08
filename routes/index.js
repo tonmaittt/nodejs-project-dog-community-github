@@ -1411,6 +1411,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
                   createdP: rows[0].created_at,
                   namehead: rows2[0].username,
                   imghead: rows2[0].img,
+                  view: rows[0].view,
                 });
               }
             }
@@ -1443,6 +1444,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
                 createdP: rows[0].created_at,
                 namehead: rows2[0].username,
                 imghead: rows2[0].img,
+                view: rows[0].view,
               });
             }
           }
@@ -2346,7 +2348,8 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
       if (err) {
           return console.log(err);
       } else {
-        return res.redirect("/boardhealthDetail/"+ boardhealthId);
+        res.redirect(req.get('referer'));
+        // return res.redirect("/boardhealthDetail/"+ boardhealthId);
       }
       }
     );
@@ -2369,6 +2372,28 @@ router.get("/api/user/(:id)", (req, res, next) => {
   );
   
 });
+
+
+//นับผู้ชม
+router.post("/countViewBoardhealth/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    dbCon.query(
+      "UPDATE tb_boardhealth SET view = view+1 WHERE boardhealth_id = "+ boardhealth_id,
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          console.log('click view');
+          res.sendStatus(201);
+        }
+      }
+    );
+ }
+});
+
 
 
 /* userData page. */
