@@ -2316,7 +2316,7 @@ router.get("/clicks/(:id)", (req, res, next) => {
   dbCon.query(
     "SELECT * FROM tb_like_boardhealth WHERE boardhealth_id = ?" , [boardhealth_id],
     (err, rows) => {
-      if (err) {
+      if (err) {  
         return console.log(err);
       } else {
         res.send(rows);
@@ -2326,20 +2326,32 @@ router.get("/clicks/(:id)", (req, res, next) => {
 });
 
 // เพิ่มคอมเม้น
-router.get("/api/user/(:id)", (req, res, next) => {
+router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
   let boardhealth_id = req.params.id;
-  dbCon.query(
-    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_boardhealth.comment_details AS comments, tb_comment_boardhealth.update_at AS time FROM tb_comment_boardhealth LEFT JOIN tb_user ON tb_comment_boardhealth.user_id = tb_user.id  WHERE boardhealth_id = ?" , boardhealth_id,
-    (err, users) => {
-      if (err) {
-        return console.log(err);
-      } else {
-        // console.log(users);
-        res.json(users);
-      }
+  let comment = req.body.comment
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        boardhealth_id: boardhealth_id,
+        comment_details: comment,
+        status: 1,
     }
-  );
-  
+    
+    dbCon.query("INSERT INTO tb_comment_boardhealth SET ?", form_data, (err, result) => {
+      if (err) {
+          return console.log(err);
+      } else {
+        console.log('click added to db');
+        res.sendStatus(201);
+      }
+      }
+    );
+  }
 });
 
 // แสเงคอมเม้น
