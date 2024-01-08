@@ -1565,6 +1565,13 @@ a.mobile-show.search-bar-icon:hover {
   background-attachment: fixed;
 }
 
+.hero-bg1 {
+  background-image: url(../../../../img/dog2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 .hero-bg2 {
   background-image: url(../../../../img/Top2.jpg);
   background-size: cover;
