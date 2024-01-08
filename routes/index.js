@@ -2330,14 +2330,14 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
   if (!req.session.ifNotLogIn) {
     return res.redirect("/");
   }
-  let boardhealth_id = req.params.id;
+  let boardhealthId = req.params.id;
   let comment = req.body.comment
   let errors = false;
 
   if (!errors) {
     let form_data = {
         user_id: req.session.idUser,
-        boardhealth_id: boardhealth_id,
+        boardhealth_id: boardhealthId,
         comment_details: comment,
         status: 1,
     }
@@ -2346,8 +2346,7 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
       if (err) {
           return console.log(err);
       } else {
-        console.log('click added to db');
-        res.sendStatus(201);
+        return res.redirect("/boardhealthDetail/"+ boardhealthId);
       }
       }
     );
@@ -2358,7 +2357,7 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
 router.get("/api/user/(:id)", (req, res, next) => {
   let boardhealth_id = req.params.id;
   dbCon.query(
-    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_boardhealth.comment_details AS comments, tb_comment_boardhealth.update_at AS time FROM tb_comment_boardhealth LEFT JOIN tb_user ON tb_comment_boardhealth.user_id = tb_user.id  WHERE boardhealth_id = ?" , boardhealth_id,
+    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_boardhealth.comment_details AS comments, tb_comment_boardhealth.update_at AS time FROM tb_comment_boardhealth LEFT JOIN tb_user ON tb_comment_boardhealth.user_id = tb_user.id  WHERE boardhealth_id = ? ORDER BY comment_boardhealth_id DESC" , boardhealth_id,
     (err, users) => {
       if (err) {
         return console.log(err);

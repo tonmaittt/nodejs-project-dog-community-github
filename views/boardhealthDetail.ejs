@@ -83,34 +83,36 @@
                                             ความคิดเห็น
                                         </div>
                                         <div class="card-body">
+                                            <% if(levelS != 0) { %>
+                                                <form action="/commentAddBoardhealth/<%- id %>" method="post">
+                                                    <div class="form-group  mt-2">
+                                                        <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">ส่งความคิดเห็น</button>
+                                                </form>
+                                                <% }else{ %>
+                                                    <div class="form-group  mt-2">
+                                                        <li class="list-group-item">
+                                                            <div class="media">
+                                                               
+                                                                <div class="media-body">
+                                                                    <h5 class="mt-0 mb-0"></h5>
+                                                                    <div class="m-2">
+                                                                        <small class="text-muted">กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น <span><a href="../login" target="_blank">Login</a></span></small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </div>
+                                                <% } %>
+
                                             <ul class="list-group" id="comment-list">
                                                 <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
                                                 <ul class="list-group">
                                                     <div id="commentShow"></div>
                                                 </ul>
                                             </ul>
-                                            <% if(levelS != 0) { %>
-                                            <form action="/commentAddBoardhealth/<%- id %>" method="post">
-                                                <div class="form-group  mt-2">
-                                                    <textarea class="form-control" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ"></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">ส่งความคิดเห็น</button>
-                                            </form>
-                                            <% }else{ %>
-                                                <div class="form-group  mt-2">
-                                                    <li class="list-group-item">
-                                                        <div class="media">
-                                                           
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0"></h5>
-                                                                <div class="m-2">
-                                                                    <small class="text-muted">กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น <span><a href="../login" target="_blank">Login</a></span></small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </div>
-                                            <% } %>
+                                            
                                         </div>
                                     </div>
                                 </div>
