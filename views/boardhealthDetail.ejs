@@ -106,7 +106,7 @@
         </main>
 
         <%- include('partials/footers') -%>
-
+        <!-- แสดงคอมเม้น -->
         <script>
             const button = document.getElementById('myButton');
             button.addEventListener('click', function(e) {
@@ -141,6 +141,7 @@
 
 
         </script>
+        <!-- แสดงคอมเม้น -->
         <script>
                 fetch('/api/user/<%- id %>', {method: 'GET'})
                     .then(function(response) {
