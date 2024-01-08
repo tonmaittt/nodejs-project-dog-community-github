@@ -2325,19 +2325,8 @@ router.get("/clicks/(:id)", (req, res, next) => {
   );
 });
 
+// เพิ่มคอมเม้น
 router.get("/api/user/(:id)", (req, res, next) => {
-  // const users = [{
-  //   id: '123',
-  //   name: 'ko',
-  //   },{
-  //     id: '456',
-  //     name: 'as',
-  //   },{
-  //     id: '987',
-  //     name: 'er',
-  //   },
-  // ];
-  // res.json(users);
   let boardhealth_id = req.params.id;
   dbCon.query(
     "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_boardhealth.comment_details AS comments, tb_comment_boardhealth.update_at AS time FROM tb_comment_boardhealth LEFT JOIN tb_user ON tb_comment_boardhealth.user_id = tb_user.id  WHERE boardhealth_id = ?" , boardhealth_id,
@@ -2353,9 +2342,22 @@ router.get("/api/user/(:id)", (req, res, next) => {
   
 });
 
-
-
-
+// แสเงคอมเม้น
+router.get("/api/user/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  dbCon.query(
+    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_boardhealth.comment_details AS comments, tb_comment_boardhealth.update_at AS time FROM tb_comment_boardhealth LEFT JOIN tb_user ON tb_comment_boardhealth.user_id = tb_user.id  WHERE boardhealth_id = ?" , boardhealth_id,
+    (err, users) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        // console.log(users);
+        res.json(users);
+      }
+    }
+  );
+  
+});
 
 
 /* userData page. */
