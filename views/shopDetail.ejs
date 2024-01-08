@@ -107,6 +107,7 @@
               <div class="row box-product">
                 <div class="col-lg-8 col-md-8 col-sm-12 mt-3 img-product">
                   <img
+                    id="bannerimg"
                     src="../img/dog food.png"
                     alt="Large Image"
                     class="rounded mx-auto d-block"
@@ -116,22 +117,26 @@
                   class="col-lg-3 col-md-3 col-sm-3 small-images-container img-product-mini mt-2"
                 >
                   <img
+                    onclick="changeImage('../img/shopdog.jpg')"
                     src="../img/shopdog.jpg"
                     alt="Small Image 1"
                     class="img-fluid img-thumbnail rounded float-right"
                   />
                   <img
-                    src="../img/shopdog.jpg"
+                    onclick="changeImage('../img/dog food.png')"
+                    src="../img/dog food.png"
                     alt="Small Image 2"
                     class="img-fluid img-thumbnail rounded float-right"
                   />
                   <img
+                    onclick="changeImage('../img/shopdog.jpg')"
                     src="../img/shopdog.jpg"
                     alt="Small Image 3"
                     class="img-fluid img-thumbnail rounded float-right"
                   />
                   <img
-                    src="../img/shopdog.jpg"
+                    onclick="changeImage('../img/dog food.png')"
+                    src="../img/dog food.png"
                     alt="Small Image 4"
                     class="img-fluid img-thumbnail rounded float-right"
                   />
@@ -256,5 +261,12 @@
     </div>
   </div>
 </main>
-
+  
 <%- include('partials/footers') -%>
+
+<script>
+  function changeImage(fileName) {
+    let img = document.querySelector("#bannerimg");
+    img.setAttribute("src", fileName);
+  }
+</script>
