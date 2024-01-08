@@ -142,7 +142,6 @@
 
         </script>
         <script>
-
                 fetch('/api/user/<%- id %>', {method: 'GET'})
                     .then(function(response) {
                     if(response.ok) return response.json();
