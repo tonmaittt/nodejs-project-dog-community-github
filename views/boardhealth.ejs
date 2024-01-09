@@ -95,7 +95,7 @@
                                             <h5 class="mt-3 text-title"><%= data[i].title %></h5>
                                             </a>
                                             <div class="text-date">
-                                            <p><i class="fas fa-calendar-week"></i> เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br><i class="fas fa-eye"></i> (<%= data[i].view %>) <i class="fas fa-comments"></i> (0) จาก
+                                            <p><i class="fas fa-calendar-week"></i> เมื่อ <%= new Intl.DateTimeFormat('th-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].created_at) %> <br><i class="fas fa-eye"></i> (<%= data[i].view %>) <!--<i class="fas fa-comments"></i> (0)--> จาก
                                             คุณ <%= data[i].username %></p>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@
         </div>
 
         <!-- number page -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="container">
                 <div class="row justify-content-start">
                     <div class="col-lg-12 text-center">
@@ -139,7 +139,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- number page -->
 
         <!-- new list -->

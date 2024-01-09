@@ -1817,13 +1817,14 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
                   username: "0",
                   emailS: "0",
                   levelS: 0,
-                  id: rows[0].boardhealth_id,
+                  id: rows[0].article_id,
                   titletext: rows[0].title,
                   photo: rows[0].photo,
                   details: rows[0].details,
                   createdP: rows[0].created_at,
                   namehead: rows2[0].username,
                   imghead: rows2[0].img,
+                  view: rows[0].view,
                 });
               }
             }
@@ -1849,13 +1850,14 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
                 userImg: req.session.userImg,
-                id: rows[0].boardhealth_id,
+                id: rows[0].article_id,
                 titletext: rows[0].title,
                 photo: rows[0].photo,
                 details: rows[0].details,
                 createdP: rows[0].created_at,
                 namehead: rows2[0].username,
                 imghead: rows2[0].img,
+                view: rows[0].view,
               });
             }
           }
@@ -2275,8 +2277,9 @@ router.get("/showProfileVets", function (req, res, next) {
 
 
 
-/* ปุ่มถูกใจ บอร์ดสุขภาพ */
+/* ปุ่มถูกใจ */
 // add a document to the DB collection recording the click event
+// Boardhealth
 router.post("/clicked/(:id)", (req, res, next) => {
   let boardhealth_id = req.params.id;
   let errors = false;
@@ -2312,7 +2315,44 @@ router.post("/clicked/(:id)", (req, res, next) => {
  }
 });
 
-// get the click data from the database
+// Article
+router.post("/clicked/article/(:id)", (req, res, next) => {
+  let article_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        article_id: article_id,
+        status: 1,
+    }
+
+    dbCon.query(
+      "SELECT * FROM tb_like_article WHERE user_id = ? AND 	article_id = ?" , [req.session.idUser,article_id],
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          if (rows1.length == 1) {
+            return console.log("ถูกใจไว้อยู่แล้ว");
+          }else{
+            dbCon.query("INSERT INTO tb_like_article SET ?", form_data, (err, result) => {
+              if (err) {
+                  return console.log(err);
+              } else {
+                console.log('click added to db');
+                res.sendStatus(201);
+              }
+            })
+          }
+        }
+      }
+    );
+ }
+});
+
+// นับถูกใจ
+// Boardhealth
 router.get("/clicks/(:id)", (req, res, next) => {
   let boardhealth_id = req.params.id;
   dbCon.query(
@@ -2327,7 +2367,24 @@ router.get("/clicks/(:id)", (req, res, next) => {
   );
 });
 
+// Article
+router.get("/clicks/article/(:id)", (req, res, next) => {
+  let article_id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_like_article WHERE article_id = ?" , [article_id],
+    (err, rows) => {
+      if (err) {  
+        return console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
+
+
 // เพิ่มคอมเม้น
+// Boardhealth
 router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
   if (!req.session.ifNotLogIn) {
     return res.redirect("/");
@@ -2356,7 +2413,37 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
   }
 });
 
+// Article
+router.post("/commentAddArticle/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  let articleId = req.params.id;
+  let comment = req.body.comment
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        article_id: articleId,
+        comment_details: comment,
+        status: 1,
+    }
+    
+    dbCon.query("INSERT INTO tb_comment_article SET ?", form_data, (err, result) => {
+      if (err) {
+          return console.log(err);
+      } else {
+        res.redirect(req.get('referer'));
+        // return res.redirect("/boardhealthDetail/"+ boardhealthId);
+      }
+      }
+    );
+  }
+});
+
 // แสเงคอมเม้น
+// Boardhealth
 router.get("/api/user/(:id)", (req, res, next) => {
   let boardhealth_id = req.params.id;
   dbCon.query(
@@ -2373,8 +2460,26 @@ router.get("/api/user/(:id)", (req, res, next) => {
   
 });
 
+// Article
+router.get("/comment/article/(:id)", (req, res, next) => {
+  let article_id = req.params.id;
+  dbCon.query(
+    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_article.comment_details AS comments, tb_comment_article.update_at AS time FROM tb_comment_article LEFT JOIN tb_user ON tb_comment_article.user_id = tb_user.id  WHERE 	article_id = ? ORDER BY 	comment_article_id DESC" , article_id,
+    (err, users) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        // console.log(users);
+        res.json(users);
+      }
+    }
+  );
+  
+});
+
 
 //นับผู้ชม
+// Boardhealth
 router.post("/countViewBoardhealth/(:id)", (req, res, next) => {
   let boardhealth_id = req.params.id;
   let errors = false;
@@ -2394,6 +2499,26 @@ router.post("/countViewBoardhealth/(:id)", (req, res, next) => {
  }
 });
 
+
+// Article
+router.post("/countViewArticle/(:id)", (req, res, next) => {
+  let article_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    dbCon.query(
+      "UPDATE tb_article SET view = view+1 WHERE article_id = "+ article_id,
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          console.log('click view');
+          res.sendStatus(201);
+        }
+      }
+    );
+ }
+});
 
 
 /* userData page. */

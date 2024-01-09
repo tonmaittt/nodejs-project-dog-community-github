@@ -25,22 +25,7 @@
 
         <main class="board mt-4">
             <div class="container">
-                <!-- <div class="d-inline-flex">
-                    <div class="p-2"
-                        style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
-                        <h3>ชุมชน - บอร์ด</h3>
-                    </div>
-                </div> -->
-
                 <div class="shadow p-3 mb-5 bg-white rounded">
-                    <!-- <div class="text-with-lines">
-                        <div class="text-top">
-                            <div class="title mt-2 text-center">
-                                <h1>บอร์ด</h1>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="container">
                         <!-- Control the column width, and how they should appear on different devices -->
                         <div class="row">
@@ -73,7 +58,14 @@
                                                         }).format(createdP) %>
                                                         เวลา <%= new Intl.DateTimeFormat('th-GB', { timeStyle: 'short'
                                                             }).format(createdP) %> น</p>
-                                                <p class="mt-0 ml-2"><i class="fas fa-eye"></i> (0) <i class="fas fa-comments"></i> (0)
+                                                            <p class="mt-0 ml-2 mb-5">
+                                                                <i class="fas fa-eye"></i> (<span><%= view %></span>) 
+                                                                <i class="fas fa-comments"></i> (<span id="counterComment"></span>) 
+                                                                <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton" style="background: white;color: black; border-color: coral;"> 
+                                                                    <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter"></span>)
+                                                                </button>
+                                                                
+                                                            </p>
                                             </div>
                                             <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto">
                                                 <img class="mr-3 img-fluid w-100 shadow-sm"
@@ -90,57 +82,42 @@
                                 </div>
                                 <!-- comment -->
 
-                                <div class="container mt-5">
+                                <div class="container mt-5 mb-5">
                                     <div class="card mt-3">
                                         <div class="card-header">
                                             ความคิดเห็น
                                         </div>
                                         <div class="card-body">
+                                            <% if(levelS != 0) { %>
+                                                <form action="/commentAddArticle/<%- id %>" method="post">
+                                                    <div class="form-group  mt-2">
+                                                        <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary mb-3" style="background-color: coral;">ส่งความคิดเห็น</button>
+                                                </form>
+                                                <% }else{ %>
+                                                    <div class="form-group  mt-2">
+                                                        <li class="list-group-item">
+                                                            <div class="media">
+                                                               
+                                                                <div class="media-body">
+                                                                    <h5 class="mt-0 mb-0"></h5>
+                                                                    <div class="m-2">
+                                                                        <small class="text-muted">กรุณาเข้าสู่ระบบก่อนเพื่อแสดงความคิดเห็น <span><a href="../login" target="_blank">Login</a></span></small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </div>
+                                                <% } %>
+
                                             <ul class="list-group" id="comment-list">
                                                 <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
                                                 <ul class="list-group">
-                                                    <li class="list-group-item">
-                                                        <div class="media">
-                                                            <img src="https://via.placeholder.com/64" class="mr-3"
-                                                                alt="User Image" style="width: 64px;">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0">John Doe</h5>
-                                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                                <div class="mt-2">
-                                                                    <small class="text-muted">10 นาทีที่แล้ว</small>
-                                                                    <button
-                                                                        class="btn btn-sm btn-outline-primary ml-2">ถูกใจ</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="media">
-                                                            <img src="https://via.placeholder.com/64" class="mr-3"
-                                                                alt="User Image" style="width: 64px;">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0">Jane Smith</h5>
-                                                                Nullam tincidunt urna sed justo efficitur, vel luctus
-                                                                justo
-                                                                bibendum.
-                                                                <div class="mt-2">
-                                                                    <small class="text-muted">30 นาทีที่แล้ว</small>
-                                                                    <button
-                                                                        class="btn btn-sm btn-outline-primary ml-2">ถูกใจ</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                                    <div id="commentShow"></div>
                                                 </ul>
                                             </ul>
-                                            <form id="comment-form">
-                                                <div class="form-group  mt-2">
-                                                    <textarea class="form-control" id="comment" rows="4"
-                                                        placeholder="ป้อนความคิดเห็นของคุณ"></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">ส่งความคิดเห็น</button>
-                                            </form>
-
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -153,3 +130,123 @@
         </main>
 
         <%- include('partials/footers') -%>
+         <!-- แสดงคอมเม้น -->
+         <script>
+            const button = document.getElementById('myButton');
+            button.addEventListener('click', function(e) {
+            console.log('button was clicked');
+            fetch('/clicked/article/<%- id %>', {method: 'POST'})
+                .then(function(response) {
+                if(response.ok) {
+                    console.log('click was recorded');
+                    return;
+                }
+                throw new Error('Request failed.');
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            });
+            
+        //  <!-- นับถูกใจ -->    
+            setInterval(function() {
+            fetch('/clicks/article/<%- id %>', {method: 'GET'})
+                .then(function(response) {
+                if(response.ok) return response.json();
+                throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                    if (data.length != 0) {
+                        document.getElementById('counter').innerHTML = `${data.length}`;
+                    }else{
+                        document.getElementById('counter').innerHTML = `0`;
+                    }
+                    
+
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            }, 1000);
+
+            // นับผู้ชม
+            fetch('/countViewArticle/<%- id %>', {method: 'POST'})
+                .then(function(response) {
+                if(response.ok) {
+                    console.log('countView+1');
+                    return;
+                }
+                throw new Error('Request countView failed.');
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+
+        </script>
+        <!-- แสดงคอมเม้น -->
+        <script>
+                fetch('/comment/article/<%- id %>', {method: 'GET'})
+                    .then(function(response) {
+                    if(response.ok) return response.json();
+                    throw new Error('Request failed.');
+                    })
+                    .then(function(data) {
+                    console.log(data);
+                    document.getElementById('counterComment').innerHTML = `${data.length}`;
+                    for (let i = 0; i < data.length; i++) {
+                    document.getElementById('commentShow').innerHTML += `
+                                                    <li class="list-group-item">
+                                                        <div class="media">
+                                                            <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64;">
+                                                            <div class="media-body">
+                                                                <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
+                                                                ${data[i]["comments"]}
+                                                                <div class="mt-2">
+                                                                    <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                
+                                                    `;
+                    }
+                    })
+                    .catch(function(error) {
+                    console.log(error);
+                    });
+
+        </script>
+        <!-- แปลงเวลา -->
+        <script>
+            function timeSince(date) {
+
+            var seconds = Math.floor((new Date() - date) / 1000);
+
+            var interval = seconds / 31536000;
+
+            if (interval > 1) {
+            return Math.floor(interval) + " ปีที่ผ่านมา";
+            }
+            interval = seconds / 2592000;
+            if (interval > 1) {
+            return Math.floor(interval) + " เดือนที่ผ่านมา";
+            }
+            interval = seconds / 86400;
+            if (interval > 1) {
+            return Math.floor(interval) + " วันที่ผ่านมา";
+            }
+            interval = seconds / 3600;
+            if (interval > 1) {
+            return Math.floor(interval) + " ชั่วโมงที่ผ่านมา";
+            }
+            interval = seconds / 60;
+            if (interval > 1) {
+            return Math.floor(interval) + " นาทีที่ผ่านมา";
+            }
+            return Math.floor(seconds) + " วินาทีที่ผ่านมา";
+            }
+            // var aDay = 24*60*60*1000;
+            // console.log(timeSince(new Date(Date.now()-aDay)));
+            // console.log(timeSince(new Date(Date.now()-aDay*2)));
+        </script>
