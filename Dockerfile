@@ -1,29 +1,12 @@
+FROM node:alpine
 
-# # FROM node:latest
+WORKDIR /app
 
-# # WORKDIR /usr/src/app
+COPY package.json ./
+RUN npm install
 
-# # COPY package.json /usr/src/app/
+COPY . .
 
-# # RUN npm install
+EXPOSE 3000
 
-# # COPY . .
-
-# # EXPOSE 3000
-
-# # CMD ["npm", "start"]
-
-
-# FROM node:latest
-
-# WORKDIR /usr/src/app
-
-# COPY package*.json ./
-
-# RUN npm install
-
-# COPY . .
-
-# EXPOSE 3000
-
-# CMD ["npm", "start"]
+CMD ["npm", "start", "npx", "nodemon", "./bin/www"]

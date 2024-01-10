@@ -1869,20 +1869,63 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
 /* GET shop page. */
 router.get("/shop", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
-    return res.render("shop", {
-      title: "Shop",
-      username: "0",
-      emailS: "0",
-      levelS: 0,
-    });
+    return dbCon.query(
+      "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username FROM tb_shop INNER JOIN tb_user ON tb_shop.user_id = tb_user.id ORDER BY boost DESC , shop_id DESC",
+      (err, rows) => {
+        if (err) {
+          req.flash("error", err);
+          res.render("shop", {
+            title: "Shop",
+            username: "0",
+            emailS: "0",
+            levelS: 0,
+            data: "",
+          });
+        } else {
+          // const dataj = '['+rows[2].photo+']';
+          // let dataj = JSON.parse(JSON.stringify(rows[2].photo));
+          // console.log("dataj : "+ dataj[0]['img']);
+          // console.log("ข้อมูล : "+ '['+rows[2].photo+']');
+          res.render("shop", {
+            title: "shop",
+            username: "0",
+            emailS: "0",
+            levelS: 0,
+            data: rows,
+          });
+        }
+      }
+    );
   }
-  res.render("shop", {
-    title: "Shop",
-    username: req.session.userName,
-    emailS: req.session.emailUser,
-    levelS: req.session.level,
-    userImg: req.session.userImg,
-  });
+  dbCon.query(
+    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username FROM tb_shop INNER JOIN tb_user ON tb_shop.user_id = tb_user.id ORDER BY boost DESC , shop_id DESC",
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("shop", {
+          title: "Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        // const dataj = '['+rows[2].photo+']';
+        // let dataj = JSON.parse(JSON.stringify(rows[2].photo));
+        // console.log("dataj : "+ dataj[0]['img']);
+        // console.log("ข้อมูล : "+ '['+rows[2].photo+']');
+        res.render("shop", {
+          title: "Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
 });
 
 // display shop add page
@@ -1890,27 +1933,44 @@ router.get("/shopDetailAdd", function (req, res, next) {
   if (!req.session.ifNotLogIn || req.session.level === 1) {
     return res.redirect("/shop");
   }
-  res.render("shopDetailAdd", {
-    title: "สร้างโฆษณา ร้านค้า",
-    username: req.session.userName,
-    emailS: req.session.emailUser,
-    levelS: req.session.level,
-    userImg: req.session.userImg,
-    titleboard: "",
-    photo: "",
-    details: "",
-  });
+  dbCon.query(
+    "SELECT * FROM tb_user_shop WHERE user_id = "+ req.session.idUser,
+    (err, shopUser) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/shop");
+      } else {
+        if (shopUser.length == 1) {
+          res.render("shopDetailAdd", {
+            title: "สร้างโฆษณา ร้านค้า",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            titleboard: "",
+            photo: "",
+            details: "",
+          });
+        }
+        else{
+          req.flash("error", "กรุณเพิ่มข้อมูลร้านค่าก่อนลงโฆษณา");
+          res.redirect("/shop");
+        }
+      }
+    }
+  );
+  
 });
 
 // add a new shop
-router.post("/shopDetailAdd", upload.array("photo", 4), (req, res, next) => {
+router.post("/shopDetailAdd", upload.single("photo"), (req, res, next) => {
   let titleboard = req.body.titleboard;
-  const images = req.files;
-  const imagePaths = images.map(image => image.path);
-
+  // const images = req.files;
+  // const imagePaths = images.map(image => image.path);
   // ลบ "img\\" ออกจากทุกรายการใน imagePaths
-  const cleanedPaths = imagePaths.join(',').replace(/img\\/g, '{img: ').replace(/,/g, '}').replace(/}{/g, '},{').replace(/{img:/g, '{ "img": "').replace(/}/g, '"}');  
-  let photo = "["+ cleanedPaths + "}]";
+  // const cleanedPaths = imagePaths.join(',').replace(/img\\/g, '{img: ').replace(/,/g, '}').replace(/}{/g, '},{').replace(/{img:/g, '{ "img": "').replace(/}/g, '"}');  
+  // let photo = '['+ cleanedPaths + '"}]';
+  let photo = req.file.filename;
   let details = req.body.details;
   let errors = false;
 
@@ -1946,7 +2006,7 @@ router.post("/shopDetailAdd", upload.array("photo", 4), (req, res, next) => {
             details: details,
           });
         } else {
-          req.flash("success", "สร้างโฆษณา ร้านค้า");
+          req.flash("success", "สร้างโฆษณา ร้านค้า สำเร็จ");
           res.redirect("/shop");
         }
       }

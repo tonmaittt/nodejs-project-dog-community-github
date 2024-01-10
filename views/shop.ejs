@@ -29,6 +29,18 @@
 		<div class="container">
 
             <% if(levelS > 1) { %>
+				<% if (messages.success) { %>
+					<div class="alert alert-success" role="alert">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<%= messages.success %>
+					</div>
+				<% } %>
+				<% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <%= messages.error %>
+                    </div>
+                <% } %>
         
                 <div class="row">
                     <div class="col-md-12">
@@ -43,80 +55,19 @@
                 </div>
     
             <% } %>
-
-			<!-- <div class="row">
-                <div class="col-md-12">
-                    <div class="product-filters">
-                        <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".strawberry">Strawberry</li>
-                            <li data-filter=".berry">Berry</li>
-                            <li data-filter=".lemon">Lemon</li>
-                        </ul>
-                    </div>
-                </div>
-            </div> -->
-
 			<div class="row product-lists">
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="/shopDetail/1"><img src="../img/dog food.png" alt="" class="img-pro"></a>
-						</div>
-						<h3>Strawberry</h3>
-						<a href="/shopDetail/1" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center berry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="../img/article2.jpg" alt="" class="img-pro"></a>
-						</div>
-						<h3>Berry</h3>
-						
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center lemon">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="../img/article3.jpg" alt="" class="img-pro"></a>
-						</div>
-						<h3>Lemon</h3>
-						
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
-					</div>
-				</div>
+			<% for(let i=0; i < data.length; i++) { %>
+				
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="#"><img src="../img/article4.jpg" alt="" class="img-pro"></a>
+							<a href="/shopDetail/<%= data[i].shop_id %>"><img src="../img/<%= data[i].photo %>" alt="" class="img-pro"></a>
 						</div>
-						<h3>Avocado</h3>
-						
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
+						<h3><%= data[i].title%></h3>
+						<a href="/shopDetail/<%= data[i].shop_id %>" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="../img/article5.jpg" alt="" class="img-pro"></a>
-						</div>
-						<h3>Green Apple</h3>
-						
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="../img/article6.jpg" alt="" class="img-pro"></a>
-						</div>
-						<h3>Strawberry</h3>
-						
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
-					</div>
-				</div>
+			<% } %>
 			</div>
 
 			<div class="row">
