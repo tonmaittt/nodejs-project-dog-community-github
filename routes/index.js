@@ -1301,12 +1301,6 @@ router.get("/boardhealth", function (req, res, next) {
 router.get("/boardhealthAdd", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return res.redirect("/boardhealth");
-    // res.render("boardhealth", {
-    //   title: "Board Health",
-    //   username: "0",
-    //   emailS: "0",
-    //   levelS: 0,
-    // });
   }
   res.render("boardhealthAdd", {
     title: "สร้างกระทู้ Board Health",
@@ -1611,13 +1605,14 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                   username: "0",
                   emailS: "0",
                   levelS: 0,
-                  id: rows[0].boardhealth_id,
+                  id: rows[0].communityboard_id,
                   titletext: rows[0].title,
                   photo: rows[0].photo,
                   details: rows[0].details,
                   createdP: rows[0].created_at,
                   namehead: rows2[0].username,
                   imghead: rows2[0].img,
+                  view: rows[0].view,
                 });
 
               }
@@ -1644,13 +1639,14 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
                 userImg: req.session.userImg,
-                id: rows[0].boardhealth_id,
+                id: rows[0].communityboard_id,
                 titletext: rows[0].title,
                 photo: rows[0].photo,
                 details: rows[0].details,
                 createdP: rows[0].created_at,
                 namehead: rows2[0].username,
                 imghead: rows2[0].img,
+                view: rows[0].view,
               });
             }
           }
@@ -1889,7 +1885,7 @@ router.get("/shop", function (req, res, next) {
   });
 });
 
-// display article add page
+// display shop add page
 router.get("/shopDetailAdd", function (req, res, next) {
   if (!req.session.ifNotLogIn || req.session.level === 1) {
     return res.redirect("/shop");
@@ -1900,70 +1896,65 @@ router.get("/shopDetailAdd", function (req, res, next) {
     emailS: req.session.emailUser,
     levelS: req.session.level,
     userImg: req.session.userImg,
+    titleboard: "",
+    photo: "",
+    details: "",
   });
 });
 
-// // add a new article
-// router.post("/articleAdd", upload.single("photo"), (req, res, next) => {
-//   let titleboard = req.body.titleboard;
-//   let photo = req.file.filename;
-//   let details = req.body.details;
-//   let errors = false;
+// add a new shop
+router.post("/shopDetailAdd", upload.array("photo", 4), (req, res, next) => {
+  let titleboard = req.body.titleboard;
+  const images = req.files;
+  const imagePaths = images.map(image => image.path);
 
-//   if (titleboard.length === 0) {
-//     errors = true;
-//     // set flash message
-//     req.flash("error", "โปรดใส่หัวข้อกระทู้");
-//     // render to add.ejs with flash message
-//     res.render("articleAdd", {
-//       title: "สร้างบทความ Article",
-//       username: req.session.userName,
-//       emailS: req.session.emailUser,
-//       levelS: req.session.level,
-//       userImg: req.session.userImg,
-//       titleboard: titleboard,
-//       photo: "",
-//       details: details,
-//     });
-//   }
+  // ลบ "img\\" ออกจากทุกรายการใน imagePaths
+  const cleanedPaths = imagePaths.join(',').replace(/img\\/g, '{img: ').replace(/,/g, '}').replace(/}{/g, '},{').replace(/{img:/g, '{ "img": "').replace(/}/g, '"}');  
+  let photo = "["+ cleanedPaths + "}]";
+  let details = req.body.details;
+  let errors = false;
 
-//   // if no error
-//   if (!errors) {
-//     let form_data = {
-//       user_id: req.session.idUser,
-//       title: titleboard,
-//       photo: photo,
-//       details: details,
-//       status: 1,
-//     };
+  console.log("ชื่อรูป : "+photo);
 
-//     // insert query
-//     dbCon.query(
-//       "INSERT INTO tb_article SET ?",
-//       form_data,
-//       (err, result) => {
-//         if (err) {
-//           req.flash("error", err);
-//           res.render("articleAdd", {
-//             title: "สร้างบทความ Article",
-//             username: req.session.userName,
-//             emailS: req.session.emailUser,
-//             levelS: req.session.level,
-//             userImg: req.session.userImg,
-//             titleboard: titleboard,
-//             photo: "",
-//             details: details,
-//           });
-//         } else {
-//           req.flash("success", "สร้างบทความสำเร็จ");
-//           res.redirect("/boardcommunity");
-//         }
-//       }
-//     );
-//   }
-// });
+  // if no error
+  if (!errors) {
+    let form_data = {
+      user_id: req.session.idUser,
+      title: titleboard,
+      photo: photo,
+      details: details,
+      boost: 0,
+      status: 1,
+      view:0,
+    };
 
-// display articleDetail page
+    // insert query
+    dbCon.query(
+      "INSERT INTO tb_shop SET ?",
+      form_data,
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.render("shopDetailAdd", {
+            title: "สร้างโฆษณา ร้านค้า",
+            username: req.session.userName,
+            emailS: req.session.emailUser,
+            levelS: req.session.level,
+            userImg: req.session.userImg,
+            titleboard: titleboard,
+            photo: "",
+            details: details,
+          });
+        } else {
+          req.flash("success", "สร้างโฆษณา ร้านค้า");
+          res.redirect("/shop");
+        }
+      }
+    );
+  }
+});
+
+// display shopDetail page
 router.get("/shopDetail/(:id)", (req, res, next) => {
   let id = req.params.id;
   if (!req.session.ifNotLogIn) {
@@ -2351,6 +2342,42 @@ router.post("/clicked/article/(:id)", (req, res, next) => {
  }
 });
 
+// Board
+router.post("/clicked/Communityboard/(:id)", (req, res, next) => {
+  let communityboard_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        communityboard_id: communityboard_id,
+        status: 1,
+    }
+
+    dbCon.query(
+      "SELECT * FROM tb_like_communityboard WHERE user_id = ? AND 	communityboard_id = ?" , [req.session.idUser,communityboard_id],
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          if (rows1.length == 1) {
+            return console.log("ถูกใจไว้อยู่แล้ว");
+          }else{
+            dbCon.query("INSERT INTO tb_like_communityboard SET ?", form_data, (err, result) => {
+              if (err) {
+                  return console.log(err);
+              } else {
+                console.log('click added to db');
+                res.sendStatus(201);
+              }
+            })
+          }
+        }
+      }
+    );
+ }
+});
+
 // นับถูกใจ
 // Boardhealth
 router.get("/clicks/(:id)", (req, res, next) => {
@@ -2372,6 +2399,21 @@ router.get("/clicks/article/(:id)", (req, res, next) => {
   let article_id = req.params.id;
   dbCon.query(
     "SELECT * FROM tb_like_article WHERE article_id = ?" , [article_id],
+    (err, rows) => {
+      if (err) {  
+        return console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
+
+// Board
+router.get("/clicks/Communityboard/(:id)", (req, res, next) => {
+  let communityboard_id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_like_communityboard WHERE communityboard_id = ?" , [communityboard_id],
     (err, rows) => {
       if (err) {  
         return console.log(err);
@@ -2442,6 +2484,35 @@ router.post("/commentAddArticle/(:id)", (req, res, next) => {
   }
 });
 
+// Board
+router.post("/commentAddCommunityboard/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  let communityboard_id = req.params.id;
+  let comment = req.body.comment
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        communityboard_id: communityboard_id,
+        comment_details: comment,
+        status: 1,
+    }
+    
+    dbCon.query("INSERT INTO tb_comment_communityboard SET ?", form_data, (err, result) => {
+      if (err) {
+          return console.log(err);
+      } else {
+        res.redirect(req.get('referer'));
+        // return res.redirect("/boardhealthDetail/"+ boardhealthId);
+      }
+      }
+    );
+  }
+});
+
 // แสเงคอมเม้น
 // Boardhealth
 router.get("/api/user/(:id)", (req, res, next) => {
@@ -2477,6 +2548,22 @@ router.get("/comment/article/(:id)", (req, res, next) => {
   
 });
 
+// Board
+router.get("/comment/Communityboard/(:id)", (req, res, next) => {
+  let communityboard_id = req.params.id;
+  dbCon.query(
+    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_communityboard.comment_details AS comments, tb_comment_communityboard.update_at AS time FROM tb_comment_communityboard LEFT JOIN tb_user ON tb_comment_communityboard.user_id = tb_user.id  WHERE 	communityboard_id = ? ORDER BY comment_communityboard_id DESC" , communityboard_id,
+    (err, users) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        // console.log(users);
+        res.json(users);
+      }
+    }
+  );
+  
+});
 
 //นับผู้ชม
 // Boardhealth
@@ -2518,6 +2605,43 @@ router.post("/countViewArticle/(:id)", (req, res, next) => {
       }
     );
  }
+});
+
+// Board
+router.post("/countViewCommunityboard/(:id)", (req, res, next) => {
+  let communityboard_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    dbCon.query(
+      "UPDATE tb_communityboard SET view = view+1 WHERE communityboard_id = "+ communityboard_id,
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          console.log('click view');
+          res.sendStatus(201);
+        }
+      }
+    );
+ }
+});
+
+// แสดงรูป shop
+router.get("/api/shop/(:id)", (req, res, next) => {
+  let shop_id = req.params.id;
+  dbCon.query(
+    "SELECT tb_shop.photo FROM tb_shop WHERE shop_id = ? " , shop_id,
+    (err, photo) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        console.log(photo[0].photo);
+        res.send(photo[0].photo);
+      }
+    }
+  );
+  
 });
 
 

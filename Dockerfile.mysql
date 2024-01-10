@@ -1,0 +1,8 @@
+# FROM mysql:latest
+
+# ENV MYSQL_ROOT_PASSWORD=root
+# ENV MYSQL_DATABASE=nodejs_dog_community_db
+# ENV MYSQL_USER=root
+# ENV MYSQL_PASSWORD= 
+
+# COPY ./nodejs_dog_community_db.sql /docker-entrypoint-initdb.d/
