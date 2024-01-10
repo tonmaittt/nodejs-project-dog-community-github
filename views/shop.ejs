@@ -64,13 +64,18 @@
 							<a href="/shopDetail/<%= data[i].shop_id %>"><img src="../img/<%= data[i].photo %>" alt="" class="img-pro"></a>
 						</div>
 						<h3><%= data[i].title%></h3>
+						<p class="blog-meta mt-2">
+							<span class="author"><i class="fas fa-shopping-cart"></i> <%= data[i].shop_name %></span><br>
+							<span class="author"><i class="fas fa-eye"></i> (<%= data[i].view %>)</span>
+							<span class="date"><i class="fas fa-calendar"></i> <%= new Intl.DateTimeFormat('th-GB').format(data[i].created_at)%></span>
+						</p>
 						<a href="/shopDetail/<%= data[i].shop_id %>" class="cart-btn"><i class="fas fa-shopping-cart"></i> เพิ่มเติม</a>
 					</div>
 				</div>
 			<% } %>
 			</div>
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-lg-12 text-center">
 					<div class="pagination-wrap">
 						<ul>
@@ -82,7 +87,7 @@
 						</ul>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- end products -->

@@ -1,31 +1,31 @@
 <%- include('partials/heads') -%> <%- include('partials/headers') -%>
 
-<!--PreLoader-->
-<div class="loader">
-  <div class="loader-inner">
-    <div class="circle"></div>
-  </div>
-</div>
-<!--PreLoader Ends-->
+    <!--PreLoader-->
+    <div class="loader">
+      <div class="loader-inner">
+        <div class="circle"></div>
+      </div>
+    </div>
+    <!--PreLoader Ends-->
 
-<!-- breadcrumb-section -->
-<div class="breadcrumb-section breadcrumb-bg hero-bg-shop">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 offset-lg-2 text-center">
-        <div class="breadcrumb-text">
-          <p class="subtitle">LOVE DOGS TH</p>
-          <h1>รายละเอียดสินค้าและบริการ</h1>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg hero-bg-shop">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 offset-lg-2 text-center">
+            <div class="breadcrumb-text">
+              <p class="subtitle">LOVE DOGS TH</p>
+              <h1>รายละเอียดสินค้าและบริการ</h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<!-- end breadcrumb section -->
-<main class="board mt-4">
-  <div class="container">
-    <div class="shadow p-3 mb-5 bg-white rounded">
-      <!-- <div class="text-with-lines">
+    <!-- end breadcrumb section -->
+    <main class="board mt-4">
+      <div class="container">
+        <div class="shadow p-3 mb-5 bg-white rounded">
+          <!-- <div class="text-with-lines">
                         <div class="text-top">
                             <div class="title mt-2 text-center">
                                 <h2>บอร์ด</h2>
@@ -33,129 +33,106 @@
                         </div>
                     </div> -->
 
-      <div class="container">
-        <!-- Control the column width, and how they should appear on different devices -->
-        <div class="row">
-          <div class="border py-3 shadow">
-            <div class="d-flex align-content-start flex-wrap w-100">
-              <div class="p-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 text-center">
-                <img
-                  class="mr-3 img-fluid rounded-circle"
-                  style="width: 150px; height: 150px"
-                  src="../img/1697816675192.jpg"
-                  alt="Generic placeholder image"
-                />
-              </div>
-              <div
-                class="p-2 align-self-center col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-2 center"
-              >
-                <a href="/showProfileShop"><h4>Tonmai Love Dog Shop</h4></a>
-                <a href="/showProfileUser"><h4>โปรไฟล์ธรรมดา</h4></a>
-                <a href="/showProfileVets"><h4>ผู้เชี่ยวชาญ</h4></a>
-                <div class="mx-auto text-more">
-                  <p>
-                    ยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่าน
-                  </p>
+          <div class="container">
+            <!-- Control the column width, and how they should appear on different devices -->
+            <div class="row">
+              <div class="border py-3 shadow col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="d-flex align-content-start flex-wrap w-100">
+                  <div class="p-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 text-center">
+                    <img class="mr-3 img-fluid rounded-circle" style="width: 150px; height: 150px"
+                      src="../img/<%= rowsshopUser[0].shop_img %>" alt="Generic placeholder image" />
+                  </div>
+                  <div class="p-2 align-self-center col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-2 center">
+                    <a href="/showProfileShop">
+                      <h4>Tonmai Love Dog Shop</h4>
+                    </a>
+                    <!-- <a href="/showProfileUser">
+                      <h4>โปรไฟล์ธรรมดา</h4>
+                    </a>
+                    <a href="/showProfileVets">
+                      <h4>ผู้เชี่ยวชาญ</h4>
+                    </a> -->
+                    <div class="mx-auto text-more">
+                      <p>
+                        <%= rowsshopUser[0].shop_introduce %>
+                          <!-- ยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่านยินดีตอนรับลูกค้าทุกท่าน -->
+                      </p>
+                    </div>
+                  </div>
+                  <div class="ml-auto p-2 pr-5 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="more-tel">
+                      <!-- <span>รายการสินค้าทั้งหมด : (0)</span>
+                      <br /> -->
+                      <span>ติดต่อ : <%= rowsshopUser[0].shop_address %></span><br />
+                      <span><i class="fas fa-phone-volume"></i>
+                        <%= rowsshopUser[0].shop_tel %>
+                      </span>
+                      <br />
+                      <span><i class="fas fa-shopping-bag" style="color: #f94e30"></i>
+                        <%= rowsshopUser[0].shop_shopee %>
+                      </span>
+                      <br />
+                      <span><i class="fab fa-facebook" style="color: blue"></i> : <%= rowsshopUser[0].shop_facebook %>
+                      </span>
+                      <br />
+                      <span><i class="fab fa-line" style="color: green"></i> : <%= rowsshopUser[0].shop_line %>
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="ml-auto p-2 pr-5 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <div class="more-tel">
-                  <span>รายการสินค้าทั้งหมด : (0)</span>
-                  <br />
-                  <span>คะแนน : (0)</span>
-                  <br />
-                  <span>ติดต่อ : </span><br />
-                  <span><i class="fas fa-phone-volume"></i> 087-988-7539</span>
-                  <br />
-                  <span
-                    ><i class="fas fa-shopping-bag" style="color: #f94e30"></i>
-                    shopee
-                  </span>
-                  <br />
-                  <span
-                    ><i class="fab fa-facebook" style="color: blue"></i>
-                    facebook</span
-                  >
-                  <br />
-                  <span
-                    ><i class="fab fa-line" style="color: green"></i> line
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="d-flex justify-content-end flex-wrap w-100 pr-5 font-weight-bold"
-            >
-              <button
-                id="myButton"
-                value=""
-                class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton"
-                style="background: white; color: black; border-color: coral"
-              >
-                <i class="fas fa-heart" style="color: coral"></i> ถูกใจ (<span
-                  id="counter"
-                ></span
-                >)
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="shadow border py-3 mt-5 col-lg-12 col-md-12 col-sm-12 d-flex flex-sm-row">
-          
-            <div class="d-flex align-content-start flex-wrap w-100">
-              <div class="row box-product">
-                <div class="col-lg-8 col-md-8 col-sm-12 mt-3 img-product">
-                  <img
-                    id="bannerimg"
-                    src="../img/dog food.png"
-                    alt="Large Image"
-                    class="rounded mx-auto d-block"
-                  />
-                </div>
-                <div
-                  class="col-lg-3 col-md-3 col-sm-3 small-images-container img-product-mini mt-2"
-                >
-                  <img
-                    onclick="changeImage('../img/shopdog.jpg')"
-                    src="../img/shopdog.jpg"
-                    alt="Small Image 1"
-                    class="img-fluid img-thumbnail rounded float-right"
-                  />
-                  <img
-                    onclick="changeImage('../img/dog food.png')"
-                    src="../img/dog food.png"
-                    alt="Small Image 2"
-                    class="img-fluid img-thumbnail rounded float-right"
-                  />
-                  <img
-                    onclick="changeImage('../img/shopdog.jpg')"
-                    src="../img/shopdog.jpg"
-                    alt="Small Image 3"
-                    class="img-fluid img-thumbnail rounded float-right"
-                  />
-                  <img
-                    onclick="changeImage('../img/dog food.png')"
-                    src="../img/dog food.png"
-                    alt="Small Image 4"
-                    class="img-fluid img-thumbnail rounded float-right"
-                  />
-                </div>
-                <div class="mt-5 col-lg-8 col-md-8 col-sm-8">
-                  <span class=""
-                    >Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Repudiandae consequuntur quod odio laborum temporibus
-                    maiores quibusdam. Optio fugiat debitis nobis et iusto,
-                    doloremque autem hic?</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="d-flex justify-content-end flex-wrap w-100 pr-5 font-weight-bold">
+                  <span>
+                    <p class="mt-0 ml-2 mb-5">
+                      <i class="fas fa-eye"></i> (<span>
+                        <%= rowsshop[0].view%>
+                      </span>)
+                      <i class="fas fa-comments"></i> (<span id="counterComment"></span>)
+                      <button id="myButton" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton"
+                        style="background: white; color: black; border-color: coral">
+                        <i class="fas fa-heart" style="color: coral"></i> ถูกใจ (<span id="counter"></span>)
+                      </button>
+                    </p>
 
-      <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="shadow border py-3 mt-5 col-lg-12 col-md-12 col-sm-12 d-flex flex-sm-row">
+                <div class="d-flex align-content-start flex-wrap w-100">
+                  <div class="col-lg-12 col-md-12 col-sm-12 mt-3 img-product">
+                    <h2 style="color: coral; text-align: center;">
+                      <br>
+                      <b>
+                        <%= rowsshop[0].title %>
+                      </b>
+                    </h2>
+                    <hr style="border-color: coral;">
+                    <img id="bannerimg" style="width: 500px; height: 500px" src="../img/<%= rowsshop[0].photo %>"
+                      alt="Large Image" class="rounded mx-auto d-block" />
+                  </div>
+                  <!-- <div class="row">
+                        <div class=" row-md-12 row-sm-12 small-images-container img-product-mini mt-2">
+                          <img onclick="changeImage('../img/shopdog.jpg')" src="../img/shopdog.jpg" alt="Small Image 1"
+                            class="img-fluid img-thumbnail rounded float-right" />
+                          <img onclick="changeImage('../img/dog food.png')" src="../img/dog food.png" alt="Small Image 2"
+                            class="img-fluid img-thumbnail rounded float-right" />
+                          <img onclick="changeImage('../img/shopdog.jpg')" src="../img/shopdog.jpg" alt="Small Image 3"
+                            class="img-fluid img-thumbnail rounded float-right" />
+                          <img onclick="changeImage('../img/dog food.png')" src="../img/dog food.png" alt="Small Image 4"
+                            class="img-fluid img-thumbnail rounded float-right" />
+                        </div>
+                      </div> -->
+
+                  <div class="mt-5 col-lg-8 col-md-8 col-sm-8">
+                    <span class=""><%- rowsshop[0].details %></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
                                 <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-column d-sm-flex flex-sm-row py-2 w-100">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-3 col-xs-3 border">
@@ -190,83 +167,171 @@
                                 </div>
                                 </div> -->
 
-      <!-- comment -->
+          <!-- comment -->
 
-      <div class="container mt-5">
-        <div class="card mt-3">
-          <div class="card-header">ความคิดเห็น</div>
-          <div class="card-body">
-            <ul class="list-group" id="comment-list">
-              <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <div class="media">
-                    <img
-                      src="https://via.placeholder.com/64"
-                      class="mr-3"
-                      alt="User Image"
-                      style="width: 64px"
-                    />
-                    <div class="media-body">
-                      <h5 class="mt-0">John Doe</h5>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      <div class="mt-2">
-                        <small class="text-muted">10 นาทีที่แล้ว</small>
-                        <button class="btn btn-sm btn-outline-primary ml-2">
-                          ถูกใจ
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="list-group-item">
-                  <div class="media">
-                    <img
-                      src="https://via.placeholder.com/64"
-                      class="mr-3"
-                      alt="User Image"
-                      style="width: 64px"
-                    />
-                    <div class="media-body">
-                      <h5 class="mt-0">Jane Smith</h5>
-                      Nullam tincidunt urna sed justo efficitur, vel luctus
-                      justo bibendum.
-                      <div class="mt-2">
-                        <small class="text-muted">30 นาทีที่แล้ว</small>
-                        <button class="btn btn-sm btn-outline-primary ml-2">
-                          ถูกใจ
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </ul>
-            <form id="comment-form">
-              <div class="form-group mt-2">
-                <textarea
-                  class="form-control"
-                  id="comment"
-                  rows="4"
-                  placeholder="ป้อนความคิดเห็นของคุณ"
-                ></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">
-                ส่งความคิดเห็น
-              </button>
-            </form>
-          </div>
+          <div class="container mt-5 mb-5">
+            <div class="card mt-3">
+                <div class="card-header">
+                    ความคิดเห็น
+                </div>
+                <div class="card-body">
+                    <% if(levelS != 0) { %>
+                        <form action="/commentAddShopdetail/<%= rowsshop[0].shop_id %>" method="post">
+                            <div class="form-group  mt-2">
+                                <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" style="background-color: coral;">ส่งความคิดเห็น</button>
+                        </form>
+                        <% }else{ %>
+                            <div class="form-group  mt-2">
+                                <li class="list-group-item">
+                                    <div class="media">
+                                       
+                                        <div class="media-body">
+                                            <h5 class="mt-0 mb-0"></h5>
+                                            <div class="m-2">
+                                                <small class="text-muted">กรุณาเข้าสู่ระบบก่อนเพื่อแสดงความคิดเห็น <span><a href="../login" target="_blank">Login</a></span></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </div>
+                        <% } %>
+
+                    <ul class="list-group" id="comment-list">
+                        <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
+                        <ul class="list-group">
+                            <div id="commentShow"></div>
+                        </ul>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
         </div>
       </div>
-    </div>
-  </div>
-</main>
-  
-<%- include('partials/footers') -%>
+    </main>
 
-<script>
-  function changeImage(fileName) {
-    let img = document.querySelector("#bannerimg");
-    img.setAttribute("src", fileName);
-  }
-</script>
+    <%- include('partials/footers') -%>
+
+      <!-- แสดงคอมเม้น -->
+      <script>
+        const button = document.getElementById('myButton');
+        button.addEventListener('click', function (e) {
+          console.log('button was clicked');
+          fetch('/clicked/shopdetail/<%= rowsshop[0].shop_id %>', { method: 'POST' })
+            .then(function (response) {
+              if (response.ok) {
+                console.log('click was recorded');
+                return;
+              }
+              throw new Error('Request failed.');
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+
+        setInterval(function () {
+          fetch('/clicks/shopdetail/<%= rowsshop[0].shop_id %>', { method: 'GET' })
+            .then(function (response) {
+              if (response.ok) return response.json();
+              throw new Error('Request failed.');
+            })
+            .then(function (data) {
+              document.getElementById('counter').innerHTML = `${data.length}`;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }, 1000);
+
+        // นับผู้ชม
+        fetch('/countViewShopdetail/<%= rowsshop[0].shop_id %>', { method: 'POST' })
+          .then(function (response) {
+            if (response.ok) {
+              console.log('countView+1');
+              return;
+            }
+            throw new Error('Request countView failed.');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      </script>
+      <!-- แสดงคอมเม้น -->
+      <script>
+        fetch('/comment/shopdetail/<%= rowsshop[0].shop_id %>', { method: 'GET' })
+          .then(function (response) {
+            if (response.ok) return response.json();
+            throw new Error('Request failed.');
+          })
+          .then(function (data) {
+            console.log(data);
+            document.getElementById('counterComment').innerHTML = `${data.length}`;
+            for (let i = 0; i < data.length; i++) {
+              document.getElementById('commentShow').innerHTML += `
+                                              <li class="list-group-item">
+                                                  <div class="media">
+                                                      <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64;">
+                                                      <div class="media-body">
+                                                          <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
+                                                          ${data[i]["comments"]}
+                                                          <div class="mt-2">
+                                                              <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
+                                                              
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </li>
+                                          
+                                              `;
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+      </script>
+
+      <script>
+        function timeSince(date) {
+
+          var seconds = Math.floor((new Date() - date) / 1000);
+
+          var interval = seconds / 31536000;
+
+          if (interval > 1) {
+            return Math.floor(interval) + " ปีที่ผ่านมา";
+          }
+          interval = seconds / 2592000;
+          if (interval > 1) {
+            return Math.floor(interval) + " เดือนที่ผ่านมา";
+          }
+          interval = seconds / 86400;
+          if (interval > 1) {
+            return Math.floor(interval) + " วันที่ผ่านมา";
+          }
+          interval = seconds / 3600;
+          if (interval > 1) {
+            return Math.floor(interval) + " ชั่วโมงที่ผ่านมา";
+          }
+          interval = seconds / 60;
+          if (interval > 1) {
+            return Math.floor(interval) + " นาทีที่ผ่านมา";
+          }
+          return Math.floor(seconds) + " วินาทีที่ผ่านมา";
+        }
+        // var aDay = 24*60*60*1000;
+        // console.log(timeSince(new Date(Date.now()-aDay)));
+        // console.log(timeSince(new Date(Date.now()-aDay*2)));
+      </script>
+
+      <script>
+        function changeImage(fileName) {
+          let img = document.querySelector("#bannerimg");
+          img.setAttribute("src", fileName);
+        }
+      </script>
+
+      

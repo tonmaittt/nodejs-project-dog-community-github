@@ -9,6 +9,7 @@ let session = require('express-session');
 let mysql = require('mysql');
 let connection = require('./lib/db');
 
+var adminRouter = require('./routes/admin');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var userDataRouter = require('./routes/userData');
@@ -40,6 +41,7 @@ app.use(session({
 
 app.use(flash());
 
+app.use('/admin', adminRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/userData', userDataRouter);
