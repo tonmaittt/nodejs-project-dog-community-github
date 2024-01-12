@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 let flash = require('express-flash');
 let session = require('express-session');
-let mysql = require('mysql');
+let mysql = require('mysql2');
 let connection = require('./lib/db');
 
 var adminRouter = require('./routes/admin');
