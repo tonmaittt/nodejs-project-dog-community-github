@@ -2156,9 +2156,10 @@ router.post("/login/submit", (req, res, next) => {
     });
   } else {
     // email เช็ค
-    dbCon.query(
-      "SELECT * FROM tb_user WHERE email = " + '"' + email + '"',
-      (err, rows) => {
+    dbCon.query("SELECT * FROM tb_user WHERE email = " + '"' + email + '"',(err, rows) => {
+
+        console.log(rows);
+        console.log(rows.length);
         if (rows.length == 0) {
           errors = true;
           // req.flash("error", "ไม่ข้อมูลผู้ใช้ " + email);
