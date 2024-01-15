@@ -81,9 +81,10 @@ router.get("/userInformation", function (req, res, next) {
     });
   }
   dbCon.query(
-    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = " + req.session.idUser,
+    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
+        console.log(err);
         req.flash("error", err);
         res.render("userInformation", {
           title: "User Information",
@@ -97,37 +98,42 @@ router.get("/userInformation", function (req, res, next) {
           email: "",
           gender: "",
           birthday: "",
+          rowsVerified: "",
+          rowsShop: "",
+          rowsDog: "",
+          rowsVets: "",
         });      
       } else {
         dbCon.query(
-          "SELECT * FROM tb_user_verified WHERE user_id = " + req.session.idUser,
+          "SELECT * FROM tb_user_verified WHERE user_id = ?" ,[req.session.idUser],
           (err, rowsVerified) => {
             if (err) {
               req.flash("error", err);
               res.redirect('/')
             } else {
               dbCon.query(
-                "SELECT * FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+                "SELECT * FROM tb_user_shop WHERE user_id = ?",[req.session.idUser],
                 (err, rowsShop) => {
                   if (err) {
                     req.flash("error", err);
                     res.redirect('/')
                   } else {
                     dbCon.query(
-                      "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+                      "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = ?",[req.session.idUser],
                       (err, rowsDog) => {
                         if (err) {
                           req.flash("error", err);
                           res.redirect('/')
                         } else {
                           dbCon.query(
-                            "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+                            "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = ?",[req.session.idUser],
                             (err, rowsVets) => {
+                              console.log(rowsVets);
                               if (err) {
                                 req.flash("error", err);
                                 res.redirect('/')
                               } else {
-                                res.render("userInformation", {
+                                return res.render("userInformation", {
                                   title: "User Information",
                                   username: req.session.userName,
                                   emailS: req.session.emailUser,
@@ -145,6 +151,7 @@ router.get("/userInformation", function (req, res, next) {
                                   rowsDog: rowsDog,
                                   rowsVets: rowsVets,
                                 });    
+                                
                                   
                               }
                             }
@@ -178,7 +185,7 @@ router.get("/editProfile", function (req, res, next) {
     });
   }
   dbCon.query(
-    "SELECT tb_user.img AS img FROM tb_user WHERE tb_user.id = " + req.session.idUser,
+    "SELECT tb_user.img AS img FROM tb_user WHERE tb_user.id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -216,14 +223,14 @@ router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data,
+      "UPDATE tb_user SET ? WHERE id = ?",[req.session.idUser, form_data],
       (err, result) => {
         if (err) {
           req.flash("error", err);
           res.redirect("/userInformation");
         } else {
           dbCon.query(
-            "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+            "SELECT * FROM tb_user WHERE id = ?",[req.session.idUser],
             async (err, rows) => {
               if (err) {
                 req.flash("error", err);
@@ -252,7 +259,7 @@ router.get("/editUserData1", function (req, res, next) {
     });
   }
   dbCon.query(
-    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.gender AS gender_num,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = " + req.session.idUser,
+    "SELECT tb_user.img AS img,tb_user.username AS username,tb_user.fname AS fname,tb_user.sname AS lname,tb_user.email AS email,tb_gender.name AS gender,tb_user_data_1.gender AS gender_num,tb_user_data_1.Birthday AS birthday FROM tb_user LEFT JOIN tb_user_data_1 ON tb_user.id = tb_user_data_1.user_id LEFT JOIN tb_gender ON tb_user_data_1.gender = tb_gender.gender_id WHERE tb_user.id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -321,7 +328,7 @@ router.post("/editUserData1Submit", (req, res, next) => {
       status: 1
   }
     dbCon.query(
-      "SELECT * FROM tb_user_data_1 WHERE user_id = " + req.session.idUser,
+      "SELECT * FROM tb_user_data_1 WHERE user_id = ?",[req.session.idUser],
       (err, rows) => {
         if (err) {
           console.log("ERRO 1");
@@ -331,20 +338,20 @@ router.post("/editUserData1Submit", (req, res, next) => {
           // มีข้อมูลอยู่แล้ว
           if (rows.length == 1) {
             // update query
-            dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_id = " + req.session.idUser, form_data2, (err, result) => {
+            dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_id = ?" [form_data2,req.session.idUser], (err, result) => {
               if (err) {
                   console.log("ERRO 2");
                   req.flash('error', err);
                   res.redirect('/userInformation')
               } else {
-                dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
+                dbCon.query("UPDATE tb_user SET ? WHERE id = ?",[form_data1,req.session.idUser], (err, result) => {
                   if (err) {
                       console.log("ERRO 3");
                       req.flash('error', err);
                       res.redirect('/userInformation')
                   } else {
                     dbCon.query(
-                      "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+                      "SELECT * FROM tb_user WHERE id = ?" [req.session.idUser],
                       async (err, rows3) => {
                         if (err) {
                           req.flash("error", err);
@@ -372,14 +379,14 @@ router.post("/editUserData1Submit", (req, res, next) => {
                   req.flash('error', err);
                   res.redirect('/userInformation')
               } else {
-                dbCon.query("UPDATE tb_user SET ? WHERE id = " + req.session.idUser, form_data1, (err, result) => {
+                dbCon.query("UPDATE tb_user SET ? WHERE id = ?",[req.session.idUser,form_data1], (err, result) => {
                   if (err) {
                       console.log("ERRO 3/");
                       req.flash('error', err);
                       res.redirect('/userInformation')
                   } else {
                     dbCon.query(
-                      "SELECT * FROM tb_user WHERE id = " + req.session.idUser,
+                      "SELECT * FROM tb_user WHERE id = ?",[req.session.idUser],
                       async (err, rows3) => {
                         if (err) {
                           req.flash("error", err);
@@ -472,7 +479,7 @@ router.get("/editUserVerified", function (req, res, next) {
     });
   }
   dbCon.query(
-    "SELECT * FROM tb_user_verified WHERE user_id = " + req.session.idUser,
+    "SELECT * FROM tb_user_verified WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -522,7 +529,7 @@ router.post("/editUserVerifiedSubmit", (req, res, next) => {
       facebook: facebook,
       line: line
     }
-    dbCon.query("UPDATE tb_user_verified SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+    dbCon.query("UPDATE tb_user_verified SET ? WHERE user_id = ?",[form_data1,req.session.idUser], (err, result) => {
       if (err) {
           console.log("ERRO 3");
           req.flash('error', err);
@@ -602,7 +609,7 @@ router.get("/editDogProfile", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT tb_dog.dog_img AS img FROM tb_dog WHERE user_id = " + req.session.idUser,
+    "SELECT tb_dog.dog_img AS img FROM tb_dog WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -639,7 +646,7 @@ router.post("/editDogProfileSubmit", upload.single("photo"), (req, res, next) =>
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_dog SET ? WHERE user_id = " + req.session.idUser, form_data,
+      "UPDATE tb_dog SET ? WHERE user_id = ?",[req.session.idUser, form_data],
       (err, result) => {
         if (err) {
           req.flash("error", err);
@@ -667,7 +674,7 @@ router.get("/editDogData", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+    "SELECT * FROM tb_dog LEFT JOIN tb_gender ON tb_dog.dog_gender = tb_gender.gender_id WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -728,7 +735,7 @@ router.post("/editDogDataSubmit", (req, res, next) => {
       dog_gender: dogGender,
       dog_introduce: dogIntroduce
     }
-    dbCon.query("UPDATE tb_dog SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+    dbCon.query("UPDATE tb_dog SET ? WHERE user_id = ?",[form_data1,req.session.idUser], (err, result) => {
       if (err) {
           console.log("ERRO 3");
           req.flash('error', err);
@@ -817,7 +824,7 @@ router.get("/editShopProfile", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT tb_user_shop.shop_img AS img FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+    "SELECT tb_user_shop.shop_img AS img FROM tb_user_shop WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -855,7 +862,7 @@ router.post("/editShopProfileSubmit", upload.single("photo"), (req, res, next) =
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_user_shop SET ? WHERE user_id = " + req.session.idUser, form_data,
+      "UPDATE tb_user_shop SET ? WHERE user_id = ?",[form_data,req.session.idUser],
       (err, result) => {
         if (err) {
           req.flash("error", err);
@@ -884,7 +891,7 @@ router.get("/editshopData", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT * FROM tb_user_shop WHERE user_id = " + req.session.idUser,
+    "SELECT * FROM tb_user_shop WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -955,7 +962,7 @@ router.post("/editshopDataSubmit", (req, res, next) => {
       shop_line	: shopLine,
       shop_address	: shopAddress,
     }
-    dbCon.query("UPDATE tb_user_shop SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+    dbCon.query("UPDATE tb_user_shop SET ? WHERE user_id = ?",[form_data1,req.session.idUser], (err, result) => {
       if (err) {
           console.log("ERRO 3");
           req.flash('error', err);
@@ -1070,7 +1077,7 @@ router.get("/editUserVetsProfile", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT tb_vets.vets_img AS img FROM tb_vets WHERE user_id = " + req.session.idUser,
+    "SELECT tb_vets.vets_img AS img FROM tb_vets WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -1101,7 +1108,7 @@ router.post("/editUserVetsProfileSubmit", upload.single("photo"), (req, res, nex
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_vets SET ? WHERE user_id = " + req.session.idUser, form_data,
+      "UPDATE tb_vets SET ? WHERE user_id = ?",[form_data,req.session.idUser],
       (err, result) => {
         if (err) {
           req.flash("error", err);
@@ -1129,7 +1136,7 @@ router.get("/editUserVetsData", function (req, res, next) {
     return res.redirect('/')
   }
   dbCon.query(
-    "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = " + req.session.idUser,
+    "SELECT * FROM tb_vets LEFT JOIN tb_gender ON tb_vets.vets_gender = tb_gender.gender_id WHERE user_id = ?",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -1227,7 +1234,7 @@ router.post("/editUserVetsDataSubmit", (req, res, next) => {
       vets_graduated: vetsGraduated,
       vets_introduce: vetsIntroduce,
     }
-    dbCon.query("UPDATE tb_vets SET ? WHERE user_id = " + req.session.idUser, form_data1, (err, result) => {
+    dbCon.query("UPDATE tb_vets SET ? WHERE user_id = ?",[form_data1,req.session.idUser], (err, result) => {
       if (err) {
           console.log("ERRO 3");
           req.flash('error', err);
@@ -1379,14 +1386,14 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
   let id = req.params.id;
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT * FROM tb_boardhealth WHERE boardhealth_id = " + id,
+      "SELECT * FROM tb_boardhealth WHERE boardhealth_id = ?",[id],
       (err, rows, fields) => {
         if (rows.length <= 0) {
           req.flash("error", "ไม่พบกระทู้ = " + id);
           res.redirect("/boardhealth");
         } else {
           dbCon.query(
-            "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,
+            "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],
             (err, rows2, fields) => {
               if (rows2.length <= 0) {
                 req.flash("error", "ไม่พบกระทู้ = " + id);
@@ -1414,13 +1421,13 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
       }
     );
   }
-  dbCon.query("SELECT * FROM tb_boardhealth WHERE boardhealth_id = " + id,(err, rows, fields) => {
+  dbCon.query("SELECT * FROM tb_boardhealth WHERE boardhealth_id = ?",[id],(err, rows, fields) => {
       if (rows.length <= 0) {
         req.flash("error", "ไม่พบกระทู้ = " + id);
         res.redirect("/boardhealth");
       } else {
         dbCon.query(
-          "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,(err, rows2, fields) => {
+          "SELECT * FROM tb_user WHERE id = ,",[rows[0].user_id],(err, rows2, fields) => {
             if (rows2.length <= 0) {
               req.flash("error", "ไม่พบกระทู้ = " + id);
               res.redirect("/boardhealth");
@@ -1586,14 +1593,14 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
   let id = req.params.id;
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT * FROM tb_communityboard WHERE communityboard_id = " + id,
+      "SELECT * FROM tb_communityboard WHERE communityboard_id = ?",[id],
       (err, rows, fields) => {
         if (rows.length <= 0) {
           req.flash("error", "ไม่พบกระทู้ = " + id);
           res.redirect("/board");
         } else {
           dbCon.query(
-            "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,
+            "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],
             (err, rows2, fields) => {
               if (rows2.length <= 0) {
                 req.flash("error", "ไม่พบกระทู้ = " + id);
@@ -1622,13 +1629,13 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
       }
     );
   }
-  dbCon.query("SELECT * FROM tb_communityboard WHERE communityboard_id = " + id,(err, rows, fields) => {
+  dbCon.query("SELECT * FROM tb_communityboard WHERE communityboard_id = ?",[id],(err, rows, fields) => {
       if (rows.length <= 0) {
         req.flash("error", "ไม่พบกระทู้ = " + id);
         res.redirect("/board");
       } else {
         dbCon.query(
-          "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,(err, rows2, fields) => {
+          "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],(err, rows2, fields) => {
             if (rows2.length <= 0) {
               req.flash("error", "ไม่พบกระทู้ = " + id);
               res.redirect("/board");
@@ -1795,14 +1802,14 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
   let id = req.params.id;
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT * FROM tb_article WHERE article_id = " + id,
+      "SELECT * FROM tb_article WHERE article_id = ?",[id],
       (err, rows, fields) => {
         if (rows.length <= 0) {
           req.flash("error", "ไม่พบบทความ = " + id);
           res.redirect("/article");
         } else {
           dbCon.query(
-            "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,
+            "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],
             (err, rows2, fields) => {
               if (rows2.length <= 0) {
                 req.flash("error", "ไม่พบบทความ = " + id);
@@ -1829,13 +1836,13 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
       }
     );
   }
-  dbCon.query("SELECT * FROM tb_article WHERE article_id = " + id,(err, rows, fields) => {
+  dbCon.query("SELECT * FROM tb_article WHERE article_id = ?",[id],(err, rows, fields) => {
       if (rows.length <= 0) {
         req.flash("error", "ไม่พบบทความ = " + id);
         res.redirect("/article");
       } else {
         dbCon.query(
-          "SELECT * FROM tb_user WHERE id = " + rows[0].user_id,(err, rows2, fields) => {
+          "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],(err, rows2, fields) => {
             if (rows2.length <= 0) {
               req.flash("error", "ไม่พบบทความ = " + id);
               res.redirect("/article");
@@ -1882,10 +1889,6 @@ router.get("/shop", function (req, res, next) {
             data: "",
           });
         } else {
-          // const dataj = '['+rows[2].photo+']';
-          // let dataj = JSON.parse(JSON.stringify(rows[2].photo));
-          // console.log("dataj : "+ dataj[0]['img']);
-          // console.log("ข้อมูล : "+ '['+rows[2].photo+']');
           res.render("shop", {
             title: "shop",
             username: "0",
@@ -1911,10 +1914,6 @@ router.get("/shop", function (req, res, next) {
           data: "",
         });
       } else {
-        // const dataj = '['+rows[2].photo+']';
-        // let dataj = JSON.parse(JSON.stringify(rows[2].photo));
-        // console.log("dataj : "+ dataj[0]['img']);
-        // console.log("ข้อมูล : "+ '['+rows[2].photo+']');
         res.render("shop", {
           title: "Shop",
           username: req.session.userName,
@@ -1934,7 +1933,7 @@ router.get("/shopDetailAdd", function (req, res, next) {
     return res.redirect("/shop");
   }
   dbCon.query(
-    "SELECT * FROM tb_user_shop WHERE user_id = "+ req.session.idUser,
+    "SELECT * FROM tb_user_shop WHERE user_id = ?",[req.session.idUser],
     (err, shopUser) => {
       if (err) {
         req.flash("error", err);
@@ -1965,11 +1964,6 @@ router.get("/shopDetailAdd", function (req, res, next) {
 // add a new shop
 router.post("/shopDetailAdd", upload.single("photo"), (req, res, next) => {
   let titleboard = req.body.titleboard;
-  // const images = req.files;
-  // const imagePaths = images.map(image => image.path);
-  // ลบ "img\\" ออกจากทุกรายการใน imagePaths
-  // const cleanedPaths = imagePaths.join(',').replace(/img\\/g, '{img: ').replace(/,/g, '}').replace(/}{/g, '},{').replace(/{img:/g, '{ "img": "').replace(/}/g, '"}');  
-  // let photo = '['+ cleanedPaths + '"}]';
   let photo = req.file.filename;
   let details = req.body.details;
   let errors = false;
@@ -2018,7 +2012,7 @@ router.post("/shopDetailAdd", upload.single("photo"), (req, res, next) => {
 router.get("/shopDetail/(:id)", (req, res, next) => {
   let id = req.params.id;
   if (!req.session.ifNotLogIn) {
-    dbCon.query("SELECT * FROM tb_shop WHERE 	shop_id = " + id,
+    dbCon.query("SELECT * FROM tb_shop WHERE 	shop_id = ?",[id],
       (err, rowsshop) => {
         if (err) {
           req.flash("error", err);
@@ -2031,7 +2025,7 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
             shopUser:"",
           })    
         } else {
-          dbCon.query("SELECT * FROM tb_user_shop WHERE user_id = " + rowsshop[0].user_id,
+          dbCon.query("SELECT * FROM tb_user_shop WHERE user_id = ?",[rowsshop[0].user_id],
             (err, rowsshopUser) => {
               if (err) {
                 req.flash("error", err);
@@ -2061,7 +2055,7 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
       }
     );
   }else{
-    dbCon.query("SELECT * FROM tb_shop WHERE 	shop_id = " + id,
+    dbCon.query("SELECT * FROM tb_shop WHERE 	shop_id = ?",[id],
       (err, rowsshop) => {
         if (err) {
           req.flash("error", err);
@@ -2075,7 +2069,7 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
             shopUser:"",
           })    
         } else {
-          dbCon.query("SELECT * FROM tb_user_shop WHERE user_id = " + rowsshop[0].user_id,
+          dbCon.query("SELECT * FROM tb_user_shop WHERE user_id = ?",[rowsshop[0].user_id],
             (err, rowsshopUser) => {
               if (err) {
                 req.flash("error", err);
@@ -2156,10 +2150,7 @@ router.post("/login/submit", (req, res, next) => {
     });
   } else {
     // email เช็ค
-    dbCon.query("SELECT * FROM tb_user WHERE email = " + '"' + email + '"',(err, rows) => {
-
-        console.log(rows);
-        console.log(rows.length);
+    dbCon.query("SELECT * FROM tb_user WHERE email = ?",[email],(err, rows) => {
         if (rows.length == 0) {
           errors = true;
           // req.flash("error", "ไม่ข้อมูลผู้ใช้ " + email);
@@ -2173,7 +2164,7 @@ router.post("/login/submit", (req, res, next) => {
           });
         } else {
           dbCon.query(
-            "SELECT * FROM tb_user WHERE email = " + '"' + email + '"',
+            "SELECT * FROM tb_user WHERE email = ?",[email],
             async (err, rows) => {
               if (rows.length == 1) {
                 let chackpass = await bcrypt.compare(
@@ -2188,14 +2179,8 @@ router.post("/login/submit", (req, res, next) => {
                   req.session.userName = rows[0].username;
                   req.session.userImg = rows[0].img;
                   res.redirect("../");
-                  // res.render("index", {
-                  //   title: "Home",
-                  //   emailS: emailS,
-                  //   levelS: levelS
-                  // });
                 } else {
                   req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
-                  // res.redirect("/login");
                   res.render("login", {
                     title: "Login",
                     emailS: "0",
@@ -2266,7 +2251,7 @@ router.post("/register/add", (req, res, next) => {
   } else {
     // email เช็ค
     dbCon.query(
-      "SELECT * FROM tb_user WHERE email = " + '"' + email + '"',
+      "SELECT * FROM tb_user WHERE email = ?",email,
       (err, rows) => {
         if (rows.length !== 0) {
           errors = true;
@@ -2807,7 +2792,7 @@ router.post("/countViewBoardhealth/(:id)", (req, res, next) => {
 
   if (!errors) {
     dbCon.query(
-      "UPDATE tb_boardhealth SET view = view+1 WHERE boardhealth_id = "+ boardhealth_id,
+      "UPDATE tb_boardhealth SET view = view+1 WHERE boardhealth_id = ?", [boardhealth_id],
       (err, rows1) => {
         if (err) {
           return console.log(err);
@@ -2828,7 +2813,7 @@ router.post("/countViewArticle/(:id)", (req, res, next) => {
 
   if (!errors) {
     dbCon.query(
-      "UPDATE tb_article SET view = view+1 WHERE article_id = "+ article_id,
+      "UPDATE tb_article SET view = view+1 WHERE article_id = ?",[article_id],
       (err, rows1) => {
         if (err) {
           return console.log(err);
@@ -2848,7 +2833,7 @@ router.post("/countViewCommunityboard/(:id)", (req, res, next) => {
 
   if (!errors) {
     dbCon.query(
-      "UPDATE tb_communityboard SET view = view+1 WHERE communityboard_id = "+ communityboard_id,
+      "UPDATE tb_communityboard SET view = view+1 WHERE communityboard_id = ?",[communityboard_id],
       (err, rows1) => {
         if (err) {
           return console.log(err);
@@ -2868,7 +2853,7 @@ router.post("/countViewShopdetail/(:id)", (req, res, next) => {
 
   if (!errors) {
     dbCon.query(
-      "UPDATE tb_shop SET view = view+1 WHERE shop_id = "+ shop_id,
+      "UPDATE tb_shop SET view = view+1 WHERE shop_id = ?",[shop_id],
       (err, rows1) => {
         if (err) {
           return console.log(err);
