@@ -47,7 +47,9 @@
                      | <%= username %>
                     </a>
                     <ul class="sub-menu">
-                      <li><a href="#">แต้มทั้งหมด : 100</a></li>
+					<% if (levelS > 1){ %>
+                      <li><a href="/point">พอยท์</a></li>
+					<% } %>  
                       <li><a href="/userInformation">ข้อมูลผู้ใช้</a></li>
                       <hr>
 					  <% if (levelS == 4) { %>	

@@ -88,17 +88,17 @@ const ifNotLogIn = (req, res, next) => {
                 password: "",
             });
         }else{
-            dbCon.query("SELECT * FROM tb_user_verified WHERE user_id = "+id , (err, rows) => {
+            dbCon.query("SELECT * FROM tb_user_verified WHERE user_id = ?",[id] , (err, rows) => {
                 if (err) {
                     req.flash("error", err);
                     res.redirect(req.get('referer'));
                 } else {
-                    dbCon.query("SELECT * FROM tb_point_user WHERE user_id = "+id , (err, rowspoint) => {
+                    dbCon.query("SELECT * FROM tb_point_user WHERE user_id = ?",[id] , (err, rowspoint) => {
                         if (err) {
                             req.flash("error", "ไม่สามารถค้นหา tb_point_user");
                             res.redirect(req.get('referer'));
                         } else {
-                            dbCon.query("SELECT * FROM tb_user WHERE id = "+ id , (err, rowsusetSTD) => {
+                            dbCon.query("SELECT * FROM tb_user WHERE id = ?",[id] , (err, rowsusetSTD) => {
                                 if (err) {
                                     req.flash("error", "ไม่สามารถค้นหา tb_user");
                                     res.redirect(req.get('referer'));
@@ -187,6 +187,7 @@ const ifNotLogIn = (req, res, next) => {
     });
 
     
+    
 
     // ยืนยันผู้ใช้ ระดับ 3 ผู้เชี่ยวชาญ
     router.get("/verifyVets", function (req, res, next) {
@@ -225,6 +226,128 @@ const ifNotLogIn = (req, res, next) => {
               });
         }
     });
+
+    // ยืนยันผู้ใช้ ระดับ 3 ผู้เชี่ยวชาญ -> ยืนยัน
+    router.get("/verifyVets/submit/(:id)", function (req, res, next) {
+        let id = req.params.id;
+        let form_data_point = {
+            user_id: id,
+            point: 0,
+            status: 1,
+        }
+        let form_data = {
+            level: 3,
+        }
+        let form_data_verified = {
+            status: 1,
+        }
+
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_vets WHERE user_id = ?",[id] , (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.redirect(req.get('referer'));
+                } else {
+                    dbCon.query("SELECT * FROM tb_point_user WHERE user_id = ?",[id] , (err, rowspoint) => {
+                        if (err) {
+                            req.flash("error", "ไม่สามารถค้นหา tb_point_user");
+                            res.redirect(req.get('referer'));
+                        } else {
+                            dbCon.query("SELECT * FROM tb_user WHERE id = ?", [id] , (err, rowsusetSTD) => {
+                                if (err) {
+                                    req.flash("error", "ไม่สามารถค้นหา tb_user");
+                                    res.redirect(req.get('referer'));
+                                } else {
+                                    if (rowsusetSTD[0].level > 3) {
+                                        if (rowspoint.length == 1) {
+                                            dbCon.query("UPDATE tb_vets SET ? WHERE user_id = ?" ,  [form_data_verified,id], (err, result) => {
+                                                if (err) {
+                                                    req.flash("error", "ไม่สามารถอัพเดท tb_vets");
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    req.flash('success', 'ยืนยันสำเร็จ ทำการเปลี่ยน status ของ tb_vets แล้ว');
+                                                    res.redirect(req.get('referer'));
+                                                }
+                                            })
+                                        }else{
+                                            dbCon.query('INSERT INTO tb_point_user SET ?', form_data_point, (err, result) => {
+                                                if (err) {
+                                                    req.flash('error', err)
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    dbCon.query("UPDATE tb_vets SET ? WHERE user_id = ?" ,[form_data_verified,id], (err, result) => {
+                                                        if (err) {
+                                                            req.flash("error", err);
+                                                            res.redirect(req.get('referer'));
+                                                        } else {
+                                                            req.flash('success', 'เพิ่มข้อมูล point ทำการเปลี่ยน status ของ tb_vets แล้ว และ ยืนยันสำเร็จ');
+                                                            res.redirect(req.get('referer'));
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    }else{
+                                        if (rowspoint.length == 1) {
+                                            dbCon.query("UPDATE tb_user SET ? WHERE id = ?"  ,[form_data, id], (err, result) => {
+                                                if (err) {
+                                                    req.flash("error", err);
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    dbCon.query("UPDATE tb_vets SET ? WHERE user_id = ?" ,  [form_data_verified,id], (err, result) => {
+                                                        if (err) {
+                                                            req.flash("error", err);
+                                                            res.redirect(req.get('referer'));
+                                                        } else {
+                                                            req.flash('success', 'tb_user tb_vets และ ยืนยันสำเร็จ ');
+                                                            res.redirect(req.get('referer'));
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }else{
+                                            dbCon.query('INSERT INTO tb_point_user SET ?', form_data_point, (err, result) => {
+                                                if (err) {
+                                                    req.flash('error', err)
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,  [form_data,id], (err, result) => {
+                                                        if (err) {
+                                                            req.flash("error", err);
+                                                            res.redirect(req.get('referer'));
+                                                        } else {
+                                                            dbCon.query("UPDATE tb_vets SET ? WHERE user_id = ?" ,[form_data_verified,id], (err, result) => {
+                                                                if (err) {
+                                                                    req.flash("error", err);
+                                                                    res.redirect(req.get('referer'));
+                                                                } else {
+                                                                    req.flash('success', 'เพิ่มข้อมูล point tb_user tb_vets และ ยืนยันสำเร็จ');
+                                                                    res.redirect(req.get('referer'));
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    }
+                                    
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+
 
 
 
@@ -330,6 +453,11 @@ const ifNotLogIn = (req, res, next) => {
             res.redirect("../");
         }
             res.redirect("../");
+    });
+
+    //กรณีไม่พบหน้า
+    router.get('*', (req, res)=>{
+        res.status(404).send('Page Not Found');
     });
 
 module.exports = router;

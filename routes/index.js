@@ -2107,6 +2107,43 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
 });
 
 
+//ระบบ point ------------------------------------------------------------------------------------
+router.get("/point", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+    (err, pointShow) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("point", {
+          title: "สร้างโฆษณา ร้านค้า",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          pointShow: pointShow,
+        });
+      }
+    }
+  );
+  
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2907,5 +2944,11 @@ router.get("/logout", function (req, res, next) {
 router.get("/admin", ifNotLogIn, function (req, res, next) {
   res.redirect("admin/login")
 });
+
+
+  //กรณีไม่พบหน้า
+  router.get('*', (req, res)=>{
+    res.status(404).send('Page Not Found');
+  });
 
 module.exports = router;

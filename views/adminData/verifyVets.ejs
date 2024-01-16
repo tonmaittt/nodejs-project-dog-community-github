@@ -34,23 +34,23 @@
                                        <th>#</th>
                                        <th>id</th>
                                        <th>ID ผู้ใช้</th>
-                                       <th>vets_title</th>
-                                       <th>vets_fname</th>
-                                       <th>vets_sname</th>
-                                       <th>vets_email</th>
-                                       <th>vets_name_show</th>
-                                       <th>vets_gender</th>
-                                       <th>vets_birthday</th>
-                                       <th>vets_address</th>
-                                       <th>vets_card_id</th>
-                                       <th>vets_tel</th>
-                                       <th>vets_facebook</th>
-                                       <th>vets_line</th>
-                                       <th>vets_workplace</th>
-                                       <th>vets_position</th>
-                                       <th>vets_graduated</th>
-                                       <th>vets_introduce</th>
-                                       <th>vets_img</th>
+                                       <th>คำนำหน้า</th>
+                                       <th>ชื่อ</th>
+                                       <th>นามสกุล</th>
+                                       <th>อีเมล</th>
+                                       <th>ชื่อที่แสดง</th>
+                                       <th>เพศ</th>
+                                       <th>วันเกิด</th>
+                                       <th>ที่อยู่</th>
+                                       <th>เลขบัตรประชาชน</th>
+                                       <th>เบอร์โทร</th>
+                                       <th>Facebook</th>
+                                       <th>Line</th>
+                                       <th>สถานที่ทำงาน</th>
+                                       <th>ตำแหน่ง</th>
+                                       <th>จบจาก</th>
+                                       <th>แนะนำตัว</th>
+                                       <th>รูปโปร</th>
                                        <th>สถานะ</th>
                                        <th>สร้างเมื่อ</th>
                                        <th>แก้ไขล้าสุด</th>
@@ -84,7 +84,7 @@
                                        <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
-                                       <td><a href="verifyUser/submit/<%= rows[i].user_id%>" onclick="return confirm('ยืนยัน?')">ยืนยัน</a></td>
+                                       <td><a href="verifyVets/submit/<%= rows[i].user_id%>" onclick="return confirm('ยืนยัน?')">ยืนยัน</a></td>
                                        <td><a href="verifyUser/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
                                     </tr>
                                  </tbody>
