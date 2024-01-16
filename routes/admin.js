@@ -17,23 +17,18 @@ const ifNotLogIn = (req, res, next) => {
   }
     // index
     router.get('/',ifNotLogIn, (req, res, next) => {
-        res.render('adminData/', { title: "Home", });
+        res.render('adminData/', { 
+        title: "Home", 
+        username: req.session.userName,
+        emailS: req.session.emailUser,
+        levelS: req.session.level,
+        userImg: req.session.userImg,
+        });
     })
 
-    router.get("/login", function (req, res, next) {
-        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
-        res.render("adminData/login", {
-            title: "Login",
-            emailS: "0",
-            email: "",
-            password: "",
-        });
-        }
-        res.render("admin/", {
-        title: "Home",
-        });
-    });
 
+
+    // ยืนยันผู้ใช้ ระดับ 2 ร้านค้า 
     router.get("/verifyUser", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
             res.render("adminData/login", {
@@ -47,7 +42,10 @@ const ifNotLogIn = (req, res, next) => {
                     req.flash("error", err);
                     res.render("adminData/verifyUser", {
                         title: "ยืนยันผู้ใช้",
-                        emailS: "0",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
                         email: "",
                         password: "",
                         rows: "",
@@ -55,7 +53,10 @@ const ifNotLogIn = (req, res, next) => {
                 } else {
                     res.render("adminData/verifyUser", {
                         title: "ยืนยันผู้ใช้",
-                        emailS: "0",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
                         email: "",
                         password: "",
                         rows: rows,
@@ -65,6 +66,7 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    // ยืนยันผู้ใช้ ระดับ 2 ร้านค้า -> ยืนยัน
     router.get("/verifyUser/submit/(:id)", function (req, res, next) {
         let id = req.params.id;
         let form_data_point = {
@@ -184,6 +186,65 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    
+
+    // ยืนยันผู้ใช้ ระดับ 3 ผู้เชี่ยวชาญ
+    router.get("/verifyVets", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_vets WHERE status = 0", (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/verifyVets", {
+                        title: "ยืนยันผู้เชี่ยวชาญ",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: "",
+                    });
+                } else {
+                    res.render("adminData/verifyVets", {
+                        title: "ยืนยันผู้เชี่ยวชาญ",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: rows,
+                    });
+                }
+              });
+        }
+    });
+
+
+
+    //loginเข้าสู่ระบบ แสดง
+    router.get("/login", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "Login",
+            email: "",
+            password: "",
+        });
+        }
+        res.render("admin/", {
+        title: "Home",
+        username: req.session.userName,
+        emailS: req.session.emailUser,
+        levelS: req.session.level,
+        userImg: req.session.userImg,
+        });
+    });
 
     //loginเข้าสู่ระบบ
     router.post("/loginadmin/submit", (req, res, next) => {
@@ -251,7 +312,6 @@ const ifNotLogIn = (req, res, next) => {
                         // res.redirect("/login");
                         res.render("adminData/login", {
                         title: "Login",
-                        emailS: "0",
                         email: email,
                         password: "",
                         });

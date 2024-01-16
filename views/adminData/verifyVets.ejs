@@ -23,7 +23,7 @@
                      <div class="white_shd full margin_bottom_30">
                         <div class="full graph_head">
                            <div class="heading1 margin_0">
-                              <h2>ยืนยันผู้ใช้</h2>
+                              <h2>ยืนยันผู้เชี่ยวชาญ</h2>
                            </div>
                         </div>
                         <div class="table_section padding_infor_info">
@@ -34,11 +34,23 @@
                                        <th>#</th>
                                        <th>id</th>
                                        <th>ID ผู้ใช้</th>
-                                       <th>ที่อยู่</th>
-                                       <th>รหัสบัตรประชาชน</th>
-                                       <th>เบอร์โทร</th>
-                                       <th>facebook</th>
-                                       <th>line</th>
+                                       <th>vets_title</th>
+                                       <th>vets_fname</th>
+                                       <th>vets_sname</th>
+                                       <th>vets_email</th>
+                                       <th>vets_name_show</th>
+                                       <th>vets_gender</th>
+                                       <th>vets_birthday</th>
+                                       <th>vets_address</th>
+                                       <th>vets_card_id</th>
+                                       <th>vets_tel</th>
+                                       <th>vets_facebook</th>
+                                       <th>vets_line</th>
+                                       <th>vets_workplace</th>
+                                       <th>vets_position</th>
+                                       <th>vets_graduated</th>
+                                       <th>vets_introduce</th>
+                                       <th>vets_img</th>
                                        <th>สถานะ</th>
                                        <th>สร้างเมื่อ</th>
                                        <th>แก้ไขล้าสุด</th>
@@ -52,11 +64,23 @@
                                        <td><%= i+1%></td>
                                        <td><%= rows[i].id%></td>
                                        <td><%= rows[i].user_id%></td>
-                                       <td><%= rows[i].address%></td>
-                                       <td><%= rows[i].card_id%></td>
-                                       <td><%= rows[i].tel%></td>
-                                       <td><%= rows[i].facebook%></td>
-                                       <td><%= rows[i].line%></td>
+                                       <td><%= rows[i].vets_title%></td>
+                                       <td><%= rows[i].vets_fname%></td>
+                                       <td><%= rows[i].vets_sname%></td>
+                                       <td><%= rows[i].vets_email%></td>
+                                       <td><%= rows[i].vets_name_show%></td>
+                                       <td><%= rows[i].vets_gender%></td>
+                                       <td><%= rows[i].vets_birthday%></td>
+                                       <td><%= rows[i].vets_address%></td>
+                                       <td><%= rows[i].vets_card_id%></td>
+                                       <td><%= rows[i].vets_tel%></td>
+                                       <td><%= rows[i].vets_facebook%></td>
+                                       <td><%= rows[i].vets_line%></td>
+                                       <td><%= rows[i].vets_workplace%></td>
+                                       <td><%= rows[i].vets_position%></td>
+                                       <td><%= rows[i].vets_graduated%></td>
+                                       <td><%= rows[i].vets_introduce%></td>
+                                       <td><img class="img-responsive" src="../img/<%= rows[i].vets_img%>" alt="#" /></td>
                                        <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>

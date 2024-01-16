@@ -1427,7 +1427,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
         res.redirect("/boardhealth");
       } else {
         dbCon.query(
-          "SELECT * FROM tb_user WHERE id = ,",[rows[0].user_id],(err, rows2, fields) => {
+          "SELECT * FROM tb_user WHERE id = ?",[rows[0].user_id],(err, rows2, fields) => {
             if (rows2.length <= 0) {
               req.flash("error", "ไม่พบกระทู้ = " + id);
               res.redirect("/boardhealth");
