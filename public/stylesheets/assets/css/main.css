@@ -2511,7 +2511,7 @@ ul.social-link-team li a {
   line-height: 1.8;
 }
 
-.contact-form form p input[type=text], .contact-form form p input[type=tel], .contact-form form p input[type=email] {
+.contact-form form p input[type=text], .contact-form form p input[type=tel], .contact-form form p input[type=email] , .contact-form form p input[type=number], .contact-form form p input[type=date] .contact-form form p input[type=time]{
   width: 49%;
   padding: 15px;
   border: 1px solid #ddd;
@@ -3006,3 +3006,31 @@ table.order-details tbody td {
   vertical-align: middle;
   width: 100%;
 }
+
+
+/* -----------------------------------------------------------------------------
+
+# เพิ่ม
+
+----------------------------------------------------------------------------- */
+
+/* unvisited link */
+.org {
+  text-decoration: none;
+  color: black;
+}
+
+/* mouse over link */
+.org:hover {
+  color: #F28123;
+}
+
+/* selected link */
+.org:active {
+  color: #F28123;
+}
+
+/* visited link */
+/* .org:visited {
+  color: #F28123;
+} */

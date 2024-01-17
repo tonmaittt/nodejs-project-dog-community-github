@@ -2108,6 +2108,7 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
 
 
 //ระบบ point ------------------------------------------------------------------------------------
+// หน้าแรก point
 router.get("/point", function (req, res, next) {
   if (!req.session.ifNotLogIn || req.session.level === 1) {
     return res.redirect("/");
@@ -2120,7 +2121,74 @@ router.get("/point", function (req, res, next) {
         res.redirect("/");
       } else {
         res.render("point", {
-          title: "สร้างโฆษณา ร้านค้า",
+          title: "จัดการพอยท์",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          pointShow: pointShow,
+        });
+      }
+    }
+  );
+  
+});
+
+// add point
+router.post("/pointAdd", upload.single("photo"), (req, res, next) => {
+  let name = req.body.name;
+  let point = req.body.point;
+  let photo = req.file.filename;
+  let date = req.body.date;
+  let time = req.body.time;
+  let errors = false;
+
+  console.log(date);
+  console.log(time);
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      user_id: req.session.idUser,
+      name: name,
+      money: point,
+      photo: photo,
+      date: date,
+      time: time,
+      status: 0,
+    };
+
+    // insert query
+    dbCon.query(
+      "INSERT INTO tb_add_point SET ?",
+      [form_data],
+      (err, result) => {
+        if (err) {
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครับ");
+          res.redirect(req.get('referer'));
+        } else {
+          req.flash('success', 'ขอบคุณสำหรับการเติมพอทย์ โปรดรอเจ้าหน้าที่ตรวจสอบการเติมพอทย์ 1-2วัน');
+          res.redirect(req.get('referer'));
+        }
+      }
+    );
+  }
+});
+
+// หน้า boost
+router.get("/boost", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+    (err, pointShow) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("boost", {
+          title: "จัดการพอยท์",
           username: req.session.userName,
           emailS: req.session.emailUser,
           levelS: req.session.level,
