@@ -1,0 +1,101 @@
+<%- include('../partials/headAdmin') -%>
+<%- include('../partials/headersAdmin') -%>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2><%= title%></h2>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+                  <% if (messages.success) { %>
+                     <div class="alert alert-success" role="alert"><%= messages.success %></div>
+                   <% } %>
+                   <% if (messages.error) { %>
+                     <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                   <% } %>
+                  <!-- table section -->
+                  <div class="col-md-12">
+                     <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                           <div class="heading1 margin_0">
+                              <h2>ยืนยันผู้เชี่ยวชาญ</h2>
+                           </div>
+                        </div>
+                        <div class="table_section padding_infor_info">
+                           <div class="table-responsive-sm">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th>#</th>
+                                       <th>id Add Point</th>
+                                       <th>ID ผู้ใช้</th>
+                                       <th>ชื่อผู้โอน</th>
+                                       <th>จำนวนเงินที่เติม</th>
+                                       <th>ภาพหลักฐานการโอน</th>
+                                       <th>วันที่โอน</th>
+                                       <th>เวลาโอน</th>
+                                       <th>สถานะ</th>
+                                       <th>สร้างเมื่อ</th>
+                                       <th>แก้ไขล้าสุด</th>
+                                       <th>ยืนยัน</th>
+                                       <th>ลบ</th>
+                                    </tr>
+                                 </thead>
+                                 <% for(let i=0; i < rows.length; i++) { %>
+                                 <tbody>
+                                    <tr>
+                                       <td><%= i+1%></td>
+                                       <td><%= rows[i].add_point_id%></td>
+                                       <td><%= rows[i].user_id%></td>
+                                       <td><%= rows[i].name%></td>
+                                       <td><%= rows[i].money%></td>
+                                       <td><img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" height="300px"/></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].date)%></td>
+                                       <td><%= rows[i].time%></td>
+                                       <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
+                                       <td><a href="confirmAddPoint/submit/<%= rows[i].user_id%>" onclick="return confirm('ยืนยัน?')">ยืนยัน</a></td>
+                                       <td><a href="confirmAddPoint/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
+                                    </tr>
+                                 </tbody>
+                                 <% } %>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+            </div>
+         </div>
+      </div>
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script> 
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+   </body>
+</html>

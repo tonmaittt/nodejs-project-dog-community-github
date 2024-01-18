@@ -186,9 +186,6 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
-    
-    
-
     // ยืนยันผู้ใช้ ระดับ 3 ผู้เชี่ยวชาญ
     router.get("/verifyVets", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
@@ -347,7 +344,83 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    // ยืนยันผู้ใช้ เติมพอทย์ 
+    router.get("/confirmAddPoint", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_add_point WHERE status = 0", (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/verifyUser", {
+                        title: "ยืนยัน เติมพอทย์",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: "",
+                    });
+                } else {
+                    res.render("adminData/confirmAddPoint", {
+                        title: "ยืนยัน เติมพอทย์",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: rows,
+                    });
+                }
+                });
+        }
+    });
 
+
+
+    // ยืนยันผู้ใช้ ถอนพอทย์ 
+    router.get("/confirmOutPoint", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_out_point WHERE status = 0", (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/confirmOutPoint", {
+                        title: "ยืนยัน ถอนพอทย์ ",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: "",
+                    });
+                } else {
+                    res.render("adminData/confirmOutPoint", {
+                        title: "ยืนยัน ถอนพอทย์ ",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        email: "",
+                        password: "",
+                        rows: rows,
+                    });
+                }
+                });
+        }
+    });
 
 
 
