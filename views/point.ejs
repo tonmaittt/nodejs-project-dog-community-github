@@ -45,15 +45,31 @@
 					<div class="form-title">
 						<h2>เติมพอยท์</h2>
 						<p>*หมายเหตุ</p>
-						<p>- อัตราจำนวนพอยท์ 1 : 1 บาท </p>
+						<p>- อัตราแลกเปลี่ยนจำนวนพอยท์ 1 : 1 บาท </p>
 						<p>- หลังจากส่งหลักการเติมพอยท์ กรุณารอการตรวจสอบจากเจ้าหน้าที่ 1 - 2  วัน </p>
 					</div>
+
+						<div class="form-title">
+							<h2>ช่องทางการชำระเงิน</h2>
+							<div class="col-lg-12 mb-5 mb-lg-0 border p-2 mx-auto d-flex justify-content-start flex-wrap">
+									<div class="p-2">
+										<img src="../img/bb.png" alt="" width="150px">
+									</div>
+									<div class="p-2">
+										<p><b><h6>ธนาคาร : กรุงเทพ</h6></b></p>
+										<p><b><h6>ชื่อบัญชี : ศุภณัฐ กมล</h6></b></p>
+										<p><b><h6>เลขที่บัญชี :622-0-xxx846</h6></b></p>
+									</div>
+								
+							</div>
+						</div>
+
 				 	<div id="form_status"></div>
 					<div class="contact-form">
 						<form action="/pointAdd" method="post" enctype="multipart/form-data" id="fruitkha-contact">
 							<p>
 								<input type="text" placeholder="ชื่อและนามสกุลผู้โอน" name="name" id="name" required>
-								<input type="number" placeholder="จำนวนพอยท์" name="point" id="point" required>
+								<input type="number" placeholder="จำนวนพอยท์" name="point" id="point" min="0" style="width: 49%;" required>
 							</p>
 							<p><h5>ภาพหลักฐานการโอน</h5></p>
 							<p>
@@ -79,6 +95,9 @@
 							<h4><i class="fas fa-map"></i> จัดการพอยท์</h4>
 							<p>
 								<a href="/point" class="org">เติมพอยท์</a><br> 
+								<% if (levelS > 2) { %>
+									<a href="/pointOut" class="org">ถอนพอยท์</a><br> 
+                                <% } %>
 								<a href="/boost" class="org">Boost Shop</a><br> 
 								<a href="#" class="org">ประวัติการเติมพอยท์</a><br> 
 							</p>

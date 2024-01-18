@@ -40,40 +40,44 @@
 					<%= messages.error %>
 				</div>
 			<% } %>
-
 			<div class="row">
 				<div class="col-lg-8 mb-5 mb-lg-0">
 					<div class="form-title">
-						<h2>โปรโมทอันดับ | ร้านค้า</h2>
+						<h2>ถอนพอยท์ สำหรับผู้เชี่ยวชาญ</h2>
 						<p>*หมายเหตุ</p>
-						<p>- ไม่สามารถโปรโมท/โฆษณา ที่โปรโมทอันดับอยู่ </p>
-						<p>- สูตรคำนวณจะนำเอาจำนวนพอทย์และจำนวนวันที่เลือกมาหารเพื่อเฉลี่ยพอทย์ต่อวัน โดยโพสโปรโมทร้านค้าที่จำนวนโปรโมทต่อวันมากที่สุดจะได้ขึ้นก่อน </p>
+						<p>- อัตราแลกเปลี่ยนจำนวนพอยท์ 1 : 1 บาท </p>
+						<p>- หลังจากแจ้งการถอนพอยท์ กรุณารอการตรวจสอบจากเจ้าหน้าที่ 1 - 2  วัน </p>
 					</div>
+
 				 	<div id="form_status"></div>
 					<div class="contact-form">
-						<form action="/boostAdd" method="post" id="fruitkha-contact">
+						<form action="/pointOutAdd" method="post" id="fruitkha-contact">
 							<div class="form-group">
-								<p><h5>เลือกโฆษณา</h5></p>
-								<select class="" id="exampleFormControlSelect1" name="shop_id" required
+								<p><h5>ธนาคารผู้รับ</h5></p>
+								<select class="" id="exampleFormControlSelect1" name="bank" required
 								style="
-									width: 100%;
+									width: 98.5%;
 									padding: 15px;
 									border: 1px solid #ddd;
 									border-radius: 3px;
 								">
-								  <option> เลือกโฆษณา </option>
-								  <% for(let i=0; i < shop.length; i++)  { %>
-									<% if(shop[i].boost == 0){ %>
-										<option value="<%= shop[i].shop_id%>"><%= shop[i].title%></option>
-									<% } %>
-								  <% }%>
+								  <option> -- เลือกธนาคาร -- </option>
+								  <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
+								  <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
+								  <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+								  <option value="ธนาคารทหารไทย">ธนาคารทหารไทย</option>
+								  <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
 								</select>
 							</div>
-							<p class="d-flex justify-content-between">
-								<input type="number" placeholder="จำนวนพอยท์" name="money" id="money" min="0" max="<%= pointShow[0].point%>" required>
-								<input type="number" placeholder="จำนวนวันที่ต้องการโปรโมท" name="numday" id="numday" style="width: 49.25%;" required>
+							<p>
+								<input type="text" placeholder="เลขที่บัญชี" name="account_number" id="account_number" maxlength="10" required>
+								<input type="text" placeholder="ชื่อบัญชี" name="name" id="name" required>
 							</p>
-							<p><input type="submit" value="Submit"></p>
+							<p>
+								<input type="number" placeholder="จำนวนพอยท์" name="money" id="money" min="0" max="<%= pointShow[0].point%>" style="width: 98.5%;" required>
+								<input type="text" hidden>
+							</p>
+							<p><input type="submit" value="ยืนยัน" class="cart-buttons"></p>
 						</form>
 					</div>
 				</div>
@@ -99,7 +103,15 @@
 
 
 			<%- include('partials/footers') -%>
-
+			<script>
+				var loadFile = function (event) {
+					var output = document.getElementById('output');
+					output.src = URL.createObjectURL(event.target.files[0]);
+					output.onload = function () {
+						URL.revokeObjectURL(output.src) // free memory
+					}
+				};
+			</script>
 		</body>
 
 		</html>

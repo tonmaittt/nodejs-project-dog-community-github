@@ -1875,6 +1875,58 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
 
 /* GET shop page. */
 router.get("/shop", function (req, res, next) {
+  dbCon.query(
+    "SELECT * FROM tb_shop WHERE boost != 0",
+    (err, shopBoost) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        console.log(shopBoost.length);
+        for (let n = 0; n < shopBoost.length; n++) {
+          dbCon.query(
+            "SELECT * FROM tb_boost WHERE shop_id = ? AND status = ?",[shopBoost[n].shop_id,1],
+            (err, boost) => {
+              if (err) {
+                console.log("ERROR ตรวจสอบวันboost"+ err);
+              } else {
+                let sum = boost[0].date_start - boost[0].date_end;
+                // console.log("ลบกัน : "+sum);
+                // console.log(boost[n]);
+                if (sum <= 0) {
+                  //ยังไม่หมดเวลา
+                  console.log(shopBoost[n].shop_id +" :"+ sum+": ยังไม่หมดเวลา");
+                }else{
+                  //หมดเวลาแล้ว
+                  console.log(shopBoost[n].shop_id +" :"+ sum+": หมดเวลา");
+                  let form_data = {
+                    boost: 0,
+                  };
+                  let form_data1 = {
+                    status: 0,
+                  };
+                  dbCon.query("UPDATE tb_shop SET ? WHERE shop_id = ?",[form_data,shopBoost[n].shop_id], (err, result) => {
+                    if (err) {
+                      console.log(": อัพเดท boost ใน tb_shop ไม่ได้");
+                    } else {
+                      dbCon.query("UPDATE tb_boost SET ? WHERE shop_id = ?",[form_data1,shopBoost[n].shop_id], (err, result) => {
+                        if (err) {
+                          console.log(": อัพเดท status ใน tb_boost ไม่ได้");
+                        } else {
+                          console.log(": ปรับ shopแล้ว");
+                        }
+                      })
+                    }
+                  })
+                }
+              }
+            }
+          );     
+        }
+      }
+    }
+  );
+
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
       "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id ORDER BY boost DESC , shop_id DESC",
@@ -2108,6 +2160,7 @@ router.get("/shopDetail/(:id)", (req, res, next) => {
 
 
 //ระบบ point ------------------------------------------------------------------------------------
+
 // หน้าแรก point
 router.get("/point", function (req, res, next) {
   if (!req.session.ifNotLogIn || req.session.level === 1) {
@@ -2136,6 +2189,9 @@ router.get("/point", function (req, res, next) {
 
 // add point
 router.post("/pointAdd", upload.single("photo"), (req, res, next) => {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
   let name = req.body.name;
   let point = req.body.point;
   let photo = req.file.filename;
@@ -2164,7 +2220,7 @@ router.post("/pointAdd", upload.single("photo"), (req, res, next) => {
       [form_data],
       (err, result) => {
         if (err) {
-          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครับ");
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
           res.redirect(req.get('referer'));
         } else {
           req.flash('success', 'ขอบคุณสำหรับการเติมพอทย์ โปรดรอเจ้าหน้าที่ตรวจสอบการเติมพอทย์ 1-2วัน');
@@ -2181,13 +2237,119 @@ router.get("/boost", function (req, res, next) {
     return res.redirect("/");
   }
   dbCon.query(
+    "SELECT * FROM tb_shop WHERE user_id = ?",[req.session.idUser],
+    (err, shop) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        dbCon.query(
+          "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+          (err, pointShow) => {
+            if (err) {
+              req.flash("error", err);
+              res.redirect("/");
+            } else {
+              res.render("boost", {
+                title: "จัดการพอยท์",
+                username: req.session.userName,
+                emailS: req.session.emailUser,
+                levelS: req.session.level,
+                userImg: req.session.userImg,
+                pointShow: pointShow,
+                shop: shop,
+              });
+            }
+          }
+        );
+      }
+    }
+  );
+
+
+  
+});
+
+// add boost
+router.post("/boostAdd", (req, res, next) => {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+
+  let shop_id = req.body.shop_id;
+  let money = req.body.money;
+  let numday = req.body.numday;
+  let errors = false;
+
+  let date_start = new Date(Date.now());
+  let date_end = new Date();
+  date_end.setTime(date_end.getTime() + numday * 24 * 60 * 60 * 1000);
+  let boost = money/numday;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      shop_id: shop_id,
+      point: money,
+      numday: numday,
+      date_start: date_start,
+      date_end: date_end,
+      status: 1,
+    };
+
+    let form_data1 = {
+      boost: boost,
+    };
+
+    
+
+    console.log(form_data);
+
+    // insert query
+    dbCon.query(
+      "INSERT INTO tb_boost SET ?",
+      [form_data],
+      (err, result) => {
+        if (err) {
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+          res.redirect(req.get('referer'));
+        } else {
+          dbCon.query("UPDATE tb_shop SET ? WHERE shop_id = ?",[form_data1,shop_id], (err, result) => {
+            if (err) {
+              req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+              res.redirect(req.get('referer'));
+            } else {
+              
+              dbCon.query("UPDATE tb_point_user SET point = point - ? WHERE user_id = ?",[money,req.session.idUser], (err, result) => {
+                if (err) {
+                  req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                  res.redirect(req.get('referer'));
+                } else {
+                  req.flash('success', 'ขอบคุณสำหรับการโปรโมท');
+                  res.redirect(req.get('referer'));
+                }
+              })
+            }
+          })
+        }
+      }
+    );
+  }
+});
+
+// หน้า ถอน point
+router.get("/pointOut", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level < 3) {
+    return res.redirect("/");
+  }
+  dbCon.query(
     "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
     (err, pointShow) => {
       if (err) {
         req.flash("error", err);
         res.redirect("/");
       } else {
-        res.render("boost", {
+        res.render("pointOut", {
           title: "จัดการพอยท์",
           username: req.session.userName,
           emailS: req.session.emailUser,
@@ -2201,9 +2363,45 @@ router.get("/boost", function (req, res, next) {
   
 });
 
+// add ถอน point
+router.post("/pointOutAdd", (req, res, next) => {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
 
+  let bank = req.body.bank;
+  let account_number = req.body.account_number;
+  let name = req.body.name;
+  let money = req.body.money;
+  let errors = false;
 
+  // if no error
+  if (!errors) {
+    let form_data = {
+      user_id: req.session.idUser,
+      bank: bank,
+      account_number: account_number,
+      name: name,
+      money: money,
+      status: 0,
+    };
 
+    // insert query
+    dbCon.query(
+      "INSERT INTO tb_out_point SET ?",
+      [form_data],
+      (err, result) => {
+        if (err) {
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+          res.redirect(req.get('referer'));
+        } else {
+          req.flash('success', 'ขอบคุณสำหรับการถอนพอทย์ โปรดรอเจ้าหน้าที่ตรวจสอบการถอนพอทย์ 1-2วัน');
+          res.redirect(req.get('referer'));
+        }
+      }
+    );
+  }
+});
 
 
 

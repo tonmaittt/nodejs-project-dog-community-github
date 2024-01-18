@@ -2511,7 +2511,7 @@ ul.social-link-team li a {
   line-height: 1.8;
 }
 
-.contact-form form p input[type=text], .contact-form form p input[type=tel], .contact-form form p input[type=email] , .contact-form form p input[type=number], .contact-form form p input[type=date] .contact-form form p input[type=time]{
+.contact-form form p input[type=text], .contact-form form p input[type=tel], .contact-form form p input[type=email] , .contact-form form p input[type=number], .contact-form form p input[type=date], .contact-form form p input[type=time], .contact-form form p input[type=datetime-local]{
   width: 49%;
   padding: 15px;
   border: 1px solid #ddd;
