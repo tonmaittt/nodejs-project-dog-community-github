@@ -1890,7 +1890,8 @@ router.get("/shop", function (req, res, next) {
               if (err) {
                 console.log("ERROR ตรวจสอบวันboost"+ err);
               } else {
-                let sum = boost[0].date_start - boost[0].date_end;
+                date_start = new Date(Date.now());
+                let sum = date_start - boost[0].date_end;
                 // console.log("ลบกัน : "+sum);
                 // console.log(boost[n]);
                 if (sum <= 0) {
