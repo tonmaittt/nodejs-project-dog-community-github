@@ -58,33 +58,34 @@
                                        <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
-                                       <td><a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="123">ยืนยัน</a></td>
+                                       <td><a href="#" data-toggle="modal" data-target="#exampleModal<%= rows[i].out_point_id %>" data-whatever="123">ยืนยัน</a></td>
                                        <td><a href="confirmOutPoint/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
                                     </tr>
                                  </tbody>
-                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                 <div class="modal fade" id="exampleModal<%= rows[i].out_point_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                          <h5 class="modal-title" id="exampleModalLabel">ยืนยันถอนพอทย์</h5>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form>
-                                             out_point_id : <%= i %><br>
-                                             out_point_id : <%= rows[i].out_point_id %><br>
-                                             name : <%= rows[i].name %><br>
-                                             user_id : <%= rows[i].user_id%>
+                                          <form action="/confirmOutPoint/submit" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
-                                              <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                              <input type="text" class="form-control" id="recipient-name">
-                                            </div>
-                                            <div class="form-group">
-                                              <label for="message-text" class="col-form-label">Message:</label>
-                                              <textarea class="form-control" id="message-text"></textarea>
-                                            </div>
+                                                <label for="recipient-name" class="col-form-label">out point id:</label>
+                                                <input type="text" class="form-control" id="out_point_id" name="out_point_id" value="<%= rows[i].out_point_id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">user id:</label>
+                                                <input type="text" class="form-control" id="user_id" name="user_id" value="<%= rows[i].user_id%>" required readonly>
+                                                <div class="custom-file mt-4">
+                                                   <input type="file" name="photo" accept="image/*" required onchange="document.getElementById('blah<%= rows[i].out_point_id %>').src = window.URL.createObjectURL(this.files[0])">
+                                                </div>
+                                                <img id="blah<%= rows[i].out_point_id %>" style="width: 100%;" class="img-responsive rounded border border-dark mt-4" />
+                                             </div>
+                                             
+                                             
+                                             
                                           </form>
                                         </div>
                                         <div class="modal-footer">
@@ -108,6 +109,18 @@
             </div>
          </div>
       </div>
+
+      
+      <script>
+            var loadFile = function (event) {
+               var output = document.getElementById('output');
+               output.src = URL.createObjectURL(event.target.files[0]);
+               output.onload = function () {
+                  URL.revokeObjectURL(output.src) // free memory
+               }
+            };
+      </script>
+
       <!-- jQuery -->
       <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
       <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
