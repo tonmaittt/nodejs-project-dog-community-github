@@ -54,7 +54,9 @@
                                        <td><%= rows[i].user_id%></td>
                                        <td><%= rows[i].name%></td>
                                        <td><%= rows[i].money%></td>
-                                       <td><img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" height="300px"/></td>
+                                       <td data-toggle="modal" data-target="#exampleModal<%= rows[i].add_point_id%>" style="cursor: pointer;" >
+                                          <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" height="200px" >
+                                       </td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].date)%></td>
                                        <td><%= rows[i].time%></td>
                                        <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
@@ -64,6 +66,27 @@
                                        <td><a href="confirmAddPoint/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
                                     </tr>
                                  </tbody>
+                                 
+                                 <!-- Modal -->
+                                 <div class="modal fade" id="exampleModal<%= rows[i].add_point_id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">รายละเอียดหลักฐานการโอน</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                          </button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" width="100%" />
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                       </div>
+                                    </div>
+                                    </div>
+                                 </div>
+
                                  <% } %>
                               </table>
                            </div>

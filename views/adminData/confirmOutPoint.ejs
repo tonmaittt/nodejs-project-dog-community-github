@@ -58,11 +58,11 @@
                                        <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
-                                       <td><a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="123">ยืนยัน</a></td>
+                                       <td><a href="#" data-toggle="modal" data-target="#exampleModal<%= rows[i].out_point_id %>" data-whatever="123">ยืนยัน</a></td>
                                        <td><a href="confirmOutPoint/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
                                     </tr>
                                  </tbody>
-                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal fade" id="exampleModal<%= rows[i].out_point_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
