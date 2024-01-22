@@ -23,74 +23,84 @@
                      <div class="white_shd full margin_bottom_30">
                         <div class="full graph_head">
                            <div class="heading1 margin_0">
-                              <h2>ยืนยันผู้เชี่ยวชาญ</h2>
+                              <h2>ยืนยันเติมพอทย์</h2>
                            </div>
                         </div>
-                        <div class="table_section padding_infor_info">
-                           <div class="table-responsive-sm">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th>#</th>
-                                       <th>id Add Point</th>
-                                       <th>ID ผู้ใช้</th>
-                                       <th>ชื่อผู้โอน</th>
-                                       <th>จำนวนเงินที่เติม</th>
-                                       <th>ภาพหลักฐานการโอน</th>
-                                       <th>วันที่โอน</th>
-                                       <th>เวลาโอน</th>
-                                       <th>สถานะ</th>
-                                       <th>สร้างเมื่อ</th>
-                                       <th>แก้ไขล้าสุด</th>
-                                       <th>ยืนยัน</th>
-                                       <th>ลบ</th>
-                                    </tr>
-                                 </thead>
-                                 <% for(let i=0; i < rows.length; i++) { %>
-                                 <tbody>
-                                    <tr>
-                                       <td><%= i+1%></td>
-                                       <td><%= rows[i].add_point_id%></td>
-                                       <td><%= rows[i].user_id%></td>
-                                       <td><%= rows[i].name%></td>
-                                       <td><%= rows[i].money%></td>
-                                       <td data-toggle="modal" data-target="#exampleModal<%= rows[i].add_point_id%>" style="cursor: pointer;" >
-                                          <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" height="200px" >
-                                       </td>
-                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].date)%></td>
-                                       <td><%= rows[i].time%></td>
-                                       <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
-                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
-                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
-                                       <td><a href="confirmAddPoint/submit/<%= rows[i].user_id%>" onclick="return confirm('ยืนยัน?')">ยืนยัน</a></td>
-                                       <td><a href="confirmAddPoint/delete/<%= rows[i].user_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
-                                    </tr>
-                                 </tbody>
-                                 
-                                 <!-- Modal -->
-                                 <div class="modal fade" id="exampleModal<%= rows[i].add_point_id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">รายละเอียดหลักฐานการโอน</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                          </button>
+                        <% if(rows.length) { %>
+                           <div class="table_section padding_infor_info">
+                              <div class="table-responsive-sm">
+                                 <table class="table">
+                                    <thead>
+                                       <tr>
+                                          <th>#</th>
+                                          <th>id Add Point</th>
+                                          <th>ID ผู้ใช้</th>
+                                          <th>ชื่อผู้โอน</th>
+                                          <th>จำนวนเงินที่เติม</th>
+                                          <th>ภาพหลักฐานการโอน</th>
+                                          <th>วันที่โอน</th>
+                                          <th>เวลาโอน</th>
+                                          <th>สถานะ</th>
+                                          <th>สร้างเมื่อ</th>
+                                          <th>แก้ไขล้าสุด</th>
+                                          <th>ยืนยัน</th>
+                                          <th>ลบ</th>
+                                       </tr>
+                                    </thead>
+                                    <% for(let i=0; i < rows.length; i++) { %>
+                                    <tbody>
+                                       <tr>
+                                          <td><%= i+1%></td>
+                                          <td><%= rows[i].add_point_id%></td>
+                                          <td><%= rows[i].user_id%></td>
+                                          <td><%= rows[i].name%></td>
+                                          <td><%= rows[i].money%></td>
+                                          <td data-toggle="modal" data-target="#exampleModal<%= rows[i].add_point_id%>" style="cursor: pointer;" >
+                                             <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" height="200px" >
+                                          </td>
+                                          <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].date)%></td>
+                                          <td><%= rows[i].time%></td>
+                                          <td><%= (rows[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
+                                          <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].created_at)%></td>
+                                          <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(rows[i].update_at)%></td>
+                                          <td><a href="confirmAddPoint/submit/<%= rows[i].add_point_id%>" onclick="return confirm('ยืนยัน?')">ยืนยัน</a></td>
+                                          <td><a href="confirmAddPoint/delete/<%= rows[i].add_point_id%>" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a></td>
+                                       </tr>
+                                    </tbody>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal<%= rows[i].add_point_id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                       <div class="modal-dialog" role="document">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLabel">รายละเอียดหลักฐานการโอน</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" width="100%" />
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          </div>
                                        </div>
-                                       <div class="modal-body">
-                                          <img class="img-responsive" src="../img/<%= rows[i].photo%>" alt="#" width="100%" />
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                        </div>
                                     </div>
-                                    </div>
-                                 </div>
-
-                                 <% } %>
-                              </table>
-                           </div>
-                        </div>
+   
+                                    <% } %>
+                                 </table>
+                              </div>
+                           </div>          
+                        <% } %>  
+                        <% if(!rows.length) { %>
+                           <p>
+                              <b>
+                                 <h3 class="text-center">ทำการยืนยันการเติมพอทย์ทั้งหมดแล้ว</h3>
+                              </b>
+                           </p>
+                        <% } %>
+                        
                      </div>
                   </div>
 

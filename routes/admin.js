@@ -5,6 +5,38 @@ const bcrypt = require("bcrypt");
 const escape = require("escape-html");
 const multer = require("multer");
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "./img"); //ตำแหน่งจัดเก็บไฟล์
+    },
+    filename: function (req, file, cb) {
+      cb(
+        null,
+        Date.now() +
+          "-" +
+          Math.round(Math.random() * 1e9) +
+          "-" +
+          file.originalname +
+          ".jpg"
+      ); // เปลี่ยนชื่อไฟล์
+    },
+  });
+  
+  const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith("image/")) {
+        // ตรวจสอบนามสกุลของไฟล์
+        cb(null, true);
+      } else {
+        cb(new Error("รูปภาพเท่านั้นที่อนุญาต"));
+      }
+    },
+    limits: {
+      fileSize: 5 * 1024 * 1024, // จำกัดขนาดไฟล์ไม่เกิน 5MB
+    },
+  });
+
 const ifNotLogIn = (req, res, next) => {
     if (!req.session.ifNotLogIn ||  req.session.level < 4) {
       return  res.render("adminData/login", { 
@@ -382,6 +414,86 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    // ยืนยันผู้ใช้ เติมพอทย์  -> ยืนยัน
+    router.get("/confirmAddPoint/submit/(:id)", function (req, res, next) {
+        let id = req.params.id;
+
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_point WHERE point_id = 1", (err, point) => {
+                if (err) {
+                    req.flash('error', err)
+                    res.redirect(req.get('referer'));
+                } else {
+                    if (point[0].status != 0) {
+                        dbCon.query("SELECT * FROM tb_add_point WHERE add_point_id = ?",[id], (err, addpoint) => {
+                            if (err) {
+                                req.flash('error', err)
+                                res.redirect(req.get('referer'));
+                            } else {
+                                if (point[0].point >= addpoint[0].money) {
+                                    let form = {
+                                        add_point_id: id,
+                                        user_id: addpoint[0].user_id,
+                                        admin_id: req.session.idUser,
+                                        status: 1,
+                                    }
+                                    let form2 = {
+                                        status: 1,
+                                    }
+                                    dbCon.query("UPDATE tb_point SET point = point - ? WHERE point_id = ?" ,  [addpoint[0].money,1], (err, result) => {
+                                        if (err) {
+                                            req.flash("error", err);
+                                            res.redirect(req.get('referer'));
+                                        } else {
+                                            dbCon.query("UPDATE tb_point_user SET point = point + ? WHERE user_id = ?" ,  [addpoint[0].money,addpoint[0].user_id], (err, result) => {
+                                                if (err) {
+                                                    req.flash("error", err);
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    dbCon.query('INSERT INTO tb_confirm_add_point SET ?', form, (err, result) => {
+                                                        if (err) {
+                                                            req.flash('error', err)
+                                                            res.redirect(req.get('referer'));
+                                                        } else {
+                                                            dbCon.query("UPDATE tb_add_point SET ? WHERE add_point_id = ?" ,  [form2,id], (err, result) => {
+                                                                if (err) {
+                                                                    req.flash("error", err);
+                                                                    res.redirect(req.get('referer'));
+                                                                } else {
+                                                                    req.flash("success", 'ยืนยันเติมพอทย์สำเร็จ');
+                                                                    res.redirect(req.get('referer'));
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    req.flash('error', 'พอทย์ในระบบไม่เพียงพอ')
+                                    res.redirect(req.get('referer'));
+                                }
+                            }
+                        });
+                    }else {
+                        req.flash('error', 'ระบบไม่เปิดใช้งานขณะนี้')
+                        res.redirect(req.get('referer'));
+                    }
+                    
+                }
+            });
+        }
+    });
+
+
+
 
 
     // ยืนยันผู้ใช้ ถอนพอทย์ 
@@ -418,11 +530,85 @@ const ifNotLogIn = (req, res, next) => {
                         rows: rows,
                     });
                 }
-                });
+            });
         }
     });
 
+    // ยืนยันผู้ใช้ ถอนพอทย์ -> ยืนยัน
+    router.post("/confirmOutPoint/submit", upload.single("photo"), (req, res, next) => {
+        let out_point_id = req.body.out_point_id;
+        let user_id = req.body.user_id;
+        let photo = req.file.filename;
+        let errors = false;
+        
 
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_point_user WHERE user_id = ?",[user_id], (err, point) => {
+                if (err) {
+                    req.flash('error', err)
+                    res.redirect(req.get('referer'));
+                } else {
+                    if (point[0].status != 0) {
+                        dbCon.query("SELECT * FROM tb_out_point WHERE out_point_id = ?",[out_point_id], (err, outpoint) => {
+                            if (err) {
+                                req.flash('error', err)
+                                res.redirect(req.get('referer'));
+                            } else {
+                                if (point[0].point >= outpoint[0].money) {
+                                    let form_data = {
+                                        out_point_id: out_point_id,
+                                        user_id: user_id,
+                                        admin_id: req.session.idUser,
+                                        photo: photo,
+                                        status: 1,
+                                    };
+                                    let form2 = {
+                                        status: 1,
+                                    }
+                                    dbCon.query("UPDATE tb_point_user SET point = point - ? WHERE user_id = ?" ,  [outpoint[0].money,user_id], (err, result) => {
+                                        if (err) {
+                                            req.flash("error", err);
+                                            res.redirect(req.get('referer'));
+                                        } else {
+                                            dbCon.query("UPDATE tb_out_point SET ? WHERE out_point_id = ?" ,  [form2,out_point_id], (err, result) => {
+                                                if (err) {
+                                                    req.flash("error", err);
+                                                    res.redirect(req.get('referer'));
+                                                } else {
+                                                    dbCon.query('INSERT INTO tb_confirm_out_point SET ?', form_data, (err, result) => {
+                                                        if (err) {
+                                                            req.flash('error', err)
+                                                            res.redirect(req.get('referer'));
+                                                        } else {
+                                                            req.flash("success", 'ยืนยันถอนพอทย์สำเร็จ');
+                                                            res.redirect(req.get('referer'));
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    req.flash('error', 'พอทย์ของผู้ใช้ไม่เพียงพอ')
+                                    res.redirect(req.get('referer'));
+                                }
+                            }
+                        });
+                    }else {
+                        req.flash('error', 'ระบบไม่เปิดใช้งานขณะนี้')
+                        res.redirect(req.get('referer'));
+                    }
+                    
+                }
+            });
+        }
+    });
 
     //loginเข้าสู่ระบบ แสดง
     router.get("/login", function (req, res, next) {

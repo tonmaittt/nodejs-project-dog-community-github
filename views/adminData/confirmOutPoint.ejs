@@ -23,13 +23,13 @@
                      <div class="white_shd full margin_bottom_30">
                         <div class="full graph_head">
                            <div class="heading1 margin_0">
-                              <h2>ยืนยันผู้เชี่ยวชาญ</h2>
+                              <h2>ยืนยันถอนพอทย์</h2>
                            </div>
                         </div>
                         <div class="table_section padding_infor_info">
                            <div class="table-responsive-sm">
                               <table class="table">
-                                 <thead>
+                                 <thead class="thead-light">
                                     <tr>
                                        <th>#</th>
                                        <th>id Out Point</th>
@@ -72,7 +72,7 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/confirmOutPoint/submit" method="post" enctype="multipart/form-data">
+                                          <form action="/admin/confirmOutPoint/submit" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">out point id:</label>
                                                 <input type="text" class="form-control" id="out_point_id" name="out_point_id" value="<%= rows[i].out_point_id %>" required readonly>
@@ -85,19 +85,20 @@
                                              </div>
                                              
                                              
-                                             
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                             </div>
                                           </form>
                                         </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                          <button type="button" class="btn btn-primary">Send message</button>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                   </div>
 
                                  <% } %>
                               </table>
+
                            </div>
                         </div>
                      </div>
