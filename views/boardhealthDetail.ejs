@@ -75,6 +75,34 @@
 
 
                                 </div>
+                                <!-- comment ผู้เชียวชาญ -->
+
+                                <div class="container mt-5 mb-5">
+                                    <div class="card mt-3">
+                                        <div class="card-header">
+                                            ความคิดเห็นผู้เชี่ยวชาญ
+                                        </div>
+                                        <div class="card-body">
+                                            <% if(levelS == 3 && cmvets.length == 0) { %>
+                                                <form action="/commentAddVets/<%- id %>" method="post">
+                                                    <div class="form-group  mt-2">
+                                                        <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary mb-3" style="background-color: coral;">ส่งความคิดเห็น</button>
+                                                </form>
+                                            <% } %>
+                                            <ul class="list-group" id="comment-list">
+                                                <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
+                                                <ul class="list-group">
+                                                    <div id="commentShowVets"></div>
+                                                </ul>
+                                            </ul>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <!-- comment -->
 
                                 <div class="container mt-5 mb-5">
@@ -201,6 +229,76 @@
                     });
 
         </script>
+
+
+        <!-- แสดงคอมเม้นผู้เชี่ยวชาญ -->
+        <script>
+            fetch('/api/vets/<%- id %>', {method: 'GET'})
+                .then(function(response) {
+                if(response.ok) return response.json();
+                throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                document.getElementById('commentShowVets').innerHTML += `
+                                                <li class="list-group-item">
+                                                    <div class="media">
+                                                        <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64;">
+                                                        <div class="media-body">
+                                                            <h5 class="mt-0 mb-0">${data[i]["title"]} ${data[i]["fname"]} ${data[i]["sname"]}</h5>
+                                                            ${data[i]["comments"]}
+                                                            <div class="mt-2">
+                                                                <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
+                                                                <button2 id="myButton2" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton" style="background: white;color: black; border-color: coral;"> 
+                                                                        <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter2"></span>)
+                                                                </button2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            
+                                                `;
+                }
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+
+    </script>
+
+    <script>
+        const button2 = document.getElementById('myButton2');
+            button2.addEventListener('click', function(e) {
+            console.log('button2 was clicked');
+            fetch('/clicked2/<%- id %>', {method: 'POST'})
+                .then(function(response) {
+                if(response.ok) {
+                    console.log('click was recorded');
+                    return;
+                }
+                throw new Error('Request failed.');
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            });
+    
+            setInterval(function() {
+            fetch('/clicks2/<%- id %>', {method: 'GET'})
+                .then(function(response) {
+                if(response.ok) return response.json();
+                throw new Error('Request failed.');
+                })
+                .then(function(data) {
+                    console.log('counter2');
+                    document.getElementById('counter2').innerHTML = `${data.length}`;
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            }, 1000);
+    </script>
 
         <script>
             function timeSince(date) {

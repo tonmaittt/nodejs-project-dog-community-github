@@ -1,0 +1,442 @@
+<%- include('../partials/headAdmin') -%>
+   <%- include('../partials/headersAdmin') -%>
+
+      <!-- dashboard inner -->
+      <div class="midde_cont">
+         <div class="container-fluid">
+            <div class="row column_title">
+               <div class="col-md-12">
+                  <div class="page_title">
+                     <h2>ระบบเก็บประวัติทั้งหมด</h2>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-12">
+               <div class="white_shd full margin_bottom_30">
+                  <div class="full graph_head">
+                     <div class="heading1 margin_0">
+                        <h2>ระบบเก็บประวัติทั้งหมด</h2>
+                     </div>
+                  </div>
+                  <div class="full inner_elements">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="tab_style2">
+                              <div class="tabbar padding_infor_info">
+                                 <nav>
+                                    <div class="nav nav-tabs" id="nav-tab1" role="tablist">
+                                       <a class="nav-item nav-link active" id="nav-home-tab2" data-toggle="tab" href="#nav-1_s2" role="tab" aria-controls="nav-home_s2" aria-selected="true">บอร์ดสุขภาพสุนัข</a>
+                                       <a class="nav-item nav-link" id="nav-profile-tab2" data-toggle="tab" href="#nav-2_s2" role="tab" aria-controls="nav-profile_s2" aria-selected="false">โพสต์บอร์ดชุมชน</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-3_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">โพสต์บทความชุมชน</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-4_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">โพสต์ร้านค้า</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-5_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">การเติมเงินเพื่อแลกพอยท์</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-6_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">ยืนยันการเติมเงินเพื่อแลกพอยท์</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-7_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">แลกเปลี่ยนพอยท์เพื่อเลื่อนอันดับร้านค้า</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-8_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">แลกเปลี่ยนพอยท์ของสัตว์แพทย</a>
+                                       <a class="nav-item nav-link" id="nav-contact-tab2" data-toggle="tab" href="#nav-9_s2" role="tab" aria-controls="nav-contacts_s2" aria-selected="false">ยืนยันการแลกเปลี่ยนพอยท์ของสัตว์แพทย์</a>
+                                    </div>
+                                 </nav>
+                                 <div class="tab-content" id="nav-tabContent_2">
+                                    <div class="tab-pane fade show active" id="nav-1_s2" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการโพสต์บอร์ดสุขภาพสุนัขทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้โพสต์</th>
+                                                            <th>หัวข้อ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < boardhealth.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= boardhealth[i].username %></td>
+                                                            <td><%= boardhealth[i].title%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(boardhealth[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(boardhealth[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-2_s2" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการโพสต์บอร์ดชุมชนทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้โพสต์</th>
+                                                            <th>หัวข้อ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < communityboard.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= communityboard[i].username %></td>
+                                                            <td><%= communityboard[i].title%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(communityboard[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(communityboard[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-3_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการโพสต์บทความชุมชนทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้โพสต์</th>
+                                                            <th>หัวข้อ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < article.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= article[i].username %></td>
+                                                            <td><%= article[i].title%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(article[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(article[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-4_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการโพสต์ร้านค้าทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้โพสต์</th>
+                                                            <th>หัวข้อ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < shop.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= shop[i].username %></td>
+                                                            <td><%= shop[i].title%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-5_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการเติมเงินเพื่อแลกพอยท์ทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้ขอ</th>
+                                                            <th>ชื่อบัญชี</th>
+                                                            <th>หลักฐาน</th>
+                                                            <th>วันที่</th>
+                                                            <th>เวลา</th>
+                                                            <th>สถานะ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < add_point.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= add_point[i].username %></td>
+                                                            <td><%= add_point[i].name%></td>
+                                                            <td><img class="img-responsive" src="../img/<%= add_point[i].photo%>" alt="#" height="200px" ></td>
+                                                            <td><%= add_point[i].date%></td>
+                                                            <td><%= add_point[i].time%></td>
+                                                            <td><%= add_point[i].status%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-6_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติยืนยันการเติมเงินเพื่อแลกพอยท์</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้ยืนยัน</th>
+                                                            <th>ชื่อบัญชี</th>
+                                                            <th>id comfirm add point</th>
+                                                            <th>สถานะ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < confirm_add_point.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= confirm_add_point[i].username %></td>
+                                                            <td><%= confirm_add_point[i].name%></td>
+                                                            <td><%= confirm_add_point[i].tb_confirm_add_point_id %></td>
+                                                            <td><%= add_point[i].status%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(confirm_add_point[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(confirm_add_point[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-7_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติแลกเปลี่ยนพอยท์เพื่อเลื่อนอันดับร้านค้าทั้งหมด</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>โฆษณา/โปรโมท</th>
+                                                            <th>เริ่ม</th>
+                                                            <th>จบ</th>
+                                                            <th>พอทย์</th>
+                                                            <th>จำนวนวัน</th>
+                                                            <th>สถานะ</th>
+
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < boost.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= boost[i].title %></td>
+                                                            <td><%= boost[i].date_start%></td>
+                                                            <td><%= boost[i].date_end %></td>
+                                                            <td><%= boost[i].point %></td>
+                                                            <td><%= boost[i].numday %></td>
+                                                            <td><%= boost[i].status%></td>
+
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-8_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติการแลกเปลี่ยนพอยท์ของสัตว์แพทย์เป็นเงิน</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้ขอ</th>
+                                                            <th>ธนาคาร</th>
+                                                            <th>เลขที่บัญชี</th>
+                                                            <th>ชื่อบัญชี</th>
+                                                            <th>จำนวนเงินที่ถอน</th>
+                                                            <th>สถานะ</th>
+
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < out_point.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= out_point[i].username %></td>
+                                                            <td><%= out_point[i].bank %></td>
+                                                            <td><%= out_point[i].account_number %></td>
+                                                            <td><%= out_point[i].name %></td>
+                                                            <td><%= out_point[i].money %></td>
+                                                            <td><%= out_point[i].status%></td>
+
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-9_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                       <div class="col-md-12">
+                                          <div class="white_shd full margin_bottom_30">
+                                             <div class="full graph_head">
+                                                <div class="heading1 margin_0">
+                                                   <h2>ประวัติยืนยันการแลกเปลี่ยนพอยท์ของสัตว์แพทย์เป็นเงิน</h2>
+                                                </div>
+                                             </div>
+                                             <div class="table_section padding_infor_info">
+                                                <div class="table-responsive-sm">
+                                                   <table class="table">
+                                                      <thead class="thead-light">
+                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>ผู้ขอ</th>
+                                                            <th>ภาพหลักฐานการโอน</th>
+                                                            <th>สถานะ</th>
+                                                            <th>วันที่สร้าง</th>
+                                                            <th>แก้ไขล่าสุด</th>
+                                                         </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         <% for(let i=0; i < confirm_out_point.length; i++) { %>
+                                                         <tr>
+                                                            <td><%= i+1 %></td>
+                                                            <td><%= confirm_out_point[i].name %></td>
+                                                            <td><img class="img-responsive" src="../img/<%= confirm_out_point[i].photo%>" alt="#" height="200px" ></td>
+                                                            <td><%= confirm_out_point[i].status%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(confirm_out_point[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(confirm_out_point[i].update_at)%></td>
+                                                         </tr>
+                                                         <% } %>
+                                                      </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end dashboard inner -->
+      </div>
+      </div>
+      </div>
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script>
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+      </body>
+
+      </html>

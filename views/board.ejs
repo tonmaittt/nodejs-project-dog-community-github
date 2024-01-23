@@ -79,10 +79,10 @@
 				<% for(let i=0; i < data.length; i++) { %>
 					<div class="col-lg-4 col-md-6">
 						<div class="single-latest-news" >
-							<a href="/boardDetail/<%= data[i].communityboard_id %>"><div class="latest-news-bg" style="background-image: url(img/<%= data[i].photo %>)"></div></a>
+							<a href="/boardDetail/<%= data[i].communityboard_id %>"><div class="latest-news-bg" style="background-image: url(../img/<%= data[i].photo %>)"></div></a>
 							<div class="news-text-box">
 								<a href="/boardDetail/<%= data[i].communityboard_id %>">
-								<h3 class="text-title"><%= data[i].title %></h3>
+								<h3 class="text-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-overflow: '...?';"><%= data[i].title %></h3>
 								</a>
 								<p class="blog-meta mt-2">
 									<span class="author"><i class="fas fa-user"></i> <%= data[i].username %></span>

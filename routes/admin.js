@@ -59,6 +59,301 @@ const ifNotLogIn = (req, res, next) => {
     })
 
 
+    // พอทย์ ทั้งหมดของระบบ
+    router.get("/pointbase", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_point WHERE point_id = 1", (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/pointbase", {
+                        title: "ยืนยันผู้ใช้",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        point: "",
+                    });
+                } else {
+                    res.render("adminData/pointbase", {
+                        title: "ยืนยันผู้ใช้",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        point: rows,
+                    });
+                }
+                });
+        }
+    });
+
+    //เพิ่มพอทย์ระบบ -> ยืนยัน
+    router.post("/pointbase/add", upload.single("photo"), (req, res, next) => {
+        let pointUp = req.body.pointUp;
+
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("UPDATE tb_point SET point = point + ? WHERE point_id = ?" ,  [pointUp,1], (err, result) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.redirect(req.get('referer'));
+                } else {
+                    req.flash("success", 'เพิ่มพอทย์สำเร็จ : ' + pointUp );
+                    res.redirect(req.get('referer'));
+                }
+            })
+        }
+    });
+
+    // ประวัติ
+    router.get("/history", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            // boardhealth
+            dbCon.query("SELECT tb_user.username AS username,tb_boardhealth.title AS title,tb_boardhealth.created_at AS created_at ,tb_boardhealth.update_at AS update_at FROM tb_boardhealth LEFT JOIN tb_user ON tb_user.id = tb_boardhealth.user_id", (err, boardhealth) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/history", {
+                        title: "ยืนยันผู้ใช้",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        boardhealth: "",
+                        communityboard: "",
+                        article: "",
+                        shop: "",
+                        add_point: "",
+                        confirm_add_point: "",
+                        boost: "",
+                        out_point: "",
+                        confirm_out_point: "",
+                    });
+                } else {
+                    //article
+                    dbCon.query("SELECT tb_user.username AS username,tb_article.title AS title,tb_article.created_at AS created_at ,tb_article.update_at AS update_at FROM tb_article LEFT JOIN tb_user ON tb_user.id = tb_article.user_id", (err, article) => {
+                        if (err) {
+                            req.flash("error", err);
+                            res.render("adminData/history", {
+                                title: "ยืนยันผู้ใช้",
+                                username: req.session.userName,
+                                emailS: req.session.emailUser,
+                                levelS: req.session.level,
+                                userImg: req.session.userImg,
+                                boardhealth: "",
+                                communityboard: "",
+                                article: "",
+                                shop: "",
+                                add_point: "",
+                                confirm_add_point: "",
+                                boost: "",
+                                out_point: "",
+                                confirm_out_point: "",
+                            });
+                        } else {
+                            // add_point
+                            dbCon.query("SELECT tb_user.username AS username, tb_add_point.name AS name, tb_add_point.photo AS photo,tb_add_point.date AS date,tb_add_point.time AS time,tb_add_point.status AS status,tb_add_point.created_at AS created_at ,tb_add_point.update_at AS update_at FROM tb_add_point LEFT JOIN tb_user ON tb_user.id = tb_add_point.user_id", (err, add_point) => {
+                                if (err) {
+                                    req.flash("error", err);
+                                    res.render("adminData/history", {
+                                        title: "ยืนยันผู้ใช้",
+                                        username: req.session.userName,
+                                        emailS: req.session.emailUser,
+                                        levelS: req.session.level,
+                                        userImg: req.session.userImg,
+                                        boardhealth: "",
+                                        communityboard: "",
+                                        article: "",
+                                        shop: "",
+                                        add_point: "",
+                                        confirm_add_point: "",
+                                        boost: "",
+                                        out_point: "",
+                                        confirm_out_point: "",
+                                    });
+                                } else {
+                                    //confirm_add_point
+                                    dbCon.query("SELECT tb_user.username AS username,tb_add_point.name AS name, tb_confirm_add_point.tb_confirm_add_point_id AS tb_confirm_add_point_id, tb_confirm_add_point.status AS status ,tb_confirm_add_point.created_at AS created_at ,tb_confirm_add_point.update_at AS update_at FROM tb_confirm_add_point LEFT JOIN tb_user ON tb_user.id = tb_confirm_add_point.admin_id LEFT JOIN tb_add_point ON tb_add_point.add_point_id = tb_confirm_add_point.add_point_id", (err, confirm_add_point) => {
+                                        if (err) {
+                                            req.flash("error", err);
+                                            res.render("adminData/history", {
+                                                title: "ยืนยันผู้ใช้",
+                                                username: req.session.userName,
+                                                emailS: req.session.emailUser,
+                                                levelS: req.session.level,
+                                                userImg: req.session.userImg,
+                                                boardhealth: "",
+                                                communityboard: "",
+                                                article: "",
+                                                shop: "",
+                                                add_point: "",
+                                                confirm_add_point: "",
+                                                boost: "",
+                                                out_point: "",
+                                                confirm_out_point: "",
+                                            });
+                                        } else {
+                                            //boost
+                        
+                                            dbCon.query("SELECT tb_shop.title AS title,tb_boost.date_start AS date_start, tb_boost.date_end AS date_end, tb_boost.point AS point, tb_boost.numday AS numday, tb_boost.status AS status FROM tb_boost LEFT JOIN tb_shop ON tb_shop.shop_id = tb_boost.shop_id", (err, boost) => {
+                                                if (err) {
+                                                    req.flash("error", err);
+                                                    res.render("adminData/history", {
+                                                        title: "ยืนยันผู้ใช้",
+                                                        username: req.session.userName,
+                                                        emailS: req.session.emailUser,
+                                                        levelS: req.session.level,
+                                                        userImg: req.session.userImg,
+                                                        boardhealth: "",
+                                                        communityboard: "",
+                                                        article: "",
+                                                        shop: "",
+                                                        add_point: "",
+                                                        confirm_add_point: "",
+                                                        boost: "",
+                                                        out_point: "",
+                                                        confirm_out_point: "",
+                                                    });
+                                                } else {
+                                                    //out_point
+                                
+                                                    dbCon.query("SELECT tb_user.username AS username,tb_out_point.bank AS bank, tb_out_point.account_number AS account_number, tb_out_point.name AS name, tb_out_point.money AS money, tb_out_point.status AS status FROM tb_out_point LEFT JOIN tb_user ON tb_user.id = tb_out_point.user_id", (err, out_point) => {
+                                                        if (err) {
+                                                            req.flash("error", err);
+                                                            res.render("adminData/history", {
+                                                                title: "ยืนยันผู้ใช้",
+                                                                username: req.session.userName,
+                                                                emailS: req.session.emailUser,
+                                                                levelS: req.session.level,
+                                                                userImg: req.session.userImg,
+                                                                boardhealth: "",
+                                                                communityboard: "",
+                                                                article: "",
+                                                                shop: "",
+                                                                add_point: "",
+                                                                confirm_add_point: "",
+                                                                boost: "",
+                                                                out_point: "",
+                                                                confirm_out_point: "",
+                                                            });
+                                                        } else {
+                                                            //confirm_out_point
+                                        
+                                                            dbCon.query("SELECT tb_out_point.name AS name,tb_confirm_out_point.photo AS photo,tb_confirm_out_point.status AS status ,tb_confirm_out_point.created_at AS created_at ,tb_confirm_out_point.update_at AS update_at FROM tb_confirm_out_point LEFT JOIN tb_out_point ON tb_out_point.out_point_id = tb_confirm_out_point.out_point_id", (err, confirm_out_point) => {
+                                                                if (err) {
+                                                                    req.flash("error", err);
+                                                                    res.render("adminData/history", {
+                                                                        title: "ยืนยันผู้ใช้",
+                                                                        username: req.session.userName,
+                                                                        emailS: req.session.emailUser,
+                                                                        levelS: req.session.level,
+                                                                        userImg: req.session.userImg,
+                                                                        boardhealth: "",
+                                                                        communityboard: "",
+                                                                        article: "",
+                                                                        shop: "",
+                                                                        add_point: "",
+                                                                        confirm_add_point: "",
+                                                                        boost: "",
+                                                                        out_point: "",
+                                                                        confirm_out_point: "",
+                                                                    });
+                                                                } else {
+                                                                    // shop
+                                                                    dbCon.query("SELECT tb_user.username AS username,tb_shop.title AS title,tb_shop.created_at AS created_at ,tb_shop.update_at AS update_at FROM tb_shop LEFT JOIN tb_user ON tb_user.id = tb_shop.user_id", (err, shop) => {
+                                                                        if (err) {
+                                                                            req.flash("error", err);
+                                                                            res.render("adminData/history", {
+                                                                                title: "ยืนยันผู้ใช้",
+                                                                                username: req.session.userName,
+                                                                                emailS: req.session.emailUser,
+                                                                                levelS: req.session.level,
+                                                                                userImg: req.session.userImg,
+                                                                                boardhealth: "",
+                                                                                communityboard: "",
+                                                                                article: "",
+                                                                                shop: "",
+                                                                                add_point: "",
+                                                                                confirm_add_point: "",
+                                                                                boost: "",
+                                                                                out_point: "",
+                                                                                confirm_out_point: "",
+                                                                            });
+                                                                        } else {
+                                                                            // communityboard
+                                                                            dbCon.query("SELECT tb_user.username AS username,tb_communityboard.title AS title,tb_communityboard.created_at AS created_at ,tb_communityboard.update_at AS update_at FROM tb_communityboard LEFT JOIN tb_user ON tb_user.id = tb_communityboard.user_id", (err, communityboard) => {
+                                                                                if (err) {
+                                                                                    req.flash("error", err);
+                                                                                    res.render("adminData/history", {
+                                                                                        title: "ยืนยันผู้ใช้",
+                                                                                        username: req.session.userName,
+                                                                                        emailS: req.session.emailUser,
+                                                                                        levelS: req.session.level,
+                                                                                        userImg: req.session.userImg,
+                                                                                        boardhealth: "",
+                                                                                        communityboard: "",
+                                                                                        article: "",
+                                                                                        shop: "",
+                                                                                        add_point: "",
+                                                                                        confirm_add_point: "",
+                                                                                        boost: "",
+                                                                                        out_point: "",
+                                                                                        confirm_out_point: "",
+                                                                                    });
+                                                                                } else {
+                                                                
+                                                                                    res.render("adminData/history", {
+                                                                                        title: "ยืนยันผู้ใช้",
+                                                                                        username: req.session.userName,
+                                                                                        emailS: req.session.emailUser,
+                                                                                        levelS: req.session.level,
+                                                                                        userImg: req.session.userImg,
+                                                                                        boardhealth: boardhealth,
+                                                                                        communityboard: communityboard,
+                                                                                        article: article,
+                                                                                        shop: shop,
+                                                                                        add_point: add_point,
+                                                                                        confirm_add_point: confirm_add_point,
+                                                                                        boost: boost,
+                                                                                        out_point: out_point,
+                                                                                        confirm_out_point: confirm_out_point,
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
 
     // ยืนยันผู้ใช้ ระดับ 2 ร้านค้า 
     router.get("/verifyUser", function (req, res, next) {
@@ -491,10 +786,6 @@ const ifNotLogIn = (req, res, next) => {
             });
         }
     });
-
-
-
-
 
     // ยืนยันผู้ใช้ ถอนพอทย์ 
     router.get("/confirmOutPoint", function (req, res, next) {

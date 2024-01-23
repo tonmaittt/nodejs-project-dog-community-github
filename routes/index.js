@@ -1399,21 +1399,32 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
                 req.flash("error", "ไม่พบกระทู้ = " + id);
                 res.redirect("/boardhealth");
               } else {
-                res.render("boardhealthDetail", {
-                  title: "รายละเอียดบอร์ดสุขภาพสุนัช",
-                  username: "0",
-                  emailS: "0",
-                  levelS: 0,
-                  userImg: req.session.userImg,
-                  id: rows[0].boardhealth_id,
-                  titletext: rows[0].title,
-                  photo: rows[0].photo,
-                  details: rows[0].details,
-                  createdP: rows[0].created_at,
-                  namehead: rows2[0].username,
-                  imghead: rows2[0].img,
-                  view: rows[0].view,
-                });
+                dbCon.query(
+                  "SELECT * FROM tb_comment_vets WHERE boardhealth_id = ?",[id],
+                  (err, rows3, fields) => {
+                    if (rows2.length <= 0) {
+                      req.flash("error", "ไม่พบกระทู้ = " + id);
+                      res.redirect("/boardhealth");
+                    } else {
+                      res.render("boardhealthDetail", {
+                        title: "รายละเอียดบอร์ดสุขภาพสุนัช",
+                        username: "0",
+                        emailS: "0",
+                        levelS: 0,
+                        userImg: req.session.userImg,
+                        id: rows[0].boardhealth_id,
+                        titletext: rows[0].title,
+                        photo: rows[0].photo,
+                        details: rows[0].details,
+                        createdP: rows[0].created_at,
+                        namehead: rows2[0].username,
+                        imghead: rows2[0].img,
+                        view: rows[0].view,
+                        cmvets: rows3,
+                      });
+                    }
+                  }
+                );
               }
             }
           );
@@ -1432,21 +1443,32 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
               req.flash("error", "ไม่พบกระทู้ = " + id);
               res.redirect("/boardhealth");
             } else {
-              res.render("boardhealthDetail", {
-                title: "รายละเอียดบอร์ดสุขภาพสุนัข",
-                username: req.session.userName,
-                emailS: req.session.emailUser,
-                levelS: req.session.level,
-                userImg: req.session.userImg,
-                id: rows[0].boardhealth_id,
-                titletext: rows[0].title,
-                photo: rows[0].photo,
-                details: rows[0].details,
-                createdP: rows[0].created_at,
-                namehead: rows2[0].username,
-                imghead: rows2[0].img,
-                view: rows[0].view,
-              });
+              dbCon.query(
+                "SELECT * FROM tb_comment_vets WHERE boardhealth_id = ?",[id],
+                (err, rows3, fields) => {
+                  if (rows2.length <= 0) {
+                    req.flash("error", "ไม่พบกระทู้ = " + id);
+                    res.redirect("/boardhealth");
+                  } else {
+                    res.render("boardhealthDetail", {
+                      title: "รายละเอียดบอร์ดสุขภาพสุนัช",
+                      username: req.session.userName,
+                      emailS: req.session.emailUser,
+                      levelS: req.session.level,
+                      userImg: req.session.userImg,
+                      id: rows[0].boardhealth_id,
+                      titletext: rows[0].title,
+                      photo: rows[0].photo,
+                      details: rows[0].details,
+                      createdP: rows[0].created_at,
+                      namehead: rows2[0].username,
+                      imghead: rows2[0].img,
+                      view: rows[0].view,
+                      cmvets: rows3,
+                    });
+                  }
+                }
+              );
             }
           }
         );
@@ -1928,6 +1950,7 @@ router.get("/shop", function (req, res, next) {
     }
   );
 
+  // ส่วน แสดง
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
       "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id ORDER BY boost DESC , shop_id DESC",
@@ -2841,6 +2864,42 @@ router.post("/clicked/shopdetail/(:id)", (req, res, next) => {
  }
 });
 
+// ผู้เชี่ยวชาญ
+router.post("/clicked2/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        boardhealth_id: boardhealth_id,
+        status: 1,
+    }
+
+    dbCon.query(
+      "SELECT * FROM tb_like_comment_vets WHERE user_id = ? AND boardhealth_id = ?" , [req.session.idUser,boardhealth_id],
+      (err, rows1) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          if (rows1.length == 1) {
+            return console.log("ถูกใจไว้อยู่แล้ว");
+          }else{
+            dbCon.query("INSERT INTO tb_like_comment_vets SET ?", form_data, (err, result) => {
+              if (err) {
+                  return console.log(err);
+              } else {
+                console.log('click added to db');
+                res.sendStatus(201);
+              }
+            })
+          }
+        }
+      }
+    );
+ }
+});
+
 // นับถูกใจ
 // Boardhealth
 router.get("/clicks/(:id)", (req, res, next) => {
@@ -2892,6 +2951,21 @@ router.get("/clicks/shopdetail/(:id)", (req, res, next) => {
   let shop_id = req.params.id;
   dbCon.query(
     "SELECT * FROM tb_like_shop WHERE shop_id = ?" , [shop_id],
+    (err, rows) => {
+      if (err) {  
+        return console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
+
+// ผู้เชี่ยวชาญ
+router.get("/clicks2/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_like_comment_vets WHERE boardhealth_id = ?" , [boardhealth_id],
     (err, rows) => {
       if (err) {  
         return console.log(err);
@@ -3019,6 +3093,42 @@ router.post("/commentAddShopdetail/(:id)", (req, res, next) => {
   }
 });
 
+// ผู้เชียวชาญ
+router.post("/commentAddVets/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  let boardhealth_id = req.params.id;
+  let comment = req.body.comment
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        user_id: req.session.idUser,
+        boardhealth_id: boardhealth_id,
+        comment_details: comment,
+        status: 1,
+    }
+    
+    dbCon.query("INSERT INTO tb_comment_vets SET ?", form_data, (err, result) => {
+      if (err) {
+          return console.log(err);
+      } else {
+        dbCon.query("UPDATE tb_point_user SET point = point + ? WHERE user_id = ?" ,  [5,req.session.idUser], (err, result) => {
+          if (err) {
+              return console.log(err);
+          } else {
+            res.redirect(req.get('referer'));
+            // return res.redirect("/boardhealthDetail/"+ boardhealthId);
+          }
+          }
+        );
+      }
+      }
+    );
+  }
+});
+
 // แสเงคอมเม้น
 // Boardhealth
 router.get("/api/user/(:id)", (req, res, next) => {
@@ -3076,6 +3186,23 @@ router.get("/comment/shopdetail/(:id)", (req, res, next) => {
   let shop_id = req.params.id;
   dbCon.query(
     "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_shop.comment_details AS comments, tb_comment_shop.update_at AS time FROM tb_comment_shop LEFT JOIN tb_user ON tb_comment_shop.user_id = tb_user.id  WHERE shop_id = ? ORDER BY comment_shop_id DESC" , shop_id,
+    (err, users) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        // console.log(users);
+        res.json(users);
+      }
+    }
+  );
+  
+});
+
+// ผู้เชียวชาญ
+router.get("/api/vets/(:id)", (req, res, next) => {
+  let boardhealth_id = req.params.id;
+  dbCon.query(
+    "SELECT tb_vets.vets_title AS title,tb_vets.vets_fname AS fname, tb_vets.vets_sname AS sname, tb_vets.vets_img AS img, tb_comment_vets.comment_details AS comments, tb_comment_vets.update_at AS time FROM tb_comment_vets LEFT JOIN tb_vets ON tb_comment_vets.user_id = tb_vets.user_id  WHERE boardhealth_id = ?" , [boardhealth_id],
     (err, users) => {
       if (err) {
         return console.log(err);
