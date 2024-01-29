@@ -223,7 +223,7 @@ router.post("/editProfileSubmit", upload.single("photo"), (req, res, next) => {
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_user SET ? WHERE id = ?",[req.session.idUser, form_data],
+      "UPDATE tb_user SET ? WHERE id = ?",[form_data,req.session.idUser],
       (err, result) => {
         if (err) {
           req.flash("error", err);
