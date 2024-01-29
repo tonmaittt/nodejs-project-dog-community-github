@@ -587,7 +587,7 @@ router.post("/dogAddSubmit", upload.single("photo"), (req, res, next) => {
         status: 1
     }
     // insert query
-    dbCon.query("INSERT INTO tb_dog SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_dog SET ?", [form_data], (err, result) => {
       if (err) {
           console.log("ERRO");
           req.flash('error', err);
@@ -646,7 +646,7 @@ router.post("/editDogProfileSubmit", upload.single("photo"), (req, res, next) =>
     };
     // insert query
     dbCon.query(
-      "UPDATE tb_dog SET ? WHERE user_id = ?",[req.session.idUser, form_data],
+      "UPDATE tb_dog SET ? WHERE user_id = ?",[form_data,req.session.idUser],
       (err, result) => {
         if (err) {
           req.flash("error", err);
@@ -802,7 +802,7 @@ router.post("/shopAddSubmit", upload.single("photo"), (req, res, next) => {
         status: 1
     }
     // insert query
-    dbCon.query("INSERT INTO tb_user_shop SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_user_shop SET ?", [form_data], (err, result) => {
       if (err) {
           console.log("ERRO");
           req.flash('error', err);
@@ -850,7 +850,7 @@ router.get("/editShopProfile", function (req, res, next) {
   );
 });
 
-// add a แก้ไข รูปโปรไฟล์สุนัข
+// add a แก้ไข รูปโปรไฟล์ร้าน
 router.post("/editShopProfileSubmit", upload.single("photo"), (req, res, next) => {
   let photo = req.file.filename;
   let errors = false;
