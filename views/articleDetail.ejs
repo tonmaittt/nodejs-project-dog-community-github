@@ -185,6 +185,8 @@
         </script>
         <!-- แสดงคอมเม้น -->
         <script>
+            var uid = <%= user_id  %>;
+            console.log(uid); 
                 fetch('/comment/article/<%- id %>', {method: 'GET'})
                     .then(function(response) {
                     if(response.ok) return response.json();
@@ -194,7 +196,24 @@
                     console.log(data);
                     document.getElementById('counterComment').innerHTML = `${data.length}`;
                     for (let i = 0; i < data.length; i++) {
-                    document.getElementById('commentShow').innerHTML += `
+                        if(uid == data[i]["user_id"]){ 
+                            document.getElementById('commentShow').innerHTML += `
+                                                    <li class="list-group-item">
+                                                        <div class="media">
+                                                            <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64px;">
+                                                            <div class="media-body">
+                                                                <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
+                                                                ${data[i]["comments"]}
+                                                                <div class="mt-2">
+                                                                    <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))} | แก้ไข | ลบ </small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                
+                                                    `;
+                         }else{
+                            document.getElementById('commentShow').innerHTML += `
                                                     <li class="list-group-item">
                                                         <div class="media">
                                                             <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64px;">
@@ -203,13 +222,14 @@
                                                                 ${data[i]["comments"]}
                                                                 <div class="mt-2">
                                                                     <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
-                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </li>
                                                 
                                                     `;
+                         }
+
                     }
                     })
                     .catch(function(error) {

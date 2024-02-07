@@ -1839,6 +1839,7 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
               } else {
                 res.render("articleDetail", {
                   title: "รายละเอียดบทความ",
+                  user_id: "-1",
                   username: "0",
                   emailS: "0",
                   levelS: 0,
@@ -1871,6 +1872,7 @@ router.get("/articleDetail/(:id)", (req, res, next) => {
             } else {
               res.render("articleDetail", {
                 title: "รายละเอียดบทความ",
+                user_id: req.session.idUser,
                 username: req.session.userName,
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
@@ -3151,7 +3153,7 @@ router.get("/api/user/(:id)", (req, res, next) => {
 router.get("/comment/article/(:id)", (req, res, next) => {
   let article_id = req.params.id;
   dbCon.query(
-    "SELECT tb_user.username AS name, tb_user.img AS img, tb_comment_article.comment_details AS comments, tb_comment_article.update_at AS time FROM tb_comment_article LEFT JOIN tb_user ON tb_comment_article.user_id = tb_user.id  WHERE 	article_id = ? ORDER BY 	comment_article_id DESC" , article_id,
+    "SELECT tb_comment_article.user_id AS user_id, tb_user.username AS name, tb_user.img AS img, tb_comment_article.comment_details AS comments, tb_comment_article.update_at AS time FROM tb_comment_article LEFT JOIN tb_user ON tb_comment_article.user_id = tb_user.id  WHERE 	article_id = ? ORDER BY 	comment_article_id DESC" , article_id,
     (err, users) => {
       if (err) {
         return console.log(err);
