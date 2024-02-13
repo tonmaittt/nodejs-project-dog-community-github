@@ -83,12 +83,25 @@
                                 <!-- comment -->
 
                                 <div class="container mt-5 mb-5">
+                                    <% if (messages.success) { %>
+                                        <div class="alert alert-success" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <%= messages.success %>
+                                        </div>
+                                    <% } %>
+                                    <% if (messages.error) { %>
+                                        <div class="alert alert-danger" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <%= messages.error %>
+                                        </div>
+                                    <% } %>
                                     <div class="card mt-3">
                                         <div class="card-header">
                                             ความคิดเห็น
                                         </div>
                                         <div class="card-body">
                                             <% if(levelS != 0) { %>
+                                                
                                                 <form action="/commentAddArticle/<%- id %>" method="post">
                                                     <div class="form-group  mt-2">
                                                         <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ" required></textarea>
@@ -99,7 +112,6 @@
                                                     <div class="form-group  mt-2">
                                                         <li class="list-group-item">
                                                             <div class="media">
-                                                               
                                                                 <div class="media-body">
                                                                     <h5 class="mt-0 mb-0"></h5>
                                                                     <div class="m-2">
@@ -205,7 +217,7 @@
                                                                 <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
                                                                 ${data[i]["comments"]}
                                                                 <div class="mt-2">
-                                                                    <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))} | <a href="#" data-toggle="modal" data-target="#exampleModal${data[i]["cm_id"]}" data-whatever="123">แก้ไข</a> | ลบ </small>
+                                                                    <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))} | <a href="#" data-toggle="modal" data-target="#exampleModal${data[i]["cm_id"]}" data-whatever="123">แก้ไข</a> | <a href="/commentDeleteArticle/${data[i]["cm_id"]}" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a> </small>
                                                                     <!-- pop up -->
                                                                     
 

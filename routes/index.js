@@ -2743,7 +2743,7 @@ router.post("/clicked/(:id)", (req, res, next) => {
           if (rows1.length == 1) {
             return console.log("ถูกใจไว้อยู่แล้ว");
           }else{
-            dbCon.query("INSERT INTO tb_like_boardhealth SET ?", form_data, (err, result) => {
+            dbCon.query("INSERT INTO tb_like_boardhealth SET ?", [form_data], (err, result) => {
               if (err) {
                   return console.log(err);
               } else {
@@ -2779,7 +2779,7 @@ router.post("/clicked/article/(:id)", (req, res, next) => {
           if (rows1.length == 1) {
             return console.log("ถูกใจไว้อยู่แล้ว");
           }else{
-            dbCon.query("INSERT INTO tb_like_article SET ?", form_data, (err, result) => {
+            dbCon.query("INSERT INTO tb_like_article SET ?", [form_data], (err, result) => {
               if (err) {
                   return console.log(err);
               } else {
@@ -2815,7 +2815,7 @@ router.post("/clicked/Communityboard/(:id)", (req, res, next) => {
           if (rows1.length == 1) {
             return console.log("ถูกใจไว้อยู่แล้ว");
           }else{
-            dbCon.query("INSERT INTO tb_like_communityboard SET ?", form_data, (err, result) => {
+            dbCon.query("INSERT INTO tb_like_communityboard SET ?", [form_data], (err, result) => {
               if (err) {
                   return console.log(err);
               } else {
@@ -2851,7 +2851,7 @@ router.post("/clicked/shopdetail/(:id)", (req, res, next) => {
           if (rows1.length == 1) {
             return console.log("ถูกใจไว้อยู่แล้ว");
           }else{
-            dbCon.query("INSERT INTO tb_like_shop SET ?", form_data, (err, result) => {
+            dbCon.query("INSERT INTO tb_like_shop SET ?", [form_data], (err, result) => {
               if (err) {
                   return console.log(err);
               } else {
@@ -2887,7 +2887,7 @@ router.post("/clicked2/(:id)", (req, res, next) => {
           if (rows1.length == 1) {
             return console.log("ถูกใจไว้อยู่แล้ว");
           }else{
-            dbCon.query("INSERT INTO tb_like_comment_vets SET ?", form_data, (err, result) => {
+            dbCon.query("INSERT INTO tb_like_comment_vets SET ?", [form_data], (err, result) => {
               if (err) {
                   return console.log(err);
               } else {
@@ -2996,7 +2996,7 @@ router.post("/commentAddBoardhealth/(:id)", (req, res, next) => {
         status: 1,
     }
     
-    dbCon.query("INSERT INTO tb_comment_boardhealth SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_comment_boardhealth SET ?", [form_data], (err, result) => {
       if (err) {
           return console.log(err);
       } else {
@@ -3025,7 +3025,7 @@ router.post("/commentAddArticle/(:id)", (req, res, next) => {
         status: 1,
     }
     
-    dbCon.query("INSERT INTO tb_comment_article SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_comment_article SET ?", [form_data], (err, result) => {
       if (err) {
           return console.log(err);
       } else {
@@ -3054,7 +3054,7 @@ router.post("/commentAddCommunityboard/(:id)", (req, res, next) => {
         status: 1,
     }
     
-    dbCon.query("INSERT INTO tb_comment_communityboard SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_comment_communityboard SET ?", [form_data], (err, result) => {
       if (err) {
           return console.log(err);
       } else {
@@ -3083,7 +3083,7 @@ router.post("/commentAddShopdetail/(:id)", (req, res, next) => {
         status: 1,
     }
     
-    dbCon.query("INSERT INTO tb_comment_shop SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_comment_shop SET ?", [form_data], (err, result) => {
       if (err) {
           return console.log(err);
       } else {
@@ -3112,7 +3112,7 @@ router.post("/commentAddVets/(:id)", (req, res, next) => {
         status: 1,
     }
     
-    dbCon.query("INSERT INTO tb_comment_vets SET ?", form_data, (err, result) => {
+    dbCon.query("INSERT INTO tb_comment_vets SET ?", [form_data], (err, result) => {
       if (err) {
           return console.log(err);
       } else {
@@ -3125,6 +3125,58 @@ router.post("/commentAddVets/(:id)", (req, res, next) => {
           }
           }
         );
+      }
+      }
+    );
+  }
+});
+
+// แก้ไขคอมเม้น
+// Article
+router.post("/commentEditArticle/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  let articleId = req.params.id;
+  let comment = req.body.comment
+  let errors = false;
+
+  if (!errors) {
+    let form_data = {
+        comment_details: comment,
+    }
+    
+    dbCon.query("UPDATE tb_comment_article SET ? WHERE comment_article_id = ?", [form_data,articleId], (err, result) => {
+      if (err) {
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+          return console.log(err);
+      } else {
+        req.flash('success', 'แก้ไขความคิดเห็นสำเร็จ');
+        res.redirect(req.get('referer'));
+      }
+      }
+    );
+  }
+});
+
+// ลบคอมเม้น
+// Article
+router.get("/commentDeleteArticle/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  let articleId = req.params.id;
+  let errors = false;
+
+  if (!errors) {
+    
+    dbCon.query("DELETE FROM tb_comment_article WHERE comment_article_id = ?", [articleId], (err, result) => {
+      if (err) {
+          req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+          return console.log(err);
+      } else {
+        req.flash('success', 'ลบความคิดเห็นสำเร็จ');
+        res.redirect(req.get('referer'));
       }
       }
     );
