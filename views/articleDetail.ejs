@@ -198,7 +198,6 @@
         <!-- แสดงคอมเม้น -->
         <script>
             var uid = <%= user_id  %>;
-            console.log(uid); 
                 fetch('/comment/article/<%- id %>', {method: 'GET'})
                     .then(function(response) {
                     if(response.ok) return response.json();

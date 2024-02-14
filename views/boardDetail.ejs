@@ -81,6 +81,18 @@
                                 <!-- comment -->
 
                                 <div class="container mt-5 mb-5">
+                                    <% if (messages.success) { %>
+                                        <div class="alert alert-success" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <%= messages.success %>
+                                        </div>
+                                    <% } %>
+                                    <% if (messages.error) { %>
+                                        <div class="alert alert-danger" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <%= messages.error %>
+                                        </div>
+                                    <% } %>
                                     <div class="card mt-3">
                                         <div class="card-header">
                                             ความคิดเห็น
@@ -177,6 +189,7 @@
                 </script>
                 <!-- แสดงคอมเม้น -->
                 <script>
+                    var uid = <%= user_id  %>;
                         fetch('/comment/Communityboard/<%- id %>', {method: 'GET'})
                             .then(function(response) {
                             if(response.ok) return response.json();
@@ -186,7 +199,54 @@
                             console.log(data);
                             document.getElementById('counterComment').innerHTML = `${data.length}`;
                             for (let i = 0; i < data.length; i++) {
-                            document.getElementById('commentShow').innerHTML += `
+                                if(uid == data[i]["user_id"]){ 
+                                    document.getElementById('commentShow').innerHTML += `
+                                                            <li class="list-group-item">
+                                                                <div class="media">
+                                                                    <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64px;">
+                                                                    <div class="media-body">
+                                                                        <h5 class="mt-0 mb-0">${data[i]["name"]}</h5>
+                                                                        ${data[i]["comments"]}
+                                                                        <div class="mt-2">
+                                                                            <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))} | <a href="#" data-toggle="modal" data-target="#exampleModal${data[i]["cm_id"]}" data-whatever="123">แก้ไข</a> | <a href="/commentDeleteCommunityboard/${data[i]["cm_id"]}" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">ลบ</a> </small>
+                                                                            <!-- pop up -->
+                                                                            
+
+                                                                            <div class="modal fade" id="exampleModal${data[i]["cm_id"]}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขความคิดเห็น</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                    <form action="/commentEditCommunityboard/${data[i]["cm_id"]}" method="post">
+                                                                                        <div class="form-group">
+                                                                                            <div class="form-group  mt-2">
+                                                                                                <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="ป้อนความคิดเห็นของคุณ" required>${data[i]["comments"]}</textarea>
+                                                                                            </div> 
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="button" class="btn btn-secondary mb-3" data-dismiss="modal">ยกเลิก</button>
+                                                                                            <button type="submit" class="btn btn-primary mb-3" style="background-color: coral;">ส่งความคิดเห็น</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                    </div>
+                                                                                    
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        
+                                                            `;
+                                }else{
+                                    document.getElementById('commentShow').innerHTML += `
                                                             <li class="list-group-item">
                                                                 <div class="media">
                                                                     <img src="../img/${data[i]["img"]}" class="ml-0 mr-3 img-fluid rounded-circle img-mini" alt="User Image" style="width: 64px;height: 64px;">
@@ -195,13 +255,13 @@
                                                                         ${data[i]["comments"]}
                                                                         <div class="mt-2">
                                                                             <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
-                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </li>
                                                         
                                                             `;
+                                }
                             }
                             })
                             .catch(function(error) {
