@@ -15,7 +15,7 @@
 						<!-- logo -->
 						<div class="site-logo">
 							<a href="/">
-								<img src="../img/LOGO_V.2.png" alt="">
+								<div id="icon"></div>
 							</a>
 						</div>
 						<!-- logo -->
@@ -92,3 +92,22 @@
 		</div>
 	</div> -->
 	<!-- end search area -->
+
+		<!-- แสดง Shop -->
+		<script>
+			fetch('/iconWeb', {method: 'GET'})
+				.then(function(response) {
+				if(response.ok) return response.json();
+				throw new Error('Request failed.');
+				})
+				.then(function(data) {
+				console.log(data);
+				document.getElementById('icon').innerHTML += `
+				<img src="../img/${data[0]["icon"]}" alt="">		
+												`;
+				})
+				.catch(function(error) {
+				console.log(error);
+				});
+	
+		</script>

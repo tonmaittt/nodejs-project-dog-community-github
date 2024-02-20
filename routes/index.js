@@ -3808,6 +3808,21 @@ router.post('/editBoardhealthAdd/(:id)',upload.single("photo"), (req, res, next)
 
 
 
+//icon Website
+router.get("/iconWeb", (req, res, next) => {
+  dbCon.query(
+    "SELECT * FROM tb_web_profile WHERE web_profile_id = ?",[1] ,
+    (err, icon) => {
+      if (err) {
+        return console.log(err);
+      } else {
+        // console.log(users);
+        res.json(icon);
+      }
+    }
+  );
+  
+});
 
 
 /* userData page. */
@@ -3834,9 +3849,13 @@ router.get("/admin", ifNotLogIn, function (req, res, next) {
 });
 
 
+
   //กรณีไม่พบหน้า
   router.get('*', (req, res)=>{
     res.status(404).send('Page Not Found');
   });
+
+
+
 
 module.exports = router;
