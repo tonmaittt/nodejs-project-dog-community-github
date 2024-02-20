@@ -16,7 +16,7 @@
                     <div class="col-lg-8 offset-lg-2 text-center">
                         <div class="breadcrumb-text">
                             <p class="subtitle">LOVE DOGS TH</p>
-                            <h1>บอร์ดสุขภาพสุนัข</h1>
+                            <h1>บทความ</h1>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                                         <div class="text-with-lines d-flex justify-content-center">
                                             <div class="text-top">
                                                 <div class="title mt-2">
-                                                    <h3>แก้ไขกระทู้ถามปัญหา</h3>
+                                                    <h3>แก้ไขบทความ</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,7 +59,7 @@
                                                 </div>
                                                 <div class="col-sm-9 mx-auto mt-auto">
                                                     <div class="container">
-                                                        <form action="/editBoardhealthAdd/<%= data[0].boardhealth_id %>" method="post">
+                                                        <form action="/editArticleAdd/<%= data[0].article_id %>" method="post">
                                                             <div class="form-group">
                                                                 <label for="titleboard">หัวข้อ</label>
                                                                 <input type="text" class="form-control" id="titleboard"
@@ -71,7 +71,7 @@
                                                                 <label for="image">รูปภาพประกอบ</label><br>
                                                                 <img id="output" class="border" src="../img/<%= data[0].photo %>" alt="" width="100%" height="500px">
                                                                 <div class="text-right mt-3">
-                                                                    <a href="/editBoardhealthIMG/<%= data[0].boardhealth_id %>" class="boxed-btn">แก้ไขรูปภาพประกอบ</a>
+                                                                    <a href="/editArticleIMG/<%= data[0].article_id %>" class="boxed-btn">แก้ไขรูปภาพประกอบ</a>
                                                                 </div>
                                                             </div>
 

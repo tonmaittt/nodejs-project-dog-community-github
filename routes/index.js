@@ -3710,8 +3710,7 @@ router.get("/ShopShow3", (req, res, next) => {
 });
 
 
-// แก้ไข จัดการ ----------------> 
-// ส่วนแสดง ---------------->
+// แก้ไข จัดการ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
 /* MY boardhealth page. */
 router.get("/myBoardhealth", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
@@ -3779,10 +3778,12 @@ router.get("/editBoardhealth/(:id)", function (req, res, next) {
   );
 });
 
-router.post('/editBoardhealthAdd/(:id)',upload.single("photo"), (req, res, next) => {
+router.post('/editBoardhealthAdd/(:id)', (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("*")
+  }
   let id = req.params.id;
   let titleboard = req.body.titleboard;
-  let photo = req.file.filename;
   let details = req.body.details;
   let errors = false;
 
@@ -3790,7 +3791,6 @@ router.post('/editBoardhealthAdd/(:id)',upload.single("photo"), (req, res, next)
   if (!errors) {
       let form_data = {
         title: titleboard,
-        photo: photo,
         details: details
       }
       // update query
@@ -3805,6 +3805,617 @@ router.post('/editBoardhealthAdd/(:id)',upload.single("photo"), (req, res, next)
       })
   }
 })
+
+/* MY boardhealth -> Edit -> IMG */
+router.get("/editBoardhealthIMG/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let boardhealth_id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_boardhealth WHERE boardhealth_id = ?",[boardhealth_id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editBoardhealthIMG", {
+          title: "My Board Health",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        console.log(rows);
+        res.render("editBoardhealthIMG", {
+          title: "My Board Health",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post("/editBoardhealthIMGAdd/(:id)", upload.single("photo"), (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+
+  let photo = req.file.filename;
+  let id = req.params.id;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      photo: photo,
+    };
+    // insert query
+    dbCon.query("UPDATE tb_boardhealth SET ? WHERE 	boardhealth_id = ?" ,[form_data,id], (err, result) => {
+      if (err) {
+          req.flash('error', err);
+          res.redirect('/myBoardhealth')
+      } else {
+          req.flash('success', 'แก้ไขสำเร็จ');
+          res.redirect('/myBoardhealth')
+      }
+  })
+  }
+});
+
+/* MY boardhealth -> DELETE */
+router.get("/deleteBoardhealth/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let errors = false;
+
+  dbCon.query("DELETE FROM tb_boardhealth WHERE boardhealth_id = ?", [id], (err, result) => {
+    if (err) {
+        req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+        return console.log(err);
+    } else {
+      req.flash('success', 'ลบบอร์ดสุขภาพสุนัขสำเร็จ');
+      res.redirect(req.get('referer'));
+    }
+    }
+  );
+});
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* MY Article page. */
+router.get("/myArticle", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  dbCon.query(
+    "SELECT tb_article.article_id,tb_article.title,tb_article.photo,tb_article.details,tb_article.status,tb_article.view,tb_article.created_at,tb_article.update_at,tb_user.username,tb_user.img FROM tb_article INNER JOIN tb_user ON tb_article.user_id = tb_user.id WHERE tb_article.user_id = ? ORDER BY article_id DESC",[req.session.idUser],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("myArticle", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("myArticle", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+/* MY Article -> Edit */
+router.get("/editArticle/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_article WHERE article_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editArticle", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("editArticle", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post('/editArticleAdd/(:id)', (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let titleboard = req.body.titleboard;
+  let details = req.body.details;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+      let form_data = {
+        title: titleboard,
+        details: details
+      }
+      // update query
+      dbCon.query("UPDATE tb_article SET ? WHERE 	article_id = ?" ,[form_data,id], (err, result) => {
+          if (err) {
+              req.flash('error', err);
+              res.redirect('/myArticle')
+          } else {
+              req.flash('success', 'แก้ไขสำเร็จ');
+              res.redirect('/myArticle')
+          }
+      })
+  }
+})
+
+/* MY boardhealth -> Edit -> IMG */
+router.get("/editArticleIMG/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_article WHERE article_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editArticleIMG", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        console.log(rows);
+        res.render("editArticleIMG", {
+          title: "My Article",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post("/editArticleIMGAdd/(:id)", upload.single("photo"), (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+
+  let photo = req.file.filename;
+  let id = req.params.id;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      photo: photo,
+    };
+    // insert query
+    dbCon.query("UPDATE tb_article SET ? WHERE 	article_id = ?" ,[form_data,id], (err, result) => {
+      if (err) {
+          req.flash('error', err);
+          res.redirect('/myArticle')
+      } else {
+          req.flash('success', 'แก้ไขสำเร็จ');
+          res.redirect('/myArticle')
+      }
+  })
+  }
+});
+
+/* MY boardhealth -> DELETE */
+router.get("/deleteArticle/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let errors = false;
+
+  dbCon.query("DELETE FROM tb_article WHERE article_id = ?", [id], (err, result) => {
+    if (err) {
+        req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+        return console.log(err);
+    } else {
+      req.flash('success', 'ลบบอร์ดบทความสำเร็จ');
+      res.redirect(req.get('referer'));
+    }
+    }
+  );
+});
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* MY Boardcommunity page. */
+router.get("/myBoardcommunity", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  dbCon.query(
+    "SELECT tb_communityboard.communityboard_id,tb_communityboard.title,tb_communityboard.photo,tb_communityboard.details,tb_communityboard.status,tb_communityboard.view,tb_communityboard.created_at,tb_communityboard.update_at,tb_user.username,tb_user.img FROM tb_communityboard INNER JOIN tb_user ON tb_communityboard.user_id = tb_user.id WHERE tb_communityboard.user_id = ? ORDER BY communityboard_id DESC",[req.session.idUser],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("myBoardcommunity", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("myBoardcommunity", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+/* MY Boardcommunity -> Edit */
+router.get("/editBoardcommunity/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_communityboard WHERE communityboard_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editBoardcommunity", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("editBoardcommunity", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post('/editBoardcommunityAdd/(:id)', (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let titleboard = req.body.titleboard;
+  let details = req.body.details;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+      let form_data = {
+        title: titleboard,
+        details: details
+      }
+      // update query
+      dbCon.query("UPDATE tb_communityboard SET ? WHERE	communityboard_id = ?" ,[form_data,id], (err, result) => {
+          if (err) {
+              req.flash('error', err);
+              res.redirect('/myBoardcommunity')
+          } else {
+              req.flash('success', 'แก้ไขสำเร็จ');
+              res.redirect('/myBoardcommunity')
+          }
+      })
+  }
+})
+
+/* MY boardhealth -> Edit -> IMG */
+router.get("/editBoardcommunityIMG/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_communityboard WHERE communityboard_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editBoardcommunityIMG", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        console.log(rows);
+        res.render("editBoardcommunityIMG", {
+          title: "My Boardcommunity",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post("/editBoardcommunityIMGAdd/(:id)", upload.single("photo"), (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+
+  let photo = req.file.filename;
+  let id = req.params.id;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      photo: photo,
+    };
+    // insert query
+    dbCon.query("UPDATE tb_communityboard SET ? WHERE 	communityboard_id = ?" ,[form_data,id], (err, result) => {
+      if (err) {
+          req.flash('error', err);
+          res.redirect('/myBoardcommunity')
+      } else {
+          req.flash('success', 'แก้ไขสำเร็จ');
+          res.redirect('/myBoardcommunity')
+      }
+  })
+  }
+});
+
+/* MY boardhealth -> DELETE */
+router.get("/deleteBoardcommunity/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let errors = false;
+
+  dbCon.query("DELETE FROM tb_communityboard WHERE communityboard_id = ?", [id], (err, result) => {
+    if (err) {
+        req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+        return console.log(err);
+    } else {
+      req.flash('success', 'ลบบอร์ดบอร์ดสำเร็จ');
+      res.redirect(req.get('referer'));
+    }
+    }
+  );
+});
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* MY Shop page. */
+router.get("/myShop", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  dbCon.query(
+    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id WHERE tb_shop.user_id = ? ORDER BY boost DESC , shop_id DESC",[req.session.idUser],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("myShop", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("myShop", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+/* MY shop -> Edit */
+router.get("/editShop/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_shop WHERE shop_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editShop", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("editShop", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post('/editShopAdd/(:id)', (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let titleboard = req.body.titleboard;
+  let details = req.body.details;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+      let form_data = {
+        title: titleboard,
+        details: details
+      }
+      // update query
+      dbCon.query("UPDATE tb_shop SET ? WHERE	shop_id = ?" ,[form_data,id], (err, result) => {
+          if (err) {
+              req.flash('error', err);
+              res.redirect('/myShop')
+          } else {
+              req.flash('success', 'แก้ไขสำเร็จ');
+              res.redirect('/myShop')
+          }
+      })
+  }
+})
+
+/* MY shop -> Edit -> IMG */
+router.get("/editShopIMG/(:id)", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  dbCon.query(
+    "SELECT * FROM tb_shop WHERE shop_id = ?",[id],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("editShopIMG", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        console.log(rows);
+        res.render("editShopIMG", {
+          title: "My Shop",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+router.post("/editShopIMGAdd/(:id)", upload.single("photo"), (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+
+  let photo = req.file.filename;
+  let id = req.params.id;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      photo: photo,
+    };
+    // insert query
+    dbCon.query("UPDATE tb_shop SET ? WHERE shop_id = ?" ,[form_data,id], (err, result) => {
+      if (err) {
+          req.flash('error', err);
+          res.redirect('/myShop')
+      } else {
+          req.flash('success', 'แก้ไขสำเร็จ');
+          res.redirect('/myShop')
+      }
+  })
+  }
+});
+
+/* MY Shop -> DELETE */
+router.get("/deleteShop/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let id = req.params.id;
+  let errors = false;
+
+  dbCon.query("DELETE FROM tb_shop WHERE shop_id = ?", [id], (err, result) => {
+    if (err) {
+        req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+        return console.log(err);
+    } else {
+      req.flash('success', 'ลบบอร์ดร้านค้าสำเร็จ');
+      res.redirect(req.get('referer'));
+    }
+    }
+  );
+});
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
 

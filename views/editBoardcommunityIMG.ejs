@@ -16,7 +16,7 @@
                     <div class="col-lg-8 offset-lg-2 text-center">
                         <div class="breadcrumb-text">
                             <p class="subtitle">LOVE DOGS TH</p>
-                            <h1>บอร์ดสุขภาพสุนัข</h1>
+                            <h1>บอร์ด</h1>
                         </div>
                     </div>
                 </div>
@@ -34,17 +34,11 @@
                             </div>
                             <% } %>
                                 <div class="container">
-                                    <!-- <div class="d-inline-flex">
-                                        <div class="p-2"
-                                            style="color: rgb(255, 255, 255); background-color: coral; border-radius: 15px 15px 0px 0px;">
-                                            <h3>บอร์ดสุขภาพสุนัข</h3>
-                                        </div>
-                                    </div> -->
                                     <div class="shadow p-3 mb-5 pb-5 bg-white rounded">
                                         <div class="text-with-lines d-flex justify-content-center">
                                             <div class="text-top">
                                                 <div class="title mt-2">
-                                                    <h3>แก้ไขกระทู้ถามปัญหา</h3>
+                                                    <h3>แก้ไขบอร์ดรูปภาพประกอบ</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,34 +53,20 @@
                                                 </div>
                                                 <div class="col-sm-9 mx-auto mt-auto">
                                                     <div class="container">
-                                                        <form action="/editBoardhealthAdd/<%= data[0].boardhealth_id %>" method="post">
-                                                            <div class="form-group">
-                                                                <label for="titleboard">หัวข้อ</label>
-                                                                <input type="text" class="form-control" id="titleboard"
-                                                                    name="titleboard" value="<%= data[0].title %>"
-                                                                    required>
-                                                            </div>
-
+                                                        <form action="/editBoardcommunityIMGAdd/<%= data[0].communityboard_id %>" method="post" enctype="multipart/form-data">
                                                             <div class="form-group">
                                                                 <label for="image">รูปภาพประกอบ</label><br>
-                                                                <img id="output" class="border" src="../img/<%= data[0].photo %>" alt="" width="100%" height="500px">
-                                                                <div class="text-right mt-3">
-                                                                    <a href="/editBoardhealthIMG/<%= data[0].boardhealth_id %>" class="boxed-btn">แก้ไขรูปภาพประกอบ</a>
-                                                                </div>
+                                                                <img id="output" class="border" src="../img/<%= data[0].photo %>" alt="" width="100%" height="500px"><br><br>
+                                                                <input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                                                <!-- <img id="output" class="col-lg-5 mt-4 mx-auto" /> -->
                                                             </div>
-
-                                                            <p>รายละเอียด</p>
-                                                            <div id="quill_editor">
-                                                                <div id="myText"></div>
-                                                            </div>
-
-                                                            <input type="hidden" id="quill_html" name="details" value="<%- data[0].details %>"></input>
-                                                            
                                                             <br>
                                                             <button type="submit"
                                                                 class="btn btn-warning btn-lg btn-block"
                                                                 style="color: #ffffff; background-color: coral;">ยืนยัน</button>
-                                                            
+                                                            <button type="button"
+                                                                class="btn btn-warning btn-lg btn-block"
+                                                                style="color: #ffffff; background-color: coral;" onclick="history.back();">กลับ</button>
                                                         </form>
                                                     </div>
                                                 </div>

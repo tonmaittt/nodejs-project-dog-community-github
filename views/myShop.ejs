@@ -47,7 +47,7 @@
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
 						<p class="subtitle">LOVE DOGS TH</p>
-							<h1>บอร์ดสุขภาพสุนัข</h1>
+							<h1>ร้านค้า</h1>
 					</div>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
                     <div class="product-filters">
                         <a href="/boardhealthAdd">
                             <ul>
-                                <li class="active" data-filter="*" style="width: 90%;" >สร้าง บอร์ดสุขภาพสุนัข</li>
+                                <li class="active" data-filter="*" style="width: 90%;" >สร้าง โฆษณา</li>
                             </ul>
                         </a>
                         
@@ -92,18 +92,18 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 mx-auto">
                 <div class="container">
                     <% if(data.length) { %>
-                    <h5><span class="underline mt-2" style="font-size: large;"> >บอร์ดสุขภาพล่าสุด </span></h5>
+                    <h5><span class="underline mt-2" style="font-size: large;"> >โฆษณาล่าสุด </span></h5>
 
                         <% for(let i=0; i < data.length; i++) { %>
                                 <div class="row justify-content-start mt-2 mb-2 list-post">
-                                    <a href="/boardhealthDetail/<%= data[i].boardhealth_id %>">
+                                    <a href="/shopDetail/<%= data[i].shop_id %>">
                                     <div class="shadow p-3 mb-2 bg-white rounded d-flex flex-column d-sm-flex flex-sm-row py-2 col-lg-12 col-sm-12 col-xs-12" style="background-color: aqua;">
                                         <div class="col-lg-8 col-sm-8 col-xs-8 align-content-center im-post">
                                             <img class="img-fluid latest-news-bg" style=" height: 100px; width: 200px;" src="img/<%= data[i].photo %>" alt="Generic placeholder image">
                                         </div>
                                         </a>
                                         <div class="col-lg-8 col-sm-8 col-xs-8 mr-auto text-ti">
-                                            <a href="/boardhealthDetail/<%= data[i].boardhealth_id %>">
+                                            <a href="/shopDetail/<%= data[i].shop_id %>">
                                             <h5 class="mt-3 text-title"><%= data[i].title %></h5>
                                             </a>
                                             <div class="text-date">
@@ -112,8 +112,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <a type="button" style="color: rgb(255, 255, 255); background-color: #f7d200;" class="btn btn-lg btn-block mb-2 mt-2" href="/editBoardhealth/<%= data[i].boardhealth_id %>">แก้ไข</a>
-                                        <a type="button" style="color: rgb(255, 255, 255); background-color: #ff3030;" class="btn btn-lg btn-block mb-2" href="/deleteBoardhealth/<%= data[i].boardhealth_id %>">ลบ</a>
+                                        <a type="button" style="color: rgb(255, 255, 255); background-color: #f7d200;" class="btn btn-lg btn-block mb-2 mt-2" href="/editShop/<%= data[i].shop_id %>">แก้ไข</a>
+                                        <a type="button" style="color: rgb(255, 255, 255); background-color: #ff3030;" class="btn btn-lg btn-block mb-2" href="/deleteShop/<%= data[i].shop_id %>">ลบ</a>
                                 </div>
                                 <hr class="line1">
                         <% } %>
