@@ -1,0 +1,97 @@
+<%- include('../partials/headAdmin') -%>
+   <%- include('../partials/headersAdmin') -%>
+
+      <!-- dashboard inner -->
+      <div class="midde_cont">
+         <div class="container-fluid">
+            <div class="row column_title">
+               <div class="col-md-12">
+                  <div class="page_title">
+                     <h2>พอทย์ในระบบ</h2>
+                  </div>
+               </div>
+            </div>
+            <!-- row -->
+            <div class="row column1">
+               <div class="col-md-2"></div>
+               <div class="col-md-8">
+                  <div class="white_shd full margin_bottom_30">
+                     <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                           <h2>พอทย์ในระบบ</h2>
+                        </div>
+                     </div>
+                     <div class="full price_table padding_infor_info">
+                        <div class="row">
+                           <div class="col-lg-12">
+                              <div class="form-group mb-2">
+                                 <% if (messages.success) { %>
+                                    <div class="alert alert-success" role="alert"><%= messages.success %></div>
+                                  <% } %>
+                                  <% if (messages.error) { %>
+                                    <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                                  <% } %>
+                              </div>
+                              <div class="full dis_flex center_text">
+                                 
+                                 <form action="/admin/icon/add" method="post" enctype="multipart/form-data" id="fruitkha-contact" class="form-inline">
+                                    <div class="form-group mx-sm-3 mb-2">
+                                       <label>ICON Website : </label>
+                                       <img id="output" class="border" src="../img/<%= photo[0].icon%>   " alt="" width="100%" >
+                                     </div>
+                                     <div class="custom-file mt-4 ml-4">
+                                       <input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mb-2 ml-auto mr-5">แก้ไข</button>
+                                    
+                                  </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-2"></div>
+               </div>
+               <!-- end row -->
+            </div>
+         </div>
+         <!-- end dashboard inner -->
+      </div>
+      </div>
+      </div>
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script>
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+      </body>
+
+      <script>
+         var loadFile = function (event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+               URL.revokeObjectURL(output.src) // free memory
+            }
+         };
+      </script>
+
+      </html>

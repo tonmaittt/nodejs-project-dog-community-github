@@ -355,6 +355,65 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    // ICON WEBSITE
+    router.get("/icon", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT * FROM tb_web_profile WHERE web_profile_id = ?",[1] , (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/icon", {
+                        title: "แก้ไขICON",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        photo: "",
+                    });
+                } else {
+                    res.render("adminData/icon", {
+                        title: "แก้ไขICON",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        photo: rows,
+                    });
+                }
+                });
+        }
+    });
+
+    //ICON WEBSITE -> ยืนยัน
+    router.post("/icon/add", upload.single("photo"), (req, res, next) => {
+        let photo = req.file.filename;
+        let form_data = {
+            icon: photo,
+          };
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("UPDATE tb_web_profile SET ? WHERE web_profile_id = ?" ,  [form_data,1], (err, result) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.redirect(req.get('referer'));
+                } else {
+                    req.flash("success", 'แก้ไขICONสำเร็จ : ' );
+                    res.redirect(req.get('referer'));
+                }
+            })
+        }
+    });
+
     // ยืนยันผู้ใช้ ระดับ 2 ร้านค้า 
     router.get("/verifyUser", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
