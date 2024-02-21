@@ -353,8 +353,15 @@
 															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="<%= new Intl.DateTimeFormat('en-CA').format(rowsVets[0].vets_birthday) %>" disabled></p>
 														  <label for="vetsAddress">ที่อยู่ :</label>
 														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" disabled><%= rowsVets[0].vets_address %></textarea></p>
-														  <label for="vetsCardId">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="<%= rowsVets[0].vets_card_id %>" disabled></p>
+														   <label for="vetsCardId">ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์ :</label>
+														   <div class="text-center">
+															<img id="output" src="../img/<%= rowsVets[0].vets_license %>" alt="" class="border" width="100%">
+															 <div class="client-meta">
+																<a href="editUserVetslicense">
+																	<h3><span>ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์</span></h3>
+																</a>
+															 </div>
+														   </div>
 														  <label for="vetsTel">เบอร์โทรศัพท์ :</label>
 														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="<%= rowsVets[0].vets_tel %>" minlength="10" maxlength="10" disabled></p>
 														  <label for="vetsFacebook">FaceBook :</label>

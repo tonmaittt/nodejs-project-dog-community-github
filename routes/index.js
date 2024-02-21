@@ -15,8 +15,8 @@ const storage = multer.diskStorage({
       Date.now() +
         "-" +
         Math.round(Math.random() * 1e9) +
-        "-" +
-        file.originalname +
+        // "-" +
+        // file.originalname +
         ".jpg"
     ); // เปลี่ยนชื่อไฟล์
   },
@@ -999,7 +999,6 @@ router.get("/userVets", function (req, res, next) {
     vetsGender: "",
     vetsBirthday: "",
     vetsAddress: "",
-    vetsCardId: "",
     vetsTel: "",
     vetsFacebook: "",
     vetsLine: "",
@@ -1021,7 +1020,6 @@ router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
   let  vetsGender = req.body.vetsGender;
   let  vetsBirthday = req.body.vetsBirthday;
   let  vetsAddress = req.body.vetsAddress;
-  let  vetsCardId = req.body.vetsCardId;
   let  vetsTel = req.body.vetsTel;
   let  vetsFacebook = req.body.vetsFacebook;
   let  vetsLine = req.body.vetsLine;
@@ -1043,7 +1041,6 @@ router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
         vets_gender: vetsGender,
         vets_birthday: vetsBirthday,
         vets_address: vetsAddress,
-        vets_card_id: vetsCardId,
         vets_tel: vetsTel,
         vets_facebook: vetsFacebook,
         vets_line: vetsLine,
@@ -1051,7 +1048,8 @@ router.post("/userVetsSubmit", upload.single("photo"), (req, res, next) => {
         vets_position: vetsPosition,
         vets_graduated: vetsGraduated,
         vets_introduce: vetsIntroduce,
-        vets_img: photo,
+        vets_license: photo,
+        vets_img: "doctor.png",
         status: 0
     }
     // insert query
@@ -1122,6 +1120,59 @@ router.post("/editUserVetsProfileSubmit", upload.single("photo"), (req, res, nex
   }
 });
 
+router.get("/editUserVetslicense", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("/");
+  }
+  if (req.session.level < 3) {
+    return res.redirect('/')
+  }
+  dbCon.query(
+    "SELECT tb_vets.vets_license AS img FROM tb_vets WHERE user_id = ?",[req.session.idUser],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect('/userInformation');
+      } else {
+        res.render("editUserVetslicense", {
+          title: "Edit UserVets license",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          img: rows[0].img,
+        });      
+      }
+    }
+  );
+});
+
+// add a แก้ไข รูปโปรไฟล์
+router.post("/editUserVetslicenseSubmit", upload.single("photo"), (req, res, next) => {
+  let photo = req.file.filename;
+  let errors = false;
+
+  // if no error
+  if (!errors) {
+    let form_data = {
+      vets_license: photo,
+    };
+    // insert query
+    dbCon.query(
+      "UPDATE tb_vets SET ? WHERE user_id = ?",[form_data,req.session.idUser],
+      (err, result) => {
+        if (err) {
+          req.flash("error", err);
+          res.redirect("/userInformation");
+        } else {
+          req.flash("success", "แก้ไขรูปโปรไฟล์ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์สำเร็จ");
+          res.redirect("/userInformation");
+        }
+      }
+    );
+  }
+});
+
 /* -------------------------------------------------------------- ข้อมูลผู้ใช้ - แก้ไขข้อมูลผู้เชี่ยวชาญ ------------------------------------------------------------------------------------------------------ */
 router.get("/editUserVetsData", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
@@ -1155,7 +1206,6 @@ router.get("/editUserVetsData", function (req, res, next) {
           vetsGenderName: "",
           vetsBirthday: "",
           vetsAddress: "",
-          vetsCardId: "",
           vetsTel: "",
           vetsFacebook: "",
           vetsLine: "",
@@ -1180,7 +1230,6 @@ router.get("/editUserVetsData", function (req, res, next) {
           vetsGenderName: rows[0].name,
           vetsBirthday: rows[0].vets_birthday,
           vetsAddress: rows[0].vets_address,
-          vetsCardId: rows[0].vets_card_id,
           vetsTel: rows[0].vets_tel,
           vetsFacebook: rows[0].vets_facebook,
           vetsLine: rows[0].vets_line,
@@ -1204,7 +1253,6 @@ router.post("/editUserVetsDataSubmit", (req, res, next) => {
   let vetsGender = req.body.vetsGender;
   let vetsBirthday = req.body.vetsBirthday;
   let vetsAddress = req.body.vetsAddress;
-  let vetsCardId = req.body.vetsCardId;
   let vetsTel = req.body.vetsTel;
   let vetsFacebook = req.body.vetsFacebook;
   let vetsLine = req.body.vetsLine;
@@ -1225,7 +1273,6 @@ router.post("/editUserVetsDataSubmit", (req, res, next) => {
       vets_gender: vetsGender,
       vets_birthday: vetsBirthday,
       vets_address: vetsAddress,
-      vets_card_id: vetsCardId,
       vets_tel: vetsTel,
       vets_facebook: vetsFacebook,
       vets_line: vetsLine,

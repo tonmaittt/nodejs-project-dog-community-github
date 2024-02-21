@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>แก้ไขข้อมูลสุนัข รูปโปรไฟล์</h1>
+								<h1>แก้ไขข้อมูลสุนัข ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์</h1>
 							</div>
 						</div>
 					</div>
@@ -30,7 +30,7 @@
 												<button class="btn btn-link" type="button" data-toggle="collapse"
 													data-target="#collapseOne" aria-expanded="true"
 													aria-controls="collapseOne">
-													ข้อมูลผู้เชี่ยวชาญ รูปโปรไฟล์
+													ข้อมูลผู้เชี่ยวชาญ ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์
 												</button>
 											</h5>
 										</div>
@@ -39,13 +39,12 @@
 											data-parent="#accordionExample">
 											<div class="card-body">
 												<div class="billing-address-form">
-													<form action="/editUserVetsProfileSubmit" method="post" enctype="multipart/form-data">
-														<div class="client-avater text-center">
-															<img id="output" class="border" src="../img/<%= img %>" alt="" width="140" height="140">
+													<form action="/editUserVetslicenseSubmit" method="post" enctype="multipart/form-data">
+														<div class="text-center">
+															<img id="output" class="border" src="../img/<%= img %>" alt="" width="100%" >
 															<div class="client-meta">
 															</div>
-															<label for="image">รูปโปรไฟล์</label><br>
-                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required class="mt-4 mb-4">
 														</div>
 														<button type="submit" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;">ยืนยัน</button>
 														<input type="button" class="btn btn-dark btn-lg btn-block" style="color: #ffffff; background-color: coral;" onclick="history.back();" value="ยกเลิก">

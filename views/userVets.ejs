@@ -48,10 +48,10 @@
 															<div class="alert alert-danger" role="alert"><%= messages.error %></div>
 														  <% } %>
 														  <div class="client-avater text-center">
-															<img id="output" src="../img/doctor.png" alt="" class="border" width="140" height="140">
+															<img id="output2" src="../img/doctor.png" alt="" class="border" width="140" height="140">
 															<div class="client-meta"></div>
 															<label for="image">รูปโปรไฟล์</label><br>
-                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                                        	<!-- <input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required> -->
 														  </div>
 														  <label for="vetsTitle">คำนำหน้า :</label>
 														  <p><input type="text" placeholder="Title" id="vetsTitle" name="vetsTitle" value="" required></p>
@@ -75,8 +75,14 @@
 															<p><input type="date" placeholder="Birthday" id="vetsBirthday" name="vetsBirthday" value="" required></p>
 														  <label for="vetsAddress">ที่อยู่ :</label>
 														   <p><textarea name="vetsAddress" id="vetsAddress" cols="30" rows="10" placeholder="Address" required></textarea></p>
-														  <label for="vetsCardId">เลขบัตรประชาชน (13หลักไม่เติม - ) :</label>
-														   <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="" required></p>
+														  <label for="vetsCardId">ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์ :</label>
+														  <div class="text-center">
+															<img id="output" src="../img/license.png" alt="" class="border" width="100%">
+															<div class="client-meta"></div>
+															<label for="image">ใบอนุญาตเป็นผู้ประกอบวิชาชีพการสัตวแพทย์</label><br>
+                                                        	<input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+														  </div>
+														   <!-- <p><input type="text" placeholder="xxxxxxxxxxxxxx" id="vetsCardId" name="vetsCardId" minlength="13" maxlength="13" value="" required></p> -->
 														  <label for="vetsTel">เบอร์โทรศัพท์ :</label>
 														   <p><input type="tel" placeholder="tel." id="vetsTel" name="vetsTel" value="" minlength="10" maxlength="10" required></p>
 														  <label for="vetsFacebook">FaceBook :</label>
