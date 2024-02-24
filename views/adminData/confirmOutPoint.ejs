@@ -122,6 +122,19 @@
             };
       </script>
 
+      <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
+
       <!-- jQuery -->
       <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
       <script src="/stylesheets/admin_assets/js/popper.min.js"></script>

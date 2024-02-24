@@ -24,7 +24,7 @@
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">	
 						<h3><span class="orange-text">พอยท์ </span>| POINT</h3>
-						<h4>จำนวนพอยท์คงเหลือ : <%= pointShow[0].point.toFixed(2) %></h4>
+						<h4>จำนวนพอยท์คงเหลือ : <%= pointShow[0].point %></h4>
 					</div>
 				</div>
 			</div>
@@ -66,7 +66,7 @@
 
 				 	<div id="form_status"></div>
 					<div class="contact-form">
-						<form action="/pointAdd" method="post" enctype="multipart/form-data" id="fruitkha-contact">
+						<form action="/pointAdd" method="post" enctype="multipart/form-data" id="fruitkha-contact" onSubmit="return confirm('ยืนยันการเติมพอยท์ใช่หรือไม่?') ">
 							<p>
 								<input type="text" placeholder="ชื่อและนามสกุลผู้โอน" name="name" id="name" required>
 								<input type="number" placeholder="จำนวนพอยท์" name="point" id="point" min="0" style="width: 49%;" required>

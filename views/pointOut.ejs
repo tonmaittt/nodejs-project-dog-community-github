@@ -24,7 +24,8 @@
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">	
 						<h3><span class="orange-text">พอยท์ </span>| POINT</h3>
-						<h4>จำนวนพอยท์คงเหลือ : <%= pointShow[0].point.toFixed(2) %></h4>
+						<h4>จำนวนพอยท์คงเหลือ : <%= pointShow[0].point %></h4>
+						<input type="number" id="point" value="<%= pointShow[0].point %>" hidden>
 					</div>
 				</div>
 			</div>
@@ -51,7 +52,7 @@
 
 				 	<div id="form_status"></div>
 					<div class="contact-form">
-						<form action="/pointOutAdd" method="post" id="fruitkha-contact">
+						<form action="/pointOutAdd" method="post" id="fruitkha-contact" onSubmit="return confirm('ยืนยันการถอนพอยท์ใช่หรือไม่?') ">
 							<div class="form-group">
 								<p><h5>ธนาคารผู้รับ</h5></p>
 								<select class="" id="exampleFormControlSelect1" name="bank" required
@@ -73,11 +74,12 @@
 								<input type="text" placeholder="เลขที่บัญชี" name="account_number" id="account_number" maxlength="10" required>
 								<input type="text" placeholder="ชื่อบัญชี" name="name" id="name" required>
 							</p>
+							<span id='message'></span>
 							<p>
-								<input type="number" placeholder="จำนวนพอยท์" name="money" id="money" min="0" max="<%= pointShow[0].point%>" style="width: 98.5%;" required>
+								<input type="number" placeholder="จำนวนพอยท์" name="money" id="money" min="0" max="<%= pointShow[0].point%>" style="width: 98.5%;"  onkeyup='check();' required>
 								<input type="text" hidden>
 							</p>
-							<p><input type="submit" value="ยืนยัน" class="cart-buttons"></p>
+							<p id='submitForm'><input type="submit" value="Submit"></p>
 						</form>
 					</div>
 				</div>
@@ -100,7 +102,36 @@
 		</div>
 	</div>
 	<!-- end contact form -->
-
+		<script>
+			var check = function() {
+				let point = parseInt(document.getElementById('point').value);
+				let money = parseInt(document.getElementById('money').value);
+			if (money > point)  {
+				console.log("มากกว่า point");
+				console.log(money+" > "+point);
+				document.getElementById('message').style.color = 'red';
+				document.getElementById('message').innerHTML = 'จำนวนพอยท์ไม่เพียงพอ';
+				document.getElementById('submitForm').innerHTML = `<input type="submit" value="Submit" disabled>`;
+			} else if (money <= 0){
+				console.log("น้อยกว่าเท่ากับ 0");
+				document.getElementById('message').style.color = 'red';
+				document.getElementById('message').innerHTML = 'กรุณาตรวจสอบจำนวนพอยท์';
+				document.getElementById('submitForm').innerHTML = `<input type="submit" value="Submit" disabled>`;
+			} else if (money == point){
+				console.log("เท่ากับ point");
+				document.getElementById('message').style.color = 'green';
+				document.getElementById('message').innerHTML = '';
+				document.getElementById('submitForm').innerHTML = `<input type="submit" value="Submit">`;
+			} else if (money < point){
+				console.log("น้อยกว่า point");
+				console.log(money+" < "+point);
+				document.getElementById('message').style.color = 'green';
+				document.getElementById('message').innerHTML = '';
+				document.getElementById('submitForm').innerHTML = `<input type="submit" value="Submit">`;
+			} 
+			
+			}
+		</script>
 
 			<%- include('partials/footers') -%>
 			<script>
