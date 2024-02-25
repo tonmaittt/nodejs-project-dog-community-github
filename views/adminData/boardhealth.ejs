@@ -1,0 +1,271 @@
+<%- include('../partials/headAdmin') -%>
+<%- include('../partials/headersAdmin') -%>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2><%= title%></h2>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+                  <% if (messages.success) { %>
+                     <div class="alert alert-success" role="alert"><%= messages.success %></div>
+                   <% } %>
+                   <% if (messages.error) { %>
+                     <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                   <% } %>
+                  <!-- table section -->
+                  <div class="col-md-12">
+                     <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                           <div class="heading1 margin_0">
+                              <h2>จัดการบอร์ดสุขภาพสุนัข  </h2>
+                           </div>
+                        </div>
+                        <div class="table_section padding_infor_info">
+                           <div class="table-responsive-sm">
+                              <table class="table">
+                                 <thead class="thead-light">
+                                    <tr>
+                                       <th>#</th>
+                                       <th>ID</th>
+                                       <th>หัวข้อ</th>
+                                       <th>รูป</th>
+                                       <th>สถานะ</th>
+                                       <th>ผู้สร้าง</th>
+                                       <th>วันที่สร้าง</th>
+                                       <th>แก้ไขล่าสุด</th>
+                                       <th>ยอดชม</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <% for(let i=0; i < data.length; i++) { %>
+                                 <input type="text" class="form-control" id="detailsLink" name="detailsLink" value="<%= data[i].details %>" hidden>
+                                 <tbody>
+                                    <tr>
+                                       <td><%= i+1%></td>
+                                       <td><%= data[i].boardhealth_id %></td>
+                                       <td><%= data[i].title%></td>
+                                       <td data-toggle="modal" data-target="#showPhoto<%= data[i].boardhealth_id%>" style="cursor: pointer;">
+                                          <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" width="200px" height="auto">
+                                       </td>
+                                       <td><%= (data[i].status == 0) ? "ยังไม่ได้ยืนยัน" : "ยืนยันแล้ว"%></td>
+                                       <td><%= data[i].username%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
+                                       <td><%= data[i].view%></td>
+                                       <td>
+                                          <a href="../boardhealthDetail/<%= data[i].boardhealth_id%>"target="_blank" class="btn btn-success">
+                                             <i class="fa fa-eye" aria-hidden="true"></i> 
+                                             รายละเอียด
+                                          </a>
+                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<%= data[i].boardhealth_id%>" style="cursor: pointer;"  onclick='check();'>
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             แก้ไข
+                                          </button>
+                                          <button type="button" class="btn btn-warning">
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             รูป
+                                          </button>
+                                          <a href="confirmOutPoint/delete/<%= data[i].boardhealth_id%>" class="btn btn-danger" onclick="return confirm('แน่ใจที่จะลบข้อมูลยืนยัน?')">
+                                             <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                             ลบ
+                                          </a>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                                 <!-- แสดงรูป เปิด-->
+                                 <div class="modal fade" id="showPhoto<%= data[i].boardhealth_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">รูป</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="form-group">
+                                             <div class="modal-body">
+                                                <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" width="100%" />
+                                             </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- แสดงรูป ปิด-->
+                                  <script>
+                                    function myFunction<%= data[i].boardhealth_id %>() {
+                                      document.getElementById("demo<%= data[i].boardhealth_id %>").innerHTML = '<%= data[i].details %>';
+                                    }
+                                    </script>
+                                  <!-- แก้ไข เปิด-->
+                                 <div class="modal fade" id="edit<%= data[i].boardhealth_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">ยืนยันถอนพอทย์</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form action="/admin/boardhealth/submit" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">ID:</label>
+                                                <input type="text" class="form-control" id="user_id" name="user_id" value="<%= data[i].boardhealth_id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">หัวข้อ:</label>
+                                                <input type="text" class="form-control" id="user_id" name="user_id" value="<%= data[i].title %>" required>
+                                                <div class="modal-body">
+                                                   <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" width="100%" />
+                                                </div>
+                                                <label for="recipient-name" class="col-form-label">รายละเอียด:</label>
+                                                <p onclick="myFunction<%= data[i].boardhealth_id %>()">Click me</p>
+
+                                                <p id="demo<%= data[i].boardhealth_id %>"></p>
+                                                <div id="quill_editor">
+                                                   <div id="myText"></div>
+                                               </div>
+                                             </div>
+                                             
+                                             
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                             </div>
+                                          </form>
+                                        </div>
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- แก้ไข ปิด-->
+
+                                 <% } %>
+                              </table>
+
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+
+                  
+
+            </div>
+         </div>
+      </div>
+
+      <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <!-- Include the Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        
+        <script>
+         var check = function() {
+            console.log("Hi");
+         }
+            var textToStore = document.getElementById('detailsLink').value;
+            var myTextElement = document.getElementById("myText");
+            myTextElement.innerHTML = textToStore;
+
+            var toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['blockquote', 'code-block'],
+
+                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                [{ 'direction': 'rtl' }],                         // text direction
+
+                [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+                ['link', 'image'],
+                ['clean']                                         // remove formatting button
+            ];
+
+            var quill = new Quill('#quill_editor', {
+                modules: {
+                toolbar: toolbarOptions
+            },
+                theme: 'snow'
+            });
+
+            quill.on('text-change', function (delta, oldDelta, source) {
+                document.getElementById("quill_html").value = quill.root.innerHTML;
+            });
+        </script>
+
+
+        <!-- แสดงรูปตัวอย่าง -->
+        <script>
+            var loadFile = function (event) {
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function () {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+            };
+        </script>
+        
+      
+      <script>
+            var loadFile = function (event) {
+               var output = document.getElementById('output');
+               output.src = URL.createObjectURL(event.target.files[0]);
+               output.onload = function () {
+                  URL.revokeObjectURL(output.src) // free memory
+               }
+            };
+      </script>
+
+      <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
+
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script> 
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+   </body>
+</html>

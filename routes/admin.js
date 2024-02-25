@@ -960,6 +960,45 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+//------------------------------------------------ จัดการ ----------------------------------------------------------------------------------------------------------------
+    // boardhealth
+    router.get("/boardhealth", function (req, res, next) {
+        if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+            res.render("adminData/login", {
+                title: "login",
+                email: "",
+                password: "",
+            });
+        }else{
+            dbCon.query("SELECT tb_boardhealth.boardhealth_id,tb_boardhealth.title,tb_boardhealth.photo,tb_boardhealth.details,tb_boardhealth.status,tb_boardhealth.view,tb_boardhealth.created_at,tb_boardhealth.update_at, tb_user.username FROM tb_boardhealth INNER JOIN tb_user ON tb_boardhealth.user_id = tb_user.id ORDER BY boardhealth_id DESC" , (err, rows) => {
+                if (err) {
+                    req.flash("error", err);
+                    res.render("adminData/boardhealth", {
+                        title: "จัดการ บอร์ดสุขภาพสุนัข",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        data: "",
+                    });
+                } else {
+                    res.render("adminData/boardhealth", {
+                        title: "จัดการ บอร์ดสุขภาพสุนัข",
+                        username: req.session.userName,
+                        emailS: req.session.emailUser,
+                        levelS: req.session.level,
+                        userImg: req.session.userImg,
+                        data: rows,
+                    });
+                }
+                });
+        }
+    });
+
+
+
+
+
     //loginเข้าสู่ระบบ แสดง
     router.get("/login", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {

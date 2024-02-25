@@ -65,7 +65,8 @@
               </div>
             <br><br>
               <!-- Checkbox -->
-              <button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button>
+              <p id='submitForm'><button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button></p>
+              
               <!-- <p>Have already an account?<a href="/login">Login</a></p> -->
 
               <hr class="my-4">
@@ -101,9 +102,11 @@
         document.getElementById('confirmpassword').value) {
         document.getElementById('message').style.color = 'green';
         document.getElementById('message').innerHTML = '';
+        document.getElementById('submitForm').innerHTML = `<button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button>`;
       } else {
         document.getElementById('message').style.color = 'red';
         document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+        document.getElementById('submitForm').innerHTML = `<button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;" disabled>Register</button>`;
       }
     }
   </script>
