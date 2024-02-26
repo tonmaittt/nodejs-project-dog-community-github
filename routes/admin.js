@@ -1348,7 +1348,7 @@ const ifNotLogIn = (req, res, next) => {
         }
       });
 
-    // board
+    // shop
     router.get("/shop", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
             res.render("adminData/login", {
@@ -1382,7 +1382,7 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
-    // board ->Edit 
+    // shop ->Edit 
     router.post('/shop/submit/(:id)', (req, res, next) => {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
             res.render("adminData/login", {
@@ -1415,7 +1415,7 @@ const ifNotLogIn = (req, res, next) => {
         }
       })
 
-    // board ->Edit IMG
+    // shop ->Edit IMG
     router.post("/shopIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
     if (!req.session.ifNotLogIn ||  req.session.level < 4) {
         res.render("adminData/login", {
@@ -1447,7 +1447,7 @@ const ifNotLogIn = (req, res, next) => {
     }
     });
 
-    // board ->Delete
+    // shop ->Delete
     router.get("/shopDelete/submit/(:id)", (req, res, next) => {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
             res.render("adminData/login", {

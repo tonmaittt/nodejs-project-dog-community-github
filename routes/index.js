@@ -4464,7 +4464,106 @@ router.get("/deleteShop/(:id)", (req, res, next) => {
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+/* MY Password page. */
+router.get("/myPassword", function (req, res, next) {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  dbCon.query(
+    "SELECT password FROM tb_user WHERE id = ?",[req.session.idUser],
+    (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.render("myPassword", {
+          title: "แก้ไขรหัสผ่าน",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: "",
+        });
+      } else {
+        res.render("myPassword", {
+          title: "แก้ไขรหัสผ่าน",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: rows,
+        });
+      }
+    }
+  );
+});
 
+router.post('/editMyPass', (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    return res.redirect("../*")
+  }
+  let passOld = req.body.passOld;
+  let password = req.body.password;
+  let confirmpassword = req.body.confirmpassword;
+  let errors = false;
+
+  if (passOld.length === 0 || password.length === 0 || confirmpassword.length === 0) {
+    errors = true;
+    // set flash message
+    req.flash("error", "โปรดกรอกข้อมูลให้ครบถ้วน");
+    res.redirect("/myPassword");
+  }
+  if (password.length < 8) {
+    errors = true;
+    // set flash message
+    req.flash("error", "รหัสผ่านควรมีอย่างน้อย 8 ตัวอักษร");
+    res.redirect("/myPassword");
+  }
+  dbCon.query(
+    "SELECT password FROM tb_user WHERE id = ?",[req.session.idUser],
+    async (err, rows) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/myPassword");
+      } else {
+        if (rows.length == 1) {
+          let chackpass = await bcrypt.compare(
+            passOld,
+            rows[0].password
+          );
+          if (chackpass) {
+            // if no error
+            if (!errors) {
+              bcrypt.hash(password, 12, function (error, hash) {
+                let form_data = {
+                  password: hash,
+                };
+
+                // insert query
+                dbCon.query(
+                  "UPDATE tb_user SET ? WHERE id = ?",
+                  [form_data,req.session.idUser],
+                  (err, result) => {
+                    if (err) {
+                      req.flash("error", err);
+                      res.redirect('/myPassword')
+                    } else {
+                      req.flash("success", "แก้ไขรหัสสำเร็จ");
+                      res.redirect('/myPassword')
+                    }
+                  }
+                );
+              });
+            }
+          } else {
+            req.flash('error', 'รหัสผ่านไม่ถูกต้อง');
+            res.redirect('/myPassword')
+          }
+        }
+      }
+    }
+  );
+
+  
+})
 
 //icon Website
 router.get("/iconWeb", (req, res, next) => {
