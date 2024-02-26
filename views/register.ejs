@@ -1,5 +1,9 @@
 <%- include('partials/heads') -%>
 <%- include('partials/headers') -%>
+<style>
+  .valid { color: #03d348 !important; }
+  .invalid { color: #d91111 !important; }
+</style>
 <body>
 	<!-- breadcrumb-section -->
 	<div class="breadcrumb-section breadcrumb-bg">
@@ -63,6 +67,18 @@
                 <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();' required/>
                 <label class="form-label" for="typePasswordX-2">Confirm Password</label>
               </div>
+              <br>
+              <section>
+                <div>
+                  รหัสผ่านควรมีอย่างน้อย 
+                  <span id="length" class="invalid">8 ตัวอักษร</span>,
+                  <span id="capital" class="invalid">ตัวพิมพ์ใหญ่ 1 ตัว</span>,
+                  <span id="letter" class="invalid">ตัวพิมพ์เล็ก 1 ตัว</span>,
+                  <span id="number" class="invalid">ตัวเลข 1 ตัว</span>, และ
+                  <span id="character" class="invalid">อักขระพิเศษ 1 ตัว</span>
+                  </p>
+                </div>
+              </section>
             <br><br>
               <!-- Checkbox -->
               <p id='submitForm'><button class="btn btn-lg btn-block" type="submit" style="color: #ffffff; background-color: coral;">Register</button></p>
@@ -80,11 +96,11 @@
 							<h4><i class="fas fa-map"></i> มีบัญชีแล้ว</h4>
 							<p><a href="/login" class="coloraaa">เข้าสู่ระบบ</a></p>
 						</div>
-						<div class="contact-form-box">
+						<!-- <div class="contact-form-box">
 							<h4><i class="far fa-clock"></i> ลืมรหัสผ่านใช่หรือไม่</h4>
 							<p><a href="" class="coloraaa">ลืมอีเมล</a></p>
               <p><a href="" class="coloraaa">ลืมรหัสผ่าน</a></p>
-						</div>
+						</div> -->
 						<div class="contact-form-box">
 							<h4><i class="fas fa-address-book"></i> Contact</h4>
 							<p>Phone: +00 111 222 3333 <br> Email: Aksadath_ru64@live.rmutl.ac.th</p>
@@ -96,6 +112,41 @@
 	</div>
 	<!-- end contact form -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var password = document.getElementById("password");
+      var letter = document.getElementById("letter");
+      var capital = document.getElementById("capital");
+      var number = document.getElementById("number");
+      var length = document.getElementById("length");
+      var character = document.getElementById("character");
+      var lowerCaseLetters = /[a-z]+/;
+      var upperCaseLetters = /[A-Z]+/;
+      var numbers = /[0-9]+/;
+      var characters = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+/;
+      var remClass, addClass;
+      
+      valid = (req, state) => {
+        remClass = state ? "invalid" : "valid";
+        addClass = state ? "valid" : "invalid";
+        req.classList.remove(remClass);
+        req.classList.add(addClass);
+      }
+
+      password.onkeyup = () => {
+        // Validate lowercase letters
+        lowerCaseLetters.test(password.value) ? valid(letter, true) : valid(letter, false);
+        // Validate capital letters
+        upperCaseLetters.test(password.value) ? valid(capital, true) : valid(capital, false);
+        // Validate numbers
+        numbers.test(password.value) ? valid(number, true) : valid(number, false);
+        // Validate characters
+        characters.test(password.value) ? valid(character, true) : valid(character, false);
+        // Validate length
+        password.value.length >= 8 ? valid(length, true) : valid(length, false);
+      }
+    })
+  </script>
   <script>
     var check = function() {
       if (document.getElementById('password').value ==

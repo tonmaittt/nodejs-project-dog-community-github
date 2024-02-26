@@ -2467,21 +2467,46 @@ router.post("/pointOutAdd", (req, res, next) => {
       money: money,
       status: 0,
     };
-
-    // insert query
     dbCon.query(
-      "INSERT INTO tb_out_point SET ?",
-      [form_data],
-      (err, result) => {
+      "SELECT * FROM tb_out_point WHERE user_id = ? AND status = ?",[req.session.idUser,0],
+      (err, rows) => {
         if (err) {
           req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
-          res.redirect(req.get('referer'));
+          res.redirect(req.get('referer')); 
         } else {
-          req.flash('success', 'ขอบคุณสำหรับการถอนพอทย์ โปรดรอเจ้าหน้าที่ตรวจสอบการถอนพอทย์ 1-2วัน');
-          res.redirect(req.get('referer'));
+          if (rows.length == 1) {
+            req.flash("error", "มีรายการถอนพอยท์นรอการตรวจอยู่");
+            res.redirect(req.get('referer'));
+          }else{
+            // insert query
+            dbCon.query(
+              "INSERT INTO tb_out_point SET ?",
+              [form_data],
+              (err, result) => {
+                if (err) {
+                  req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                  res.redirect(req.get('referer'));
+                } else {
+                  dbCon.query("UPDATE tb_point_user SET point = point - ? WHERE user_id = ?",[money,req.session.idUser], (err, result) => {
+                    if (err) {
+                        console.log("ERRO 3");
+                        req.flash('error', err);
+                        res.redirect('/userInformation')
+                    } else {
+                      req.flash('success', 'ขอบคุณสำหรับการถอนพอทย์ โปรดรอเจ้าหน้าที่ตรวจสอบการถอนพอทย์ 1-2วัน');
+                      res.redirect(req.get('referer'));
+                    }
+                  })
+                  
+                }
+              }
+            );
+          }
         }
       }
     );
+    
+
   }
 });
 
@@ -2611,6 +2636,22 @@ router.post("/register/add", (req, res, next) => {
   let level = 1;
   let errors = false;
 
+  if (password.length < 8) {
+    errors = true;
+    // set flash message
+    req.flash("error", "รหัสผ่านควรมีอย่างน้อย 8 ตัวอักษร");
+    res.render("register", {
+      title: "Register",
+      emailS: "0",
+      email: email,
+      username: username,
+      fname: fname,
+      sname: sname,
+      password: password,
+      confirmpassword: confirmpassword,
+    });
+  }
+  
   if (
     email.length === 0 ||
     username.length === 0 ||
@@ -2924,9 +2965,14 @@ router.post("/clicked/shopdetail/(:id)", (req, res, next) => {
 
 // ผู้เชี่ยวชาญ
 router.post("/clicked2/(:id)", (req, res, next) => {
+  if (!req.session.ifNotLogIn) {
+    console.log('Not login');
+    res.sendStatus(201);
+  }
+
   let boardhealth_id = req.params.id;
   let errors = false;
-
+  
   if (!errors) {
     let form_data = {
         user_id: req.session.idUser,

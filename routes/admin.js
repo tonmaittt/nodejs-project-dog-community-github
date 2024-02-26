@@ -910,7 +910,7 @@ const ifNotLogIn = (req, res, next) => {
                                 req.flash('error', err)
                                 res.redirect(req.get('referer'));
                             } else {
-                                if (point[0].point >= outpoint[0].money) {
+                                
                                     let form_data = {
                                         out_point_id: out_point_id,
                                         user_id: user_id,
@@ -921,33 +921,22 @@ const ifNotLogIn = (req, res, next) => {
                                     let form2 = {
                                         status: 1,
                                     }
-                                    dbCon.query("UPDATE tb_point_user SET point = point - ? WHERE user_id = ?" ,  [outpoint[0].money,user_id], (err, result) => {
+                                    dbCon.query("UPDATE tb_out_point SET ? WHERE out_point_id = ?" ,  [form2,out_point_id], (err, result) => {
                                         if (err) {
                                             req.flash("error", err);
                                             res.redirect(req.get('referer'));
                                         } else {
-                                            dbCon.query("UPDATE tb_out_point SET ? WHERE out_point_id = ?" ,  [form2,out_point_id], (err, result) => {
+                                            dbCon.query('INSERT INTO tb_confirm_out_point SET ?', form_data, (err, result) => {
                                                 if (err) {
-                                                    req.flash("error", err);
+                                                    req.flash('error', err)
                                                     res.redirect(req.get('referer'));
                                                 } else {
-                                                    dbCon.query('INSERT INTO tb_confirm_out_point SET ?', form_data, (err, result) => {
-                                                        if (err) {
-                                                            req.flash('error', err)
-                                                            res.redirect(req.get('referer'));
-                                                        } else {
-                                                            req.flash("success", 'ยืนยันถอนพอทย์สำเร็จ');
-                                                            res.redirect(req.get('referer'));
-                                                        }
-                                                    })
+                                                    req.flash("success", 'ยืนยันถอนพอทย์สำเร็จ');
+                                                    res.redirect(req.get('referer'));
                                                 }
                                             })
                                         }
                                     })
-                                } else {
-                                    req.flash('error', 'พอทย์ของผู้ใช้ไม่เพียงพอ')
-                                    res.redirect(req.get('referer'));
-                                }
                             }
                         });
                     }else {
@@ -959,7 +948,7 @@ const ifNotLogIn = (req, res, next) => {
             });
         }
     });
-
+    
 //------------------------------------------------ จัดการ ----------------------------------------------------------------------------------------------------------------
     // boardhealth
     router.get("/boardhealth", function (req, res, next) {

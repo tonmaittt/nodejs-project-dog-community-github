@@ -93,9 +93,12 @@
                                             <% } %>
                                             <ul class="list-group" id="comment-list">
                                                 <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
-                                                <ul class="list-group">
+                                                <ul class="list-group mb-2">
                                                     <div id="commentShowVets"></div>
                                                 </ul>
+                                                <button id="myButton2" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton" style="background: white;color: black; border-color: coral;"> 
+                                                    <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter2"></span>)
+                                                </button>
                                             </ul>
                                             
                                         </div>
@@ -310,9 +313,6 @@
                                                             ${data[i]["comments"]}
                                                             <div class="mt-2">
                                                                 <small class="text-muted"> ${timeSince(new Date(data[i]["time"]))}</small>
-                                                                <button2 id="myButton2" value="" class="btn btn-sm btn-outline-primary ml-2 rounded-pill myButton" style="background: white;color: black; border-color: coral;"> 
-                                                                        <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter2"></span>)
-                                                                </button2>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -326,10 +326,17 @@
                 });
 
     </script>
-
     <script>
-        const button2 = document.getElementById('myButton2');
-            button2.addEventListener('click', function(e) {
+        const element1 = document.getElementById("myBtn");
+        element1.addEventListener("click", myFunction);
+        
+        function myFunction() {
+          document.getElementById("demo").innerHTML = "Hello World";
+        }
+        </script>
+    <script>
+        const element = document.getElementById('myButton2');
+            element.addEventListener('click', function(e) {
             console.log('button2 was clicked');
             fetch('/clicked2/<%- id %>', {method: 'POST'})
                 .then(function(response) {
@@ -350,9 +357,9 @@
                 if(response.ok) return response.json();
                 throw new Error('Request failed.');
                 })
-                .then(function(data) {
-                    console.log('counter2');
-                    document.getElementById('counter2').innerHTML = `${data.length}`;
+                .then(function(data2) {
+                    console.log(data2.length);
+                    document.getElementById('counter2').innerHTML = `${data2.length}`;
                 })
                 .catch(function(error) {
                 console.log(error);
