@@ -23,7 +23,7 @@
                      <div class="white_shd full margin_bottom_30">
                         <div class="full graph_head">
                            <div class="heading1 margin_0">
-                              <h2>จัดการบอร์ดสุขภาพสุนัข  </h2>
+                              <h2>จัดการบทความชุมชน  </h2>
                            </div>
                         </div>
                         <div class="table_section padding_infor_info">
@@ -44,13 +44,13 @@
                                     </tr>
                                  </thead>
                                  <% for(let i=0; i < data.length; i++) { %>
-                                 <input type="text" class="form-control" id="detailsLink<%= data[i].boardhealth_id %>" name="detailsLink<%= data[i].boardhealth_id %>" value="<%= data[i].details %>" hidden>
+                                 <input type="text" class="form-control" id="detailsLink<%= data[i].shop_id %>" name="detailsLink<%= data[i].shop_id %>" value="<%= data[i].details %>" hidden>
                                  <tbody>
                                     <tr>
                                        <td><%= i+1%></td>
-                                       <td><%= data[i].boardhealth_id %></td>
+                                       <td><%= data[i].shop_id %></td>
                                        <td><%= data[i].title%></td>
-                                       <td data-toggle="modal" data-target="#showPhoto<%= data[i].boardhealth_id%>" style="cursor: pointer;">
+                                       <td data-toggle="modal" data-target="#showPhoto<%= data[i].shop_id%>" style="cursor: pointer;">
                                           <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" width="200px" height="auto">
                                        </td>
                                        <td><%= (data[i].status == 0) ? "ปิดใช้งาน" : "ใช้งาน"%></td>
@@ -59,19 +59,19 @@
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
                                        <td><%= data[i].view%></td>
                                        <td>
-                                          <a href="../boardhealthDetail/<%= data[i].boardhealth_id%>"target="_blank" class="btn btn-success">
+                                          <a href="../shopDetail/<%= data[i].shop_id%>"target="_blank" class="btn btn-success">
                                              <i class="fa fa-eye" aria-hidden="true"></i> 
                                              รายละเอียด
                                           </a>
-                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<%= data[i].boardhealth_id%>" style="cursor: pointer;"  onclick="myFunction<%= data[i].boardhealth_id %>()">
+                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<%= data[i].shop_id%>" style="cursor: pointer;"  onclick="myFunction<%= data[i].shop_id %>()">
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              แก้ไข
                                           </button>
-                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editIMG<%= data[i].boardhealth_id%>" style="cursor: pointer;">
+                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editIMG<%= data[i].shop_id%>" style="cursor: pointer;">
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              รูป
                                           </button>
-                                          <a href="boardhealthDelete/submit/<%= data[i].boardhealth_id %>" class="btn btn-danger" onclick="return confirm('แน่ใจที่จะลบข้อมูลบอร์ดสุขภาพสุนัข?')">
+                                          <a href="shopDelete/submit/<%= data[i].shop_id %>" class="btn btn-danger" onclick="return confirm('แน่ใจที่จะลบข้อมูลบอร์ดสุขภาพสุนัข?')">
                                              <i class="fa fa-trash-o" aria-hidden="true"></i> 
                                              ลบ
                                           </a>
@@ -79,7 +79,7 @@
                                     </tr>
                                  </tbody>
                                  <!-- แสดงรูป เปิด-->
-                                 <div class="modal fade" id="showPhoto<%= data[i].boardhealth_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal fade" id="showPhoto<%= data[i].shop_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -103,11 +103,11 @@
                                   </div>
                                   <!-- แสดงรูป ปิด-->
                                  <script>
-                                    function myFunction<%= data[i].boardhealth_id %>() {
+                                    function myFunction<%= data[i].shop_id %>() {
                                        
-                                       var textToStore<%= data[i].boardhealth_id %> = document.getElementById('detailsLink<%= data[i].boardhealth_id %>').value;
-                                       var myTextElement<%= data[i].boardhealth_id %> = document.getElementById("myText<%= data[i].boardhealth_id %>");
-                                       myTextElement<%= data[i].boardhealth_id %>.innerHTML = textToStore<%= data[i].boardhealth_id %>;
+                                       var textToStore<%= data[i].shop_id %> = document.getElementById('detailsLink<%= data[i].shop_id %>').value;
+                                       var myTextElement<%= data[i].shop_id %> = document.getElementById("myText<%= data[i].shop_id %>");
+                                       myTextElement<%= data[i].shop_id %>.innerHTML = textToStore<%= data[i].shop_id %>;
 
                                        var toolbarOptions = [
                                           ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -129,7 +129,7 @@
                                           ['clean']                                         // remove formatting button
                                        ];
 
-                                       var quill = new Quill('#quill_editor<%= data[i].boardhealth_id %>', {
+                                       var quill = new Quill('#quill_editor<%= data[i].shop_id %>', {
                                           modules: {
                                           toolbar: toolbarOptions
                                        },
@@ -143,8 +143,8 @@
                                  </script>
                                  <!-- แสดงรูปตัวอย่าง -->
                                  <script>
-                                    var loadFile<%= data[i].boardhealth_id %> = function (event) {
-                                       var output = document.getElementById('output<%= data[i].boardhealth_id %>');
+                                    var loadFile<%= data[i].shop_id %> = function (event) {
+                                       var output = document.getElementById('output<%= data[i].shop_id %>');
                                        output.src = URL.createObjectURL(event.target.files[0]);
                                        output.onload = function () {
                                           URL.revokeObjectURL(output.src) // free memory
@@ -152,7 +152,7 @@
                                     };
                                  </script>
                                   <!-- แก้ไข เปิด-->
-                                 <div class="modal fade" id="edit<%= data[i].boardhealth_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal fade" id="edit<%= data[i].shop_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -162,10 +162,10 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/boardhealth/submit/<%= data[i].boardhealth_id %>" method="post">
+                                          <form action="/admin/shop/submit/<%= data[i].shop_id %>" method="post">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">ID:</label>
-                                                <input type="text" class="form-control" id="boardhealth_id" name="boardhealth_id" value="<%= data[i].boardhealth_id %>" required readonly>
+                                                <input type="text" class="form-control" id="shop_id" name="shop_id" value="<%= data[i].shop_id %>" required readonly>
                                                 <label for="recipient-name" class="col-form-label">หัวข้อ:</label>
                                                 <input type="text" class="form-control" id="titleboard" name="titleboard" value="<%= data[i].title %>" required>
                                                 <div class="modal-body">
@@ -174,8 +174,8 @@
                                                 <label for="recipient-name" class="col-form-label">รายละเอียด:</label>
 
                                                 
-                                                <div id="quill_editor<%= data[i].boardhealth_id %>">
-                                                   <div id="myText<%= data[i].boardhealth_id %>"></div>
+                                                <div id="quill_editor<%= data[i].shop_id %>">
+                                                   <div id="myText<%= data[i].shop_id %>"></div>
                                                </div>
                                                <input type="hidden" id="quill_html" name="details" value="<%- data[i].details %>"></input>
                                              </div>
@@ -193,7 +193,7 @@
                                   <!-- แก้ไข ปิด-->
 
                                   <!-- แก้ไขรูป เปิด-->
-                                 <div class="modal fade" id="editIMG<%= data[i].boardhealth_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal fade" id="editIMG<%= data[i].shop_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -203,11 +203,11 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/boardhealthIMG/submit/<%= data[i].boardhealth_id %>" method="post" enctype="multipart/form-data">
+                                          <form action="/admin/shopIMG/submit/<%= data[i].shop_id %>" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">รูปภาพประกอบ:</label>
-                                                <img id="output<%= data[i].boardhealth_id %>" class="border" src="../img/<%= data[i].photo %>" alt="" width="100%" height="500px"><br><br>
-                                                <input type="file" accept="image/*" onchange="loadFile<%= data[i].boardhealth_id %>(event)" name="photo" required>
+                                                <img id="output<%= data[i].shop_id %>" class="border" src="../img/<%= data[i].photo %>" alt="" width="100%" height="500px"><br><br>
+                                                <input type="file" accept="image/*" onchange="loadFile<%= data[i].shop_id %>(event)" name="photo" required>
                                              </div>
                                              
                                              
