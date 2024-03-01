@@ -1,0 +1,252 @@
+<%- include('../partials/headAdmin') -%>
+<%- include('../partials/headersAdmin') -%>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2><%= title%></h2>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+                  <% if (messages.success) { %>
+                     <div class="alert alert-success" role="alert"><%= messages.success %></div>
+                   <% } %>
+                   <% if (messages.error) { %>
+                     <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                   <% } %>
+                  <!-- table section -->
+                  <div class="col-md-12">
+                     <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                           <div class="heading1 margin_0">
+                              <h2>จัดการข้อมูลผู้ใช้  </h2>
+                           </div>
+                        </div>
+                        <div class="table_section padding_infor_info">
+                           <div class="table-responsive-sm">
+                              <table class="table">
+                                 <thead class="thead-light">
+                                    <tr>
+                                       <th>#</th>
+                                       <th>ID</th>
+                                       <th>ชื่อผู้ใช้</th>
+                                       <th>ชื่อ</th>
+                                       <th>สกุล</th>
+                                       <th>อีเมล</th>
+                                       <th>บทบาท</th>
+                                       <th>รูป</th>
+                                       <th>สถานะ</th>
+                                       <th>วันที่สร้าง</th>
+                                       <th>แก้ไขล่าสุด</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <% for(let i=0; i < data.length; i++) { %>
+                                 <tbody>
+                                    <tr>
+                                       <td><%= i+1%></td>
+                                       <td><%= data[i].id %></td>
+                                       <td><%= data[i].username%></td>
+                                       <td><%= data[i].fname%></td>
+                                       <td><%= data[i].sname%></td>
+                                       <td><%= data[i].email%></td>
+                                       <td><% if(data[i].level == 1){
+                                             %> <p class="btn btn-primary">ผู้ใช้ทั่วไป</p> <%
+                                                }else if(data[i].level == 2){
+                                                   %> <p class="btn btn-success">ยืนยันแล้ว</p><%
+                                                }else if(data[i].level == 3){
+                                                   %> <p class="btn btn-info">ผู้เชี่ยวชาญ</p> <%
+                                                }else if(data[i].level == 4){
+                                                   %> <p class="btn btn-warning">ผู้ดูแลระบบ</p> <%
+                                                }
+                                          %>
+                                       </td>
+                                       <td data-toggle="modal" data-target="#showPhoto<%= data[i].id%>" style="cursor: pointer;">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].img%>" alt="#" width="100px" height="auto">
+                                       </td>
+                                       <td><%= (data[i].status == 0) ? "ปิดใช้งาน" : "ใช้งาน"%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
+                                       <td>
+                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#edit<%= data[i].id%>" style="cursor: pointer;"  onclick="myFunction<%= data[i].id %>()">
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             ข้อมูล
+                                          </button>
+                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editPass<%= data[i].id%>" style="cursor: pointer;"  onclick="myFunction<%= data[i].id %>()">
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             รหัสผ่าน
+                                          </button>
+                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editIMG<%= data[i].id%>" style="cursor: pointer;">
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             รูป
+                                          </button>
+                                          <a href="articleDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบข้อมูลบอร์ดสุขภาพสุนัข?')">
+                                             <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                             ลบ
+                                          </a>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                                 <!-- แสดงรูป เปิด-->
+                                 <div class="modal fade" id="showPhoto<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">รูป</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="form-group">
+                                             <div class="modal-body">
+                                                <img class="img-responsive" src="../img/<%= data[i].img %>" alt="#" width="100%" />
+                                             </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                 </div>
+                                 <!-- แสดงรูป ปิด-->
+                                 <!-- แก้ไข เปิด-->
+                                 <div class="modal fade" id="edit<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายละเอียด</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form action="/admin/article/submit/<%= data[i].id %>" method="post">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">ID:</label>
+                                                <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">หัวข้อ:</label>
+                                                <input type="text" class="form-control" id="titleboard" name="titleboard" value="<%= data[i].user %>" required>
+                                                <div class="modal-body">
+                                                   <img class="img-responsive" src="../img/<%= data[i].img%>" alt="#" width="100%" />
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                             </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                 </div>
+                                 <!-- แก้ไข ปิด-->
+                                 <script>
+                                    var loadFile<%= data[i].id %> = function (event) {
+                                       var output = document.getElementById('output<%= data[i].id %>');
+                                       output.src = URL.createObjectURL(event.target.files[0]);
+                                       output.onload = function () {
+                                          URL.revokeObjectURL(output.src) // free memory
+                                       }
+                                    };
+                                 </script>
+                                 <!-- แก้ไขรูป เปิด-->
+                                 <div class="modal fade" id="editIMG<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรูปภาพประกอบ</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form action="/admin/articleIMG/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">รูปภาพประกอบ:</label>
+                                                <img id="output<%= data[i].id %>" class="border" src="../img/<%= data[i].img %>" alt="" width="100%" height="500px"><br><br>
+                                                <input type="file" accept="image/*" onchange="loadFile<%= data[i].id %>(event)" name="photo" required>
+                                             </div>
+                                             
+                                             
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                             </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- แก้ไขรูป ปิด-->
+
+                                 <% } %>
+                              </table>
+
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </div>
+
+      <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <!-- Include the Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+           
+      <script>
+            var loadFile = function (event) {
+               var output = document.getElementById('output');
+               output.src = URL.createObjectURL(event.target.files[0]);
+               output.onload = function () {
+                  URL.revokeObjectURL(output.src) // free memory
+               }
+            };
+      </script>
+
+      <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
+
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script> 
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+   </body>
+</html>

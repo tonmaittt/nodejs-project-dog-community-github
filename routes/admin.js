@@ -15,8 +15,8 @@ const storage = multer.diskStorage({
         Date.now() +
           "-" +
           Math.round(Math.random() * 1e9) +
-          "-" +
-          file.originalname +
+            //   "-" +
+            //   file.originalname +
           ".jpg"
       ); // เปลี่ยนชื่อไฟล์
     },
@@ -948,7 +948,42 @@ const ifNotLogIn = (req, res, next) => {
             });
         }
     });
-    
+//------------------------------------------------ ข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
+// user
+router.get("/user", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT * FROM tb_user ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/user", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/user", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+
+//------------------------------------------------ ปิดข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
 //------------------------------------------------ จัดการ ----------------------------------------------------------------------------------------------------------------
     // boardhealth
     router.get("/boardhealth", function (req, res, next) {
