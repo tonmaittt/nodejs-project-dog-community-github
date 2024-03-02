@@ -983,6 +983,154 @@ router.get("/user", function (req, res, next) {
     }
 });
 
+// user ->Edit 
+router.post('/user/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let username = req.body.username;
+    let fname = req.body.fname;
+    let sname = req.body.sname;
+    let email = req.body.email;
+    let level = req.body.level;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            username: username,
+            fname: fname,
+            sname: sname,
+            email: email,
+            level: level,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_user SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', err);
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขข้อมูลผู้ใช้สำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// user -> Edit Password
+router.post('/userPassword/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let password = req.body.password;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        bcrypt.hash(password, 12, function (error, hash) {
+          let form_data = {
+            password: hash
+          };
+
+            // update query
+            dbCon.query("UPDATE tb_user SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
+                if (err) {
+                    req.flash('error', err);
+                    res.redirect(req.get('referer'));
+                } else {
+                    req.flash('success', 'แก้ไขรหัสผ่านผู้ใช้สำเร็จ');
+                    res.redirect(req.get('referer'));
+                }
+            })
+        });
+      }
+});
+
+// user ->Edit IMG
+router.post("/userIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    
+    let photo = req.file.filename;
+    let id = req.params.id;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+        img: photo,
+        };
+        // insert query
+        dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', err);
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'แก้ไขรูปผู้ใช้สำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+// user ->Delete
+router.get("/userDelete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    // dbCon.query("DELETE FROM tb_user WHERE id = ?", [id], (err, result) => {
+    //     if (err) {
+    //         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+    //         return console.log(err);
+    //     } else {
+    //       req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+    //       res.redirect(req.get('referer'));
+    //     }
+    // })
+    
+    // insert query
+    dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', err);
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+  });
+
 //------------------------------------------------ ปิดข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
 //------------------------------------------------ จัดการ ----------------------------------------------------------------------------------------------------------------
     // boardhealth
@@ -1050,7 +1198,7 @@ router.get("/user", function (req, res, next) {
                 }
             })
         }
-      })
+    })
 
     // boardhealth ->Edit IMG
     router.post("/boardhealthIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
@@ -1573,7 +1721,8 @@ router.get("/user", function (req, res, next) {
                             req.session.level = rows[0].level;
                             req.session.userName = rows[0].username;
                             req.session.userImg = rows[0].img;
-                            res.redirect("../");
+                            res.redirect(req.get('referer'));
+                            // res.redirect("../");
                         }else{
                             req.flash("error", "ไม่มีสิทธิเข้าใช้งาน");
                             res.render("adminData/login", {

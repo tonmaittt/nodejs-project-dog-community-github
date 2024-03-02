@@ -338,20 +338,20 @@ router.post("/editUserData1Submit", (req, res, next) => {
           // มีข้อมูลอยู่แล้ว
           if (rows.length == 1) {
             // update query
-            dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_id = ?" [form_data2,req.session.idUser], (err, result) => {
+            dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_id = ?" ,[form_data2,req.session.idUser], (err, result) => {
               if (err) {
                   console.log("ERRO 2");
                   req.flash('error', err);
                   res.redirect('/userInformation')
               } else {
-                dbCon.query("UPDATE tb_user SET ? WHERE id = ?",[form_data1,req.session.idUser], (err, result) => {
+                dbCon.query("UPDATE tb_user SET ? WHERE	id = ?",[form_data1,req.session.idUser], (err, result2) => {
                   if (err) {
                       console.log("ERRO 3");
                       req.flash('error', err);
                       res.redirect('/userInformation')
                   } else {
                     dbCon.query(
-                      "SELECT * FROM tb_user WHERE id = ?" [req.session.idUser],
+                      "SELECT * FROM tb_user WHERE id = ?" ,[req.session.idUser],
                       async (err, rows3) => {
                         if (err) {
                           req.flash("error", err);
@@ -379,7 +379,7 @@ router.post("/editUserData1Submit", (req, res, next) => {
                   req.flash('error', err);
                   res.redirect('/userInformation')
               } else {
-                dbCon.query("UPDATE tb_user SET ? WHERE id = ?",[req.session.idUser,form_data1], (err, result) => {
+                dbCon.query("UPDATE tb_user SET ? WHERE id = ?",[form_data1,req.session.idUser], (err, result) => {
                   if (err) {
                       console.log("ERRO 3/");
                       req.flash('error', err);
@@ -2588,6 +2588,7 @@ router.post("/login/submit", (req, res, next) => {
                   req.session.level = rows[0].level;
                   req.session.userName = rows[0].username;
                   req.session.userImg = rows[0].img;
+                  //res.redirect(req.get('referer'));
                   res.redirect("../");
                 } else {
                   req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
