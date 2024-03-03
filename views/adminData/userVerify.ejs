@@ -1,0 +1,196 @@
+<%- include('../partials/headAdmin') -%>
+<%- include('../partials/headersAdmin') -%>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2><%= title%></h2>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+                  <% if (messages.success) { %>
+                     <div class="alert alert-success" role="alert"><%= messages.success %></div>
+                   <% } %>
+                   <% if (messages.error) { %>
+                     <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                   <% } %>
+                  <!-- table section -->
+                  <div class="col-md-12">
+                     <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                           <div class="heading1 margin_0">
+                              <h2>จัดการข้อมูลผู้ใช้  </h2>
+                           </div>
+                        </div>
+                        <div class="table_section padding_infor_info">
+                           <div class="table-responsive-sm">
+                              <table class="table">
+                                 <thead class="thead-light">
+                                    <tr>
+                                       <th>#</th>
+                                       <th>ID</th>
+                                       <th>USER ID</th>
+                                       <th>ชื่อผู้ใช้</th>
+                                       <th>ที่อยู่</th>
+                                       <th>รหัสบัตรประชาชน</th>
+                                       <th>เบอร์โทร</th>
+                                       <th>Facebook</th>
+                                       <th>Line</th>
+                                       <th>สถานะ</th>
+                                       <th>วันที่สร้าง</th>
+                                       <th>แก้ไขล่าสุด</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <% for(let i=0; i < data.length; i++) { %>
+                                 <tbody>
+                                    <tr>
+                                       <td><%= i+1%></td>
+                                       <td><%= data[i].id %></td>
+                                       <td><%= data[i].user_id %></td>
+                                       <td><%= data[i].username %></td>
+                                       <td><%= data[i].address%></td>
+                                       <td><%= data[i].card_id%></td>
+                                       <td><%= data[i].tel%></td>
+                                       <td><%= data[i].facebook%></td>
+                                       <td><%= data[i].line%></td>
+                                       <td><%= (data[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
+                                       <td>
+                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#edit<%= data[i].id%>" style="cursor: pointer;" >
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             ข้อมูล
+                                          </button>
+                                          <a href="userVerifyDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบผู้ใช้ที่ผ่านการยืนยันแล้ว?')">
+                                             <i class="fa fa-trash-o" aria-hidden="true"></i> 
+                                             ลบ
+                                          </a>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                                 <!-- แก้ไข เปิด-->
+                                 <div class="modal fade" id="edit<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายละเอียดผู้ใช้</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form action="/admin/userVerify/submit/<%= data[i].id %>" method="post">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">ID:</label>
+                                                <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">USER ID:</label>
+                                                <input type="text" class="form-control" id="id" name="user_id" value="<%= data[i].user_id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">ชื่อผู้ใช้:</label>
+                                                <input type="text" class="form-control" id="username" name="username" value="<%= data[i].username %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">ที่อยู่:</label>
+                                                <textarea class="form-control" id="address" name="address" rows="3" required><%= data[i].address %></textarea>
+                                                <label for="recipient-name" class="col-form-label">รหัสบัตรประชาชน:</label>
+                                                <input type="text" minlength="13" maxlength="13" class="form-control" id="card_id" name="card_id" value="<%= data[i].card_id %>" required>
+                                                <label for="recipient-name" class="col-form-label">เบอร์โทร:</label>
+                                                <input type="tel" minlength="10" maxlength="10" class="form-control" id="tel" name="tel" value="<%= data[i].tel %>" required>
+                                                <label for="recipient-name" class="col-form-label">facebook:</label>
+                                                <input type="text" class="form-control" id="facebook" name="facebook" value="<%= data[i].facebook %>" required>
+                                                <label for="recipient-name" class="col-form-label">line:</label>
+                                                <input type="text" class="form-control" id="line" name="line" value="<%= data[i].line %>" required>
+                                                <label for="recipient-name" class="col-form-label">สถานะ:</label>
+                                                <select class="custom-select" id="status" name="status">
+                                                   <option value="<%= data[i].level %>">
+                                                         <% if(data[i].status == 0){ %>
+                                                            ไม่ผ่านการยืนยัน
+                                                         <% }else if(data[i].status == 1){ %>
+                                                            ยืนยันแล้ว
+                                                         <% } %>
+                                                   </option>
+                                                   <% if(data[i].status != 0){ %>
+                                                   <option value="0">ไม่ผ่านการยืนยัน</option>
+                                                   <% } %>
+                                                   <% if(data[i].status != 1){ %>
+                                                   <option value="1">ยืนยันแล้ว</option>
+                                                   <% } %>
+                                                </select>
+                                             </div>
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขผู้ใช้ที่ผ่านการยืนยันแล้ว?')">บันทึก</button>
+                                             </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                 </div>
+                                 <!-- แก้ไข ปิด-->
+
+
+                                 <% } %>
+                              </table>
+
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </div>
+
+      <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <!-- Include the Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+           
+      <script>
+            var loadFile = function (event) {
+               var output = document.getElementById('output');
+               output.src = URL.createObjectURL(event.target.files[0]);
+               output.onload = function () {
+                  URL.revokeObjectURL(output.src) // free memory
+               }
+            };
+      </script>
+
+      <script>
+    var check = function() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirmpassword').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = '';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'กรุณาตรวจสอบรหัสผ่านอีกครั้ง';
+      }
+    }
+  </script>
+
+      <!-- jQuery -->
+      <script src="/stylesheets/admin_assets/js/jquery.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/popper.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/bootstrap.min.js"></script>
+      <!-- wow animation -->
+      <script src="/stylesheets/admin_assets/js/animate.js"></script>
+      <!-- select country -->
+      <script src="/stylesheets/admin_assets/js/bootstrap-select.js"></script>
+      <!-- owl carousel -->
+      <script src="/stylesheets/admin_assets/js/owl.carousel.js"></script> 
+      <!-- chart js -->
+      <script src="/stylesheets/admin_assets/js/Chart.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/Chart.bundle.min.js"></script>
+      <script src="/stylesheets/admin_assets/js/utils.js"></script>
+      <script src="/stylesheets/admin_assets/js/analyser.js"></script>
+      <!-- nice scrollbar -->
+      <script src="/stylesheets/admin_assets/js/perfect-scrollbar.min.js"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="/stylesheets/admin_assets/js/chart_custom_style1.js"></script>
+      <script src="/stylesheets/admin_assets/js/custom.js"></script>
+   </body>
+</html>

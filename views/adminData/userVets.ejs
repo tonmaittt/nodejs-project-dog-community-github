@@ -33,11 +33,24 @@
                                     <tr>
                                        <th>#</th>
                                        <th>ID</th>
+                                       <th>USER ID</th>
                                        <th>ชื่อผู้ใช้</th>
+                                       <th>คำนำหน้า</th>
                                        <th>ชื่อ</th>
                                        <th>สกุล</th>
                                        <th>อีเมล</th>
-                                       <th>สิทธิ</th>
+                                       <th>ชื่อที่ใช้แสดง</th>
+                                       <!-- <th>เพศ</th>
+                                       <th>วันเกิด</th>
+                                       <th>ที่อยู่</th> -->
+                                       <th>ใบอนุญาต</th>
+                                       <!-- <th>เบอร์โทร</th>
+                                       <th>Facebook</th>
+                                       <th>line</th>
+                                       <th>คลีนิคที่ทำงาน</th>
+                                       <th>ตำแหน่งงาน</th>
+                                       <th>เรียนจบจาก</th>
+                                       <th>แนะนำตัว</th> -->
                                        <th>รูป</th>
                                        <th>สถานะ</th>
                                        <th>วันที่สร้าง</th>
@@ -50,35 +63,43 @@
                                     <tr>
                                        <td><%= i+1%></td>
                                        <td><%= data[i].id %></td>
+                                       <td><%= data[i].user_id %></td>
                                        <td><%= data[i].username%></td>
-                                       <td><%= data[i].fname%></td>
-                                       <td><%= data[i].sname%></td>
-                                       <td><%= data[i].email%></td>
-                                       <td><% if(data[i].level == 1){
-                                             %> <p class="btn btn-primary">ผู้ใช้ทั่วไป</p> <%
-                                                }else if(data[i].level == 2){
-                                                   %> <p class="btn btn-success">ยืนยันแล้ว</p><%
-                                                }else if(data[i].level == 3){
-                                                   %> <p class="btn btn-info">ผู้เชี่ยวชาญ</p> <%
-                                                }else if(data[i].level == 4){
-                                                   %> <p class="btn btn-warning">ผู้ดูแลระบบ</p> <%
-                                                }
-                                          %>
+                                       <td><%= data[i].vets_title%></td>
+                                       <td><%= data[i].vets_fname%></td>
+                                       <td><%= data[i].vets_sname%></td>
+                                       <td><%= data[i].vets_email%></td>
+                                       <td><%= data[i].vets_name_show%></td>
+                                       <!-- <td><% if(data[i].vets_gender == 1){ %> 
+                                                   ชาย 
+                                                <% }else if(data[i].vets_gender == 2){ %> 
+                                                   หญิง
+                                                <% }else if(data[i].vets_gender == 3){ %> 
+                                                   ไม่ระบุ 
+                                                <% } %> 
                                        </td>
+                                       <td><%= new Intl.DateTimeFormat('en-CA').format(data[i].vets_birthday) %></td>
+                                       <td><%= data[i].vets_address%></td> -->
                                        <td data-toggle="modal" data-target="#showPhoto<%= data[i].id%>" style="cursor: pointer;">
-                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].img%>" alt="#" width="100px" height="auto">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_license%>" alt="#" width="100px" height="auto">
                                        </td>
-                                       <td><%= (data[i].status == 0) ? "ปิดใช้งาน" : "ใช้งาน"%></td>
+                                       <!-- <td><%= data[i].vets_tel%></td>
+                                       <td><%= data[i].vets_facebook%></td>
+                                       <td><%= data[i].vets_line%></td>
+                                       <td><%= data[i].vets_workplace%></td>
+                                       <td><%= data[i].vets_position%></td>
+                                       <td><%= data[i].vets_graduated%></td>
+                                       <td><%= data[i].vets_introduce%></td> -->
+                                       <td data-toggle="modal" data-target="#showPhotoPro<%= data[i].id%>" style="cursor: pointer;">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_img%>" alt="#" width="100px" height="auto">
+                                       </td>
+                                       <td><%= (data[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
                                        <td>
                                           <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#edit<%= data[i].id%>" style="cursor: pointer;" >
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              ข้อมูล
-                                          </button>
-                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editPass<%= data[i].id%>" style="cursor: pointer;" >
-                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
-                                             รหัสผ่าน
                                           </button>
                                           <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editIMG<%= data[i].id%>" style="cursor: pointer;">
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 

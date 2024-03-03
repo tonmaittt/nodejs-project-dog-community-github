@@ -1129,9 +1129,165 @@ router.get("/userDelete/submit/(:id)", (req, res, next) => {
         }
     })
     }
-  });
+});
 
 //------------------------------------------------ ปิดข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------ ข้อมูลผู้ใช้ที่ผ่านการยืนยันแล้ว ----------------------------------------------------------------------------------------------------------------
+// userVerify
+router.get("/userVerify", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT tb_user.username AS username, tb_user_verified.* FROM tb_user_verified LEFT JOIN tb_user ON tb_user_verified.user_id = tb_user.id ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/userVerify", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/userVerify", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+
+// userVerify ->Edit 
+router.post('/userVerify/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let address = req.body.address;
+    let card_id = req.body.card_id;
+    let tel = req.body.tel;
+    let facebook = req.body.facebook;
+    let line = req.body.line;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            address: address,
+            card_id: card_id,
+            tel: tel,
+            facebook: facebook,
+            line: line,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_user_verified SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', err);
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขผู้ใช้ที่ผ่านการยืนยันแล้วสำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// userVerify ->Delete
+router.get("/userVerifyDelete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    dbCon.query("DELETE FROM tb_user_verified WHERE id = ?", [id], (err, result) => {
+        if (err) {
+            req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            return console.log(err);
+        } else {
+          req.flash('success', 'ลบข้อมูลผู้ใช้ที่ผ่านการยืนยันแล้วสำเร็จ');
+          res.redirect(req.get('referer'));
+        }
+    })
+    
+    // insert query
+    // dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+    //     if (err) {
+    //         req.flash('error', err);
+    //         res.redirect(req.get('referer'));
+    //     } else {
+    //         req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+    //         res.redirect(req.get('referer'));
+    //     }
+    // })
+    }
+});
+//------------------------------------------------ ปิดข้อมูลผู้ใช้ที่ผ่านการยืนยันแล้ว ----------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------ ข้อมูลผู้เชี่ยวชาญ ----------------------------------------------------------------------------------------------------------------
+// userVerify
+router.get("/userVets", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT tb_user.username AS username, tb_vets.* FROM tb_vets LEFT JOIN tb_user ON tb_vets.user_id = tb_user.id ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/userVets", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/userVets", {
+                    title: "จัดการ ผู้ใช้",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+//------------------------------------------------ ข้อมูลผู้เชี่ยวชาญ ----------------------------------------------------------------------------------------------------------------
+
+
 //------------------------------------------------ จัดการ ----------------------------------------------------------------------------------------------------------------
     // boardhealth
     router.get("/boardhealth", function (req, res, next) {
