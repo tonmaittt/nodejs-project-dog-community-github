@@ -33,11 +33,13 @@
                                     <tr>
                                        <th>#</th>
                                        <th>ID</th>
+                                       <th>USER ID</th>
                                        <th>ชื่อผู้ใช้</th>
-                                       <th>ชื่อ</th>
-                                       <th>สกุล</th>
-                                       <th>อีเมล</th>
-                                       <th>สิทธิ</th>
+                                       <th>ชื่อสุนัข</th>
+                                       <th>พันธุ์ของสุนัข</th>
+                                       <th>วันเกิด</th>
+                                       <th>เพศ</th>
+                                       <th>แนะนำตัวสุนัข</th>
                                        <th>รูป</th>
                                        <th>สถานะ</th>
                                        <th>วันที่สร้าง</th>
@@ -50,23 +52,22 @@
                                     <tr>
                                        <td><%= i+1%></td>
                                        <td><%= data[i].id %></td>
+                                       <td><%= data[i].user_id %></td>
                                        <td><%= data[i].username%></td>
-                                       <td><%= data[i].fname%></td>
-                                       <td><%= data[i].sname%></td>
-                                       <td><%= data[i].email%></td>
-                                       <td><% if(data[i].level == 1){
-                                             %> <p class="btn btn-primary">ผู้ใช้ทั่วไป</p> <%
-                                                }else if(data[i].level == 2){
-                                                   %> <p class="btn btn-success">ยืนยันแล้ว</p><%
-                                                }else if(data[i].level == 3){
-                                                   %> <p class="btn btn-info">ผู้เชี่ยวชาญ</p> <%
-                                                }else if(data[i].level == 4){
-                                                   %> <p class="btn btn-warning">ผู้ดูแลระบบ</p> <%
-                                                }
-                                          %>
+                                       <td><%= data[i].dog_name%></td>
+                                       <td><%= data[i].dog_breed%></td>
+                                       <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].dog_birthday)%></td>
+                                       <td><% if(data[i].dog_gender == 1){ %> 
+                                          ชาย 
+                                       <% }else if(data[i].dog_gender == 2){ %> 
+                                          หญิง
+                                       <% }else if(data[i].dog_gender == 3){ %> 
+                                          ไม่ระบุ 
+                                       <% } %> 
                                        </td>
+                                       <td><%= data[i].dog_introduce%></td>
                                        <td data-toggle="modal" data-target="#showPhoto<%= data[i].id%>" style="cursor: pointer;">
-                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].img%>" style="aspect-ratio: 1;object-fit: cover;" alt="#" width="100px" height="auto">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].dog_img%>" style="aspect-ratio: 1;object-fit: cover;" alt="#" width="100px" height="auto">
                                        </td>
                                        <td><%= (data[i].status == 0) ? "ปิดใช้งาน" : "ใช้งาน"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
@@ -76,18 +77,14 @@
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              ข้อมูล
                                           </button>
-                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editPass<%= data[i].id%>" style="cursor: pointer;" >
-                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
-                                             รหัสผ่าน
-                                          </button>
                                           <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editIMG<%= data[i].id%>" style="cursor: pointer;">
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              รูป
                                           </button>
-                                          <a href="userDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบข้อมูลผู้ใช้?')">
+                                          <!-- <a href="dogDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบข้อมูลผู้ใช้?')">
                                              <i class="fa fa-trash-o" aria-hidden="true"></i> 
                                              ลบ
-                                          </a>
+                                          </a> -->
                                        </td>
                                     </tr>
                                  </tbody>
@@ -104,7 +101,7 @@
                                         <div class="modal-body">
                                           <div class="form-group">
                                              <div class="modal-body">
-                                                <img class="img-responsive" src="../img/<%= data[i].img %>" alt="#" width="100%" />
+                                                <img class="img-responsive" src="../img/<%= data[i].dog_img %>" alt="#" width="100%" />
                                              </div>
                                           </div>
                                           <div class="modal-footer">
@@ -126,45 +123,44 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/user/submit/<%= data[i].id %>" method="post">
+                                          <form action="/admin/dog/submit/<%= data[i].id %>" method="post">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">ID:</label>
                                                 <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">USER ID:</label>
+                                                <input type="text" class="form-control" id="user_id" name="user_id" value="<%= data[i].user_id %>" readonly required readonly>
                                                 <label for="recipient-name" class="col-form-label">ชื่อผู้ใช้:</label>
-                                                <input type="text" class="form-control" id="username" name="username" value="<%= data[i].username %>" required>
-                                                <label for="recipient-name" class="col-form-label">ชื่อ:</label>
-                                                <input type="text" class="form-control" id="fname" name="fname" value="<%= data[i].fname %>" required>
-                                                <label for="recipient-name" class="col-form-label">สกุล:</label>
-                                                <input type="text" class="form-control" id="sname" name="sname" value="<%= data[i].sname %>" required>
-                                                <label for="recipient-name" class="col-form-label">อีเมล:</label>
-                                                <input type="text" class="form-control" id="email" name="email" value="<%= data[i].email %>" required>
-                                                <label for="recipient-name" class="col-form-label">สิทธิ:</label>
-                                                <select class="custom-select" id="level" name="level" required>
-                                                   <option value="<%= data[i].level %>">
-                                                         <% if(data[i].level == 1){
-                                                            %>ผู้ใช้ทั่วไป<%
-                                                         }else if(data[i].level == 2){
-                                                            %>ยืนยันแล้ว<%
-                                                         }else if(data[i].level == 3){
-                                                            %>ผู้เชี่ยวชาญ<%
-                                                         }else if(data[i].level == 4){
-                                                            %>ผู้ดูแลระบบ<%
+                                                <input type="text" class="form-control" id="username" name="username" value="<%= data[i].username %>" readonly required>
+                                                <label for="recipient-name" class="col-form-label">ชื่อสุนัข:</label>
+                                                <input type="text" class="form-control" id="dog_name" name="dog_name" value="<%= data[i].dog_name %>" required>
+                                                <label for="recipient-name" class="col-form-label">พันธุ์ของสุนัข:</label>
+                                                <input type="text" class="form-control" id="dog_breed" name="dog_breed" value="<%= data[i].dog_breed %>" required>
+                                                <label for="recipient-name" class="col-form-label">วันเกิด:</label>
+                                                <input type="date" class="form-control" id="dog_birthday" name="dog_birthday" value="<%= new Intl.DateTimeFormat('en-CA').format(data[i].dog_birthday) %>" required>
+                                                <label for="recipient-name" class="col-form-label">เพศ:</label>
+                                                <select class="custom-select" id="dog_gender" name="dog_gender" required>
+                                                   <option value="<%= data[i].dog_gender %>">
+                                                         <% if(data[i].dog_gender == 1){
+                                                            %>ชาย<%
+                                                         }else if(data[i].dog_gender == 2){
+                                                            %>หญิง<%
+                                                         }else if(data[i].dog_gender == 3){
+                                                            %>ไม่ระบุ<%
                                                          }
                                                       %>
                                                    </option>
-                                                   <% if(data[i].level != 1){ %>
-                                                   <option value="1">ผู้ใช้ทั่วไป</option>
+                                                   <% if(data[i].dog_gender != 1){ %>
+                                                   <option value="1">ชาย</option>
                                                    <% } %>
-                                                   <% if(data[i].level != 2){ %>
-                                                   <option value="2">ยืนยันแล้ว</option>
+                                                   <% if(data[i].dog_gender != 2){ %>
+                                                   <option value="2">หญิง</option>
                                                    <% } %>
-                                                   <% if(data[i].level != 3){ %>
-                                                   <option value="3">ผู้เชี่ยวชาญ</option>
-                                                   <% } %>
-                                                   <% if(data[i].level != 4){ %>
-                                                   <option value="4">ผู้ดูแลระบบ</option>
+                                                   <% if(data[i].dog_gender != 3){ %>
+                                                   <option value="3">ไม่ระบุ</option>
                                                    <% } %>
                                                 </select>
+                                                <label for="recipient-name" class="col-form-label">แนะนำตัวสุนัข:</label>
+                                                <textarea class="form-control" id="dog_introduce" name="dog_introduce" rows="3" required><%= data[i].dog_introduce %></textarea>
                                                 <label for="recipient-name" class="col-form-label">สถานะ:</label>
                                                 <select class="custom-select" id="status" name="status" required>
                                                    <option value="<%= data[i].status %>">
@@ -187,7 +183,7 @@
                                              </div>
                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลผู้ใช้?')">บันทึก</button>
+                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลสุนัข?')">บันทึก</button>
                                              </div>
                                           </form>
                                         </div>
@@ -195,48 +191,6 @@
                                     </div>
                                  </div>
                                  <!-- แก้ไข ปิด-->
-                                 <script>
-                                    function myFunction<%= data[i].id %>() {
-                                      var x = document.getElementById("myInput<%= data[i].id %>");
-                                      if (x.type === "password") {
-                                        x.type = "text";
-                                      } else {
-                                        x.type = "password";
-                                      }
-                                    }
-                                 </script>
-                                 <!-- แก้ไขรหัสผ่าน เปิด-->
-                                 <div class="modal fade" id="editPass<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายละเอียด</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <form action="/admin/userPassword/submit/<%= data[i].id %>" method="post">
-                                            <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">ID:</label>
-                                                <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
-                                                <label for="recipient-name" class="col-form-label">ชื่อผู้ใช้:</label>
-                                                <input type="password" id="myInput<%= data[i].id %>" class="form-control" id="password" name="password" value="" required>
-                                                <input type="checkbox" class="mt-2" onclick="myFunction<%= data[i].id %>()"> Show Password
-                                                <!-- <div class="modal-body">
-                                                   <img class="img-responsive" src="../img/<%= data[i].img%>" alt="#" width="100%" />
-                                                </div> -->
-                                             </div>
-                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขรหัสผ่านผู้ใช้?')">บันทึก</button>
-                                             </div>
-                                          </form>
-                                        </div>
-                                      </div>
-                                    </div>
-                                 </div>
-                                 <!-- แก้ไขรหัสผ่าน ปิด-->
                                  <script>
                                     var loadFile<%= data[i].id %> = function (event) {
                                        var output = document.getElementById('output<%= data[i].id %>');
@@ -251,22 +205,22 @@
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรูปภาพประกอบ</h5>
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรูปภาพ</h5>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/userIMG/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
+                                          <form action="/admin/dogIMG/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">รูปภาพประกอบ:</label>
-                                                <img id="output<%= data[i].id %>" class="border" src="../img/<%= data[i].img %>" alt="" width="100%" height="500px"><br><br>
+                                                <label for="recipient-name" class="col-form-label">รูปภาพ:</label>
+                                                <img id="output<%= data[i].id %>" class="border" src="../img/<%= data[i].dog_img %>" alt="" width="100%" height="500px"><br><br>
                                                 <input type="file" accept="image/*" onchange="loadFile<%= data[i].id %>(event)" name="photo" required>
                                              </div>
 
                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลรูปผู้ใช้?')">บันทึก</button>
+                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลรูปสุนัข?')">บันทึก</button>
                                              </div>
                                           </form>
                                         </div>

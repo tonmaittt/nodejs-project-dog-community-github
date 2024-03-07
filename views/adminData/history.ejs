@@ -223,8 +223,8 @@
                                                             <td><%= add_point[i].date%></td>
                                                             <td><%= add_point[i].time%></td>
                                                             <td><%= add_point[i].status%></td>
-                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].created_at)%></td>
-                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(shop[i].update_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].created_at)%></td>
+                                                            <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].update_at)%></td>
                                                          </tr>
                                                          <% } %>
                                                       </tbody>

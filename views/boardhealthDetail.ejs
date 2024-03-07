@@ -83,6 +83,7 @@
                                             ความคิดเห็นผู้เชี่ยวชาญ
                                         </div>
                                         <div class="card-body">
+                                            
                                             <% if(levelS == 3 && cmvets.length == 0) { %>
                                                 <form action="/commentAddVets/<%- id %>" method="post">
                                                     <div class="form-group  mt-2">
@@ -91,6 +92,7 @@
                                                     <button type="submit" class="btn btn-primary mb-3" style="background-color: coral;">ส่งความคิดเห็น</button>
                                                 </form>
                                             <% } %>
+                                            <% if(cmvets.length != 0) { %>
                                             <ul class="list-group" id="comment-list">
                                                 <!-- รายการความคิดเห็นจะถูกเพิ่มที่นี่ -->
                                                 <ul class="list-group mb-2">
@@ -100,7 +102,10 @@
                                                     <i class="fas fa-heart" style="color: coral;"></i> ถูกใจ (<span id="counter2"></span>)
                                                 </button>
                                             </ul>
-                                            
+                                            <% } %>
+                                            <% if(cmvets.length == 0 && levelS != 3) { %>
+                                                <center>ยังไม่มีความคิดเห็นจากผู้เชียวชาญ</center>
+                                            <% } %>
                                         </div>
                                     </div>
                                 </div>
@@ -213,6 +218,7 @@
         <!-- แสดงคอมเม้น -->
         <script>
             var uid = <%= user_id  %>;
+            var levelS1 = <%= levelS %>;
                 fetch('/api/user/<%- id %>', {method: 'GET'})
                     .then(function(response) {
                     if(response.ok) return response.json();
@@ -222,7 +228,7 @@
                     console.log(data);
                     document.getElementById('counterComment').innerHTML = `${data.length}`;
                     for (let i = 0; i < data.length; i++) {
-                        if(uid == data[i]["user_id"]){ 
+                        if(uid == data[i]["user_id"] || levelS1 == 4){ 
                             document.getElementById('commentShow').innerHTML += `
                                                     <li class="list-group-item">
                                                         <div class="media">

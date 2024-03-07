@@ -9,7 +9,7 @@
 						<div class="col-lg-8 offset-lg-2 text-center">
 							<div class="breadcrumb-text">
 								<p>ยินดีต้อนรับ</p>
-								<h1>จัดการพอยท์</h1>
+								<h1>ประวัติพอยท์</h1>
 							</div>
 						</div>
 					</div>
@@ -42,52 +42,36 @@
 			<% } %>
 			<div class="row">
 				<div class="col-lg-8 mb-5 mb-lg-0">
-					<div class="form-title">
-						<h2>เติมพอยท์</h2>
-						<p>*หมายเหตุ</p>
-						<p>- อัตราแลกเปลี่ยนจำนวนพอยท์ 1 : 1 บาท </p>
-						<p>- หลังจากส่งหลักการเติมพอยท์ กรุณารอการตรวจสอบจากเจ้าหน้าที่ 1 - 2  วัน </p>
-					</div>
-
-						<div class="form-title">
-							<h2>ช่องทางการชำระเงิน</h2>
-							<div class="col-lg-12 mb-5 mb-lg-0 border p-2 mx-auto d-flex justify-content-start flex-wrap">
-									<div class="p-2">
-										<img src="../img/bb.png" alt="" width="150px">
-									</div>
-									<div class="p-2">
-										<p><b><h6>ธนาคาร : กรุงเทพ</h6></b></p>
-										<p><b><h6>ชื่อบัญชี : ศุภณัฐ กมล</h6></b></p>
-										<p><b><h6>เลขที่บัญชี :622-0-xxx846</h6></b></p>
-									</div>
-								
-							</div>
-						</div>
-
-				 	<div id="form_status"></div>
-					<div class="contact-form">
-						<form action="/pointAdd" method="post" enctype="multipart/form-data" id="fruitkha-contact">
-							<p>
-								<input type="text" placeholder="ชื่อและนามสกุลผู้โอน" name="name" id="name" required>
-								<input type="number" placeholder="จำนวนพอยท์" name="point" id="point" min="0" style="width: 49%;" required>
-							</p>
-							<p><h5>ภาพหลักฐานการโอน</h5></p>
-							<p>
-								<div class="custom-file">
-									<input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" accept="image/*" onchange="loadFile(event)" required>
-									<label class="custom-file-label" for="customFileLang">เลือกภาพหลักฐานการโอน</label>
-							  	</div>
-								  <img id="output" style="width: 100%;" class="rounded border border-dark mt-4" />
-							</p>
-							<p><h5>วันที่และเวลาโอน</h5></p>
-							<p class="d-flex justify-content-between">
-								<input style="width: 49%;" type="date" placeholder="วันที่โอน" name="date" id="date" required>
-								<input style="width: 49%;" type="time" placeholder="เวลาที่โอน" name="time" id="time" required>
-							</p>
-							<!-- <input type="hidden" name="token" value="FsWga4&@f6aw" /> -->
-							<p><input type="submit" value="ยืนยัน" class="cart-buttons"></p>
-						</form>
-					</div>
+					<table class="table">
+						<thead class="thead-light">
+						   <tr>
+							  <th>#</th>
+							  <th>ผู้ขอ</th>
+							  <th>ชื่อบัญชี</th>
+							  <th>หลักฐาน</th>
+							  <th>วันที่</th>
+							  <th>เวลา</th>
+							  <th>สถานะ</th>
+							  <th>วันที่สร้าง</th>
+							  <th>แก้ไขล่าสุด</th>
+						   </tr>
+						</thead>
+						<tbody>
+						   <% for(let i=0; i < add_point.length; i++) { %>
+						   <tr>
+							  <td><%= i+1 %></td>
+							  <td><%= add_point[i].username %></td>
+							  <td><%= add_point[i].name%></td>
+							  <td><img class="img-responsive" src="../img/<%= add_point[i].photo%>" alt="#" height="200px" ></td>
+							  <td><%= add_point[i].date%></td>
+							  <td><%= add_point[i].time%></td>
+							  <td><%= (add_point[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
+							  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].created_at)%></td>
+							  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].update_at)%></td>
+						   </tr>
+						   <% } %>
+						</tbody>
+					 </table>
 				</div>
 				<div class="col-lg-4">
 					<div class="contact-form-wrap">
@@ -99,7 +83,7 @@
 									<a href="/pointOut" class="org">ถอนพอยท์</a><br> 
                                 <% } %>
 								<a href="/boost" class="org">Boost Shop</a><br> 
-								<a href="/historyPoint" class="org">ประวัติการเติมพอยท์</a><br> 
+								<a href="/historyPoint" class="org">ประวัติพอยท์</a><br> 
 							</p>
 						</div>
 					</div>

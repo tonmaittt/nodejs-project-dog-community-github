@@ -190,6 +190,7 @@
                 <!-- แสดงคอมเม้น -->
                 <script>
                     var uid = <%= user_id  %>;
+                    var levelS1 = <%= levelS %>;
                         fetch('/comment/Communityboard/<%- id %>', {method: 'GET'})
                             .then(function(response) {
                             if(response.ok) return response.json();
@@ -199,7 +200,7 @@
                             console.log(data);
                             document.getElementById('counterComment').innerHTML = `${data.length}`;
                             for (let i = 0; i < data.length; i++) {
-                                if(uid == data[i]["user_id"]){ 
+                                if(uid == data[i]["user_id"] || levelS1 == 4){ 
                                     document.getElementById('commentShow').innerHTML += `
                                                             <li class="list-group-item">
                                                                 <div class="media">

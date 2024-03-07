@@ -23,7 +23,7 @@
                      <div class="white_shd full margin_bottom_30">
                         <div class="full graph_head">
                            <div class="heading1 margin_0">
-                              <h2>จัดการข้อมูลผู้ใช้  </h2>
+                              <h2>จัดการข้อมูลผู้เชี่ยวชาญ  </h2>
                            </div>
                         </div>
                         <div class="table_section padding_infor_info">
@@ -80,8 +80,8 @@
                                        </td>
                                        <td><%= new Intl.DateTimeFormat('en-CA').format(data[i].vets_birthday) %></td>
                                        <td><%= data[i].vets_address%></td> -->
-                                       <td data-toggle="modal" data-target="#showPhoto<%= data[i].id%>" style="cursor: pointer;">
-                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_license%>" alt="#" width="100px" height="auto">
+                                       <td data-toggle="modal" data-target="#showPhotolicense<%= data[i].id%>" style="cursor: pointer;">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_license%>" style="aspect-ratio: 1;object-fit: cover;" alt="#" width="100px" height="auto">
                                        </td>
                                        <!-- <td><%= data[i].vets_tel%></td>
                                        <td><%= data[i].vets_facebook%></td>
@@ -91,7 +91,7 @@
                                        <td><%= data[i].vets_graduated%></td>
                                        <td><%= data[i].vets_introduce%></td> -->
                                        <td data-toggle="modal" data-target="#showPhotoPro<%= data[i].id%>" style="cursor: pointer;">
-                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_img%>" alt="#" width="100px" height="auto">
+                                          <img class="img-responsive img-fluid rounded-circle" src="../img/<%= data[i].vets_img%>" style="aspect-ratio: 1;object-fit: cover;" alt="#" width="100px" height="auto">
                                        </td>
                                        <td><%= (data[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
                                        <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
@@ -101,19 +101,23 @@
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              ข้อมูล
                                           </button>
+                                          <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editLicense<%= data[i].id%>" style="cursor: pointer;">
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                                             ใบอนุญาต
+                                          </button>
                                           <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#editIMG<%= data[i].id%>" style="cursor: pointer;">
                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                                              รูป
                                           </button>
-                                          <a href="userDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบข้อมูลผู้ใช้?')">
+                                          <!-- <a href="userVetsDelete/submit/<%= data[i].id %>" class="btn btn-danger mb-2" onclick="return confirm('แน่ใจที่จะลบข้อมูลผู้เชี่ยวชาญ?')">
                                              <i class="fa fa-trash-o" aria-hidden="true"></i> 
                                              ลบ
-                                          </a>
+                                          </a> -->
                                        </td>
                                     </tr>
                                  </tbody>
-                                 <!-- แสดงรูป เปิด-->
-                                 <div class="modal fade" id="showPhoto<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <!-- แสดงรูปใบอนุญาต เปิด-->
+                                 <div class="modal fade" id="showPhotolicense<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -125,7 +129,31 @@
                                         <div class="modal-body">
                                           <div class="form-group">
                                              <div class="modal-body">
-                                                <img class="img-responsive" src="../img/<%= data[i].img %>" alt="#" width="100%" />
+                                                <img class="img-responsive" src="../img/<%= data[i].vets_license %>"   alt="#" width="100%" />
+                                             </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                 </div>
+                                 <!-- แสดงรูป ปิด-->
+                                 <!-- แสดงรูป เปิด-->
+                                 <div class="modal fade" id="showPhotoPro<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">รูปโปรไฟล์</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="form-group">
+                                             <div class="modal-body">
+                                                <img class="img-responsive" src="../img/<%= data[i].vets_img %>" alt="#" width="100%" />
                                              </div>
                                           </div>
                                           <div class="modal-footer">
@@ -147,68 +175,84 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/user/submit/<%= data[i].id %>" method="post">
+                                          <form action="/admin/userVets/submit/<%= data[i].id %>" method="post">
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">ID:</label>
                                                 <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
+                                                <label for="recipient-name" class="col-form-label">USER ID:</label>
+                                                <input type="text" class="form-control" id="user_id" name="user_id" value="<%= data[i].user_id %>" readonly required readonly>
                                                 <label for="recipient-name" class="col-form-label">ชื่อผู้ใช้:</label>
-                                                <input type="text" class="form-control" id="username" name="username" value="<%= data[i].username %>" required>
+                                                <input type="text" class="form-control" id="username" name="username" value="<%= data[i].username %>" readonly required>
+                                                <label for="recipient-name" class="col-form-label">คำนำหน้า:</label>
+                                                <input type="text" class="form-control" id="vets_title" name="vets_title" value="<%= data[i].vets_title %>" required>
                                                 <label for="recipient-name" class="col-form-label">ชื่อ:</label>
-                                                <input type="text" class="form-control" id="fname" name="fname" value="<%= data[i].fname %>" required>
+                                                <input type="text" class="form-control" id="vets_fname" name="vets_fname" value="<%= data[i].vets_fname %>" required>
                                                 <label for="recipient-name" class="col-form-label">สกุล:</label>
-                                                <input type="text" class="form-control" id="sname" name="sname" value="<%= data[i].sname %>" required>
+                                                <input type="text" class="form-control" id="vets_sname" name="vets_sname" value="<%= data[i].vets_sname %>" required>
                                                 <label for="recipient-name" class="col-form-label">อีเมล:</label>
-                                                <input type="text" class="form-control" id="email" name="email" value="<%= data[i].email %>" required>
-                                                <label for="recipient-name" class="col-form-label">สิทธิ:</label>
-                                                <select class="custom-select" id="level" name="level" required>
-                                                   <option value="<%= data[i].level %>">
-                                                         <% if(data[i].level == 1){
-                                                            %>ผู้ใช้ทั่วไป<%
-                                                         }else if(data[i].level == 2){
-                                                            %>ยืนยันแล้ว<%
-                                                         }else if(data[i].level == 3){
-                                                            %>ผู้เชี่ยวชาญ<%
-                                                         }else if(data[i].level == 4){
-                                                            %>ผู้ดูแลระบบ<%
+                                                <input type="email" class="form-control" id="vets_email" name="vets_email" value="<%= data[i].vets_email %>" required>
+                                                <label for="recipient-name" class="col-form-label">ชื่อที่ใช้แสดง:</label>
+                                                <input type="text" class="form-control" id="vets_name_show" name="vets_name_show" value="<%= data[i].vets_name_show %>" required>
+                                                <label for="recipient-name" class="col-form-label">เพศ:</label>
+                                                <select class="custom-select" id="vets_gender" name="vets_gender" required>
+                                                   <option value="<%= data[i].vets_gender %>">
+                                                         <% if(data[i].vets_gender == 1){
+                                                            %>ชาย<%
+                                                         }else if(data[i].vets_gender == 2){
+                                                            %>หญิง<%
+                                                         }else if(data[i].vets_gender == 3){
+                                                            %>ไม่ระบุ<%
                                                          }
                                                       %>
                                                    </option>
-                                                   <% if(data[i].level != 1){ %>
-                                                   <option value="1">ผู้ใช้ทั่วไป</option>
+                                                   <% if(data[i].vets_gender != 1){ %>
+                                                   <option value="1">ชาย</option>
                                                    <% } %>
-                                                   <% if(data[i].level != 2){ %>
-                                                   <option value="2">ยืนยันแล้ว</option>
+                                                   <% if(data[i].vets_gender != 2){ %>
+                                                   <option value="2">หญิง</option>
                                                    <% } %>
-                                                   <% if(data[i].level != 3){ %>
-                                                   <option value="3">ผู้เชี่ยวชาญ</option>
-                                                   <% } %>
-                                                   <% if(data[i].level != 4){ %>
-                                                   <option value="4">ผู้ดูแลระบบ</option>
+                                                   <% if(data[i].vets_gender != 3){ %>
+                                                   <option value="3">ไม่ระบุ</option>
                                                    <% } %>
                                                 </select>
+                                                <label for="recipient-name" class="col-form-label">วันเกิด:</label>
+                                                <input type="date" class="form-control" id="vets_birthday" name="vets_birthday" value="<%= new Intl.DateTimeFormat('en-CA').format(data[i].vets_birthday) %>" required>
+                                                <label for="recipient-name" class="col-form-label">ที่อยู่:</label>
+                                                <textarea class="form-control" id="vets_address" name="vets_address" rows="3" required><%= data[i].vets_address %></textarea>
+                                                <label for="recipient-name" class="col-form-label">เบอร์โทร:</label>
+                                                <input type="tel" minlength="10" maxlength="10" class="form-control" id="vets_tel" name="vets_tel" value="<%= data[i].vets_tel %>" required>
+                                                <label for="recipient-name" class="col-form-label">Facebook:</label>
+                                                <input type="text" class="form-control" id="vets_facebook" name="vets_facebook" value="<%= data[i].vets_facebook %>" required>
+                                                <label for="recipient-name" class="col-form-label">Line:</label>
+                                                <input type="text" class="form-control" id="vets_line" name="vets_line" value="<%= data[i].vets_line %>" required>
+                                                <label for="recipient-name" class="col-form-label">คลีนิคที่ทำงาน:</label>
+                                                <input type="text" class="form-control" id="vets_workplace" name="vets_workplace" value="<%= data[i].vets_workplace %>" required>
+                                                <label for="recipient-name" class="col-form-label">ตำแหน่งงาน:</label>
+                                                <input type="text" class="form-control" id="vets_position" name="vets_position" value="<%= data[i].vets_position %>" required>
+                                                <label for="recipient-name" class="col-form-label">เรียนจบจาก:</label>
+                                                <input type="text" class="form-control" id="vets_graduated" name="vets_graduated" value="<%= data[i].vets_graduated %>" required>
+                                                <label for="recipient-name" class="col-form-label">แนะนำตัว:</label>
+                                                <textarea class="form-control" id="vets_introduce" name="vets_introduce" rows="3" required><%= data[i].vets_introduce %></textarea>
                                                 <label for="recipient-name" class="col-form-label">สถานะ:</label>
-                                                <select class="custom-select" id="status" name="status" required>
-                                                   <option value="<%= data[i].level %>">
+                                                <select class="custom-select" id="status" name="status">
+                                                   <option value="<%= data[i].status %>" required>
                                                          <% if(data[i].status == 0){ %>
-                                                            ปิดใช้งาน
+                                                            ไม่ผ่านการยืนยัน
                                                          <% }else if(data[i].status == 1){ %>
-                                                            ใช้งาน
+                                                            ยืนยันแล้ว
                                                          <% } %>
                                                    </option>
                                                    <% if(data[i].status != 0){ %>
-                                                   <option value="0">ปิดใช้งาน</option>
+                                                   <option value="0">ไม่ผ่านการยืนยัน</option>
                                                    <% } %>
                                                    <% if(data[i].status != 1){ %>
-                                                   <option value="1">ใช้งาน</option>
+                                                   <option value="1">ยืนยันแล้ว</option>
                                                    <% } %>
                                                 </select>
-                                                <!-- <div class="modal-body">
-                                                   <img class="img-responsive" src="../img/<%= data[i].img%>" alt="#" width="100%" />
-                                                </div> -->
                                              </div>
                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลผู้ใช้?')">บันทึก</button>
+                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลผู้เชี่ยวชาญ?')">บันทึก</button>
                                              </div>
                                           </form>
                                         </div>
@@ -226,41 +270,46 @@
                                       }
                                     }
                                  </script>
-                                 <!-- แก้ไขรหัสผ่าน เปิด-->
-                                 <div class="modal fade" id="editPass<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <!-- แก้ไขรูปใบอนุญาต เปิด-->
+                                 <div class="modal fade" id="editLicense<%= data[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายละเอียด</h5>
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขใบอนุญาต</h5>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/userPassword/submit/<%= data[i].id %>" method="post">
-                                            <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">ID:</label>
-                                                <input type="text" class="form-control" id="id" name="id" value="<%= data[i].id %>" required readonly>
-                                                <label for="recipient-name" class="col-form-label">ชื่อผู้ใช้:</label>
-                                                <input type="password" id="myInput<%= data[i].id %>" class="form-control" id="password" name="password" value="" required>
-                                                <input type="checkbox" class="mt-2" onclick="myFunction<%= data[i].id %>()"> Show Password
-                                                <!-- <div class="modal-body">
-                                                   <img class="img-responsive" src="../img/<%= data[i].img%>" alt="#" width="100%" />
-                                                </div> -->
+                                          <form action="/admin/vetsLicense/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
+                                             <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">รูปใบอนุญาต:</label>
+                                                <img id="output<%= data[i].id %>" class="border" src="../img/<%= data[i].vets_license %>" alt="" width="100%" height="500px"><br><br>
+                                                <input type="file" accept="image/*" onchange="loadFile<%= data[i].id %>(event)" name="photo" required>
                                              </div>
+
                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขรหัสผ่านผู้ใช้?')">บันทึก</button>
+                                                <button type="submit" class="btn btn-primary" onclick="return confirm('แน่ใจที่จะแก้ไขข้อมูลรูปใบอนุญาต?')">บันทึก</button>
                                              </div>
                                           </form>
                                         </div>
                                       </div>
                                     </div>
                                  </div>
-                                 <!-- แก้ไขรหัสผ่าน ปิด-->
+                                 <!-- แก้ไขรูปใบอนุญาต ปิด-->
                                  <script>
                                     var loadFile<%= data[i].id %> = function (event) {
                                        var output = document.getElementById('output<%= data[i].id %>');
+                                       output.src = URL.createObjectURL(event.target.files[0]);
+                                       output.onload = function () {
+                                          URL.revokeObjectURL(output.src) // free memory
+                                       }
+                                    };
+                                 </script>
+                                 <script>
+                                    var loadFile2<%= data[i].id %> = function (event) {
+                                       var output = document.getElementById('output2<%= data[i].id %>');
                                        output.src = URL.createObjectURL(event.target.files[0]);
                                        output.onload = function () {
                                           URL.revokeObjectURL(output.src) // free memory
@@ -272,17 +321,17 @@
                                     <div class="modal-dialog modal-lg" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรูปภาพประกอบ</h5>
+                                          <h5 class="modal-title" id="exampleModalLabel">แก้ไขรูปภาพโปรไฟล์</h5>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <form action="/admin/userIMG/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
+                                          <form action="/admin/vetsIMG/submit/<%= data[i].id %>" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">รูปภาพประกอบ:</label>
-                                                <img id="output<%= data[i].id %>" class="border" src="../img/<%= data[i].img %>" alt="" width="100%" height="500px"><br><br>
-                                                <input type="file" accept="image/*" onchange="loadFile<%= data[i].id %>(event)" name="photo" required>
+                                                <label for="recipient-name" class="col-form-label">รูปภาพโปรไฟล์:</label>
+                                                <img id="output2<%= data[i].id %>" class="border" src="../img/<%= data[i].vets_img %>" alt="" width="100%" height="500px"><br><br>
+                                                <input type="file" accept="image/*" onchange="loadFile2<%= data[i].id %>(event)" name="photo" required>
                                              </div>
 
                                              <div class="modal-footer">

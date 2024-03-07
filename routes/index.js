@@ -1301,7 +1301,7 @@ router.post("/editUserVetsDataSubmit", (req, res, next) => {
 router.get("/boardhealth", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT tb_boardhealth.boardhealth_id,tb_boardhealth.title,tb_boardhealth.photo,tb_boardhealth.details,tb_boardhealth.status,tb_boardhealth.view,tb_boardhealth.created_at,tb_boardhealth.update_at, tb_user.username FROM tb_boardhealth INNER JOIN tb_user ON tb_boardhealth.user_id = tb_user.id ORDER BY boardhealth_id DESC",
+      "SELECT tb_boardhealth.boardhealth_id,tb_boardhealth.title,tb_boardhealth.photo,tb_boardhealth.details,tb_boardhealth.status,tb_boardhealth.view,tb_boardhealth.created_at,tb_boardhealth.update_at, tb_user.username FROM tb_boardhealth INNER JOIN tb_user ON tb_boardhealth.user_id = tb_user.id WHERE tb_boardhealth.status = 1 ORDER BY boardhealth_id DESC;",
       (err, rows) => {
         if (err) {
           req.flash("error", err);
@@ -1532,7 +1532,7 @@ router.get("/boardhealthDetail/(:id)", (req, res, next) => {
 router.get("/board", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT tb_communityboard.communityboard_id,tb_communityboard.title,tb_communityboard.photo,tb_communityboard.details,tb_communityboard.status,tb_communityboard.view,tb_communityboard.created_at,tb_communityboard.update_at,tb_user.username,tb_user.img FROM tb_communityboard INNER JOIN tb_user ON tb_communityboard.user_id = tb_user.id ORDER BY communityboard_id DESC",
+      "SELECT tb_communityboard.communityboard_id,tb_communityboard.title,tb_communityboard.photo,tb_communityboard.details,tb_communityboard.status,tb_communityboard.view,tb_communityboard.created_at,tb_communityboard.update_at,tb_user.username,tb_user.img FROM tb_communityboard INNER JOIN tb_user ON tb_communityboard.user_id = tb_user.id WHERE tb_communityboard.status = 1 ORDER BY communityboard_id DESC",
       (err, rows) => {
         if (err) {
           req.flash("error", err);
@@ -1743,7 +1743,7 @@ router.get("/boardDetail/(:id)", (req, res, next) => {
 router.get("/boardcommunity", function (req, res, next) {
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT tb_article.article_id,tb_article.title,tb_article.photo,tb_article.details,tb_article.status,tb_article.view,tb_article.created_at,tb_article.update_at,tb_user.username,tb_user.img FROM tb_article INNER JOIN tb_user ON tb_article.user_id = tb_user.id ORDER BY article_id DESC",
+      "SELECT tb_article.article_id,tb_article.title,tb_article.photo,tb_article.details,tb_article.status,tb_article.view,tb_article.created_at,tb_article.update_at,tb_user.username,tb_user.img FROM tb_article INNER JOIN tb_user ON tb_article.user_id = tb_user.id WHERE tb_article.status = 1 ORDER BY article_id DESC",
       (err, rows) => {
         if (err) {
           req.flash("error", err);
@@ -2006,7 +2006,7 @@ router.get("/shop", function (req, res, next) {
   // ส่วน แสดง
   if (!req.session.ifNotLogIn) {
     return dbCon.query(
-      "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id ORDER BY boost DESC , shop_id DESC",
+      "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id WHERE tb_user_shop.status = 1  ORDER BY boost DESC , shop_id DESC",
       (err, rows) => {
         if (err) {
           req.flash("error", err);
@@ -2030,7 +2030,7 @@ router.get("/shop", function (req, res, next) {
     );
   }
   dbCon.query(
-    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id ORDER BY boost DESC , shop_id DESC",
+    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id WHERE tb_user_shop.status = 1  ORDER BY boost DESC , shop_id DESC",
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -2510,7 +2510,42 @@ router.post("/pointOutAdd", (req, res, next) => {
   }
 });
 
-
+// ประวิต point
+router.get("/historyPoint", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+    (err, pointShow) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        dbCon.query(
+          "SELECT * FROM tb_add_point WHERE user_id = ?",[req.session.idUser],
+          (err, pointAdd) => {
+            if (err) {
+              req.flash("error", err);
+              res.redirect("/");
+            } else {
+              res.render("historyPoint", {
+                title: "ประวัติพอยท์",
+                username: req.session.userName,
+                emailS: req.session.emailUser,
+                levelS: req.session.level,
+                userImg: req.session.userImg,
+                pointShow: pointShow,
+                add_point: pointAdd
+              });
+            }
+          }
+        );
+      }
+    }
+  );
+  
+});
 
 
 
@@ -3219,12 +3254,23 @@ router.post("/commentAddVets/(:id)", (req, res, next) => {
       if (err) {
           return console.log(err);
       } else {
-        dbCon.query("UPDATE tb_point_user SET point = point + ? WHERE user_id = ?" ,  [5,req.session.idUser], (err, result) => {
+        dbCon.query("SELECT * FROM tb_point WHERE point_id = 1", (err, point) => {
           if (err) {
               return console.log(err);
           } else {
-            res.redirect(req.get('referer'));
-            // return res.redirect("/boardhealthDetail/"+ boardhealthId);
+            if (point[0].point < 5) {
+              return console.log(err);
+            }else{
+              dbCon.query("UPDATE tb_point_user SET point = point + ? WHERE user_id = ?" ,  [5,req.session.idUser], (err, result) => {
+                if (err) {
+                    return console.log(err);
+                } else {
+                  res.redirect(req.get('referer'));
+                  // return res.redirect("/boardhealthDetail/"+ boardhealthId);
+                }
+                }
+              );
+            }
           }
           }
         );
@@ -3256,7 +3302,7 @@ router.post("/commentEditArticle/(:id)", (req, res, next) => {
           req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             return console.log(err);
         } else {
-          if(rows[0].user_id == req.session.idUser){
+          if(rows[0].user_id == req.session.idUser || req.session.level == 4){
             dbCon.query("UPDATE tb_comment_article SET ? WHERE comment_article_id = ?", [form_data,articleId], (err, result) => {
               if (err) {
                   req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
@@ -3297,7 +3343,7 @@ router.post("/commentEditCommunityboard/(:id)", (req, res, next) => {
           req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             return console.log(err);
         } else {
-          if(rows[0].user_id == req.session.idUser){
+          if(rows[0].user_id == req.session.idUser || req.session.level == 4){
             dbCon.query("UPDATE tb_comment_communityboard SET ? WHERE comment_communityboard_id = ?", [form_data,CommunityboardID], (err, result) => {
               if (err) {
                   req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
@@ -3338,7 +3384,7 @@ router.post("/commentEditBoardhealth/(:id)", (req, res, next) => {
           req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             return console.log(err);
         } else {
-          if(rows[0].user_id == req.session.idUser){
+          if(rows[0].user_id == req.session.idUser || req.session.level == 4){
             dbCon.query("UPDATE tb_comment_boardhealth SET ? WHERE comment_boardhealth_id = ?", [form_data,boardhealthId], (err, result) => {
               if (err) {
                   req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
@@ -3379,7 +3425,7 @@ router.post("/commentEditShop/(:id)", (req, res, next) => {
           req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             return console.log(err);
         } else {
-          if(rows[0].user_id == req.session.idUser){
+          if(rows[0].user_id == req.session.idUser || req.session.level == 4){
             dbCon.query("UPDATE tb_comment_shop SET ? WHERE comment_shop_id = ?", [form_data,shopId], (err, result) => {
               if (err) {
                   req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
@@ -3415,7 +3461,7 @@ router.get("/commentDeleteArticle/(:id)", (req, res, next) => {
         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
           return console.log(err);
       } else {
-        if(rows[0].user_id == req.session.idUser){
+        if(rows[0].user_id == req.session.idUser || req.session.level == 4){
           if (!errors) {
             dbCon.query("DELETE FROM tb_comment_article WHERE comment_article_id = ?", [articleId], (err, result) => {
               if (err) {
@@ -3452,7 +3498,7 @@ router.get("/commentDeleteCommunityboard/(:id)", (req, res, next) => {
         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
           return console.log(err);
       } else {
-        if(rows[0].user_id == req.session.idUser){
+        if(rows[0].user_id == req.session.idUser || req.session.level == 4){
           if (!errors) {
             dbCon.query("DELETE FROM tb_comment_communityboard WHERE comment_communityboard_id = ?", [CommunityboardID], (err, result) => {
               if (err) {
@@ -3489,7 +3535,7 @@ router.get("/commentDeleteBoardhealth/(:id)", (req, res, next) => {
         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
           return console.log(err);
       } else {
-        if(rows[0].user_id == req.session.idUser){
+        if(rows[0].user_id == req.session.idUser || req.session.level == 4){
           if (!errors) {
             dbCon.query("DELETE FROM tb_comment_boardhealth WHERE comment_boardhealth_id = ?", [boardhealthId], (err, result) => {
               if (err) {
@@ -3526,7 +3572,7 @@ router.get("/commentDeleteShop/(:id)", (req, res, next) => {
         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
           return console.log(err);
       } else {
-        if(rows[0].user_id == req.session.idUser){
+        if(rows[0].user_id == req.session.idUser || req.session.level == 4){
           if (!errors) {
             dbCon.query("DELETE FROM tb_comment_shop WHERE comment_shop_id = ?", [shopId], (err, result) => {
               if (err) {
@@ -4656,9 +4702,27 @@ router.get("/admin", ifNotLogIn, function (req, res, next) {
 
   //กรณีไม่พบหน้า
   router.get('*', (req, res)=>{
+    // res.redirect("errorPage");
     res.status(404).send('Page Not Found');
   });
 
+  router.get("/errorPage", function (req, res, next) {
+    if (!req.session.ifNotLogIn) {
+      return res.render("errorPage", {
+        title: "404",
+        username: "0",
+        emailS: "0",
+        levelS: 0,
+      });
+    }
+    res.render("errorPage", {
+      title: "404",
+      username: req.session.userName,
+      emailS: req.session.emailUser,
+      levelS: req.session.level,
+      userImg: req.session.userImg,
+    });
+  });
 
 
 

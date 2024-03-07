@@ -67,6 +67,33 @@
                 <input type="password" id="confirmpassword" class="form-control form-control-lg" name="confirmpassword" value="<%= confirmpassword %>" autocomplete="off" onkeyup='check();' required/>
                 <label class="form-label" for="typePasswordX-2">Confirm Password</label>
               </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1"  required>
+                <label class="form-check-label" for="exampleCheck1">  <div data-toggle="modal" data-target="#exampleModal">ฉันได้อ่านและตกลง <b style="color: blue;">เงื้อนไขและข้อตกลงการให้บริการ</b></div></label>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">เงื้อนไขและข้อตกลงการให้บริการ</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h3><b>เงื่อนไขและข้อตกลง</b></h3>
+                        - เราสงวนสิทธิ์ในการเปลี่ยนแปลงเงื่อนไขและข้อตกลงการให้บริการเหล่านี้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า<br>
+                        - ผู้ใช้บริการสามารถแก้ไขข้อมูลส่วนบุคคลของตนเองที่ได้ลงทะเบียนไว้ในการใช้บริการต่างๆ ไม่ว่าในเวลาใดๆ นอกจากนี้ ผู้ใช้บริการอาจจะยกเลิกการใช้บริการทั้งหมด ตามข้อกำหนดและเงื่อนไขผู้ใช้บริการ<br>
+                        - ในกรณีที่ท่านได้รับความเสียหาย อันเกิดจากความสูญหาย หรือเสียหายของข้อมูลส่วนบุคคล หรือเกิดจากเหตุใดก็ตาม ซึ่งรวมถึงแต่ไม่จํากัดเฉพาะ เกิดจากการถูกจารกรรม โดยวิธีการทางอิเล็กทรอนิกส์ (hack) หรือเกิดจากเหตุสุดวิสัย หรือไม่ว่ากรณีใดๆ ทั้งสิ้น บริษัทขอสงวนสิทธิ ในการปฏิเสธ ความรับผิดจากเหตุดังกล่าวทั้งหมด และบริษัทไม่ต้องรับผิดชอบต่อความเสียหาย สูญหายใดๆ ที่เกิดขึ้นทั้งสิ้น
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ตกลง</button>
+                        <!-- <button type="button" class="btn btn-primary">ตกลง</button> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <br>
               <section>
                 <div>

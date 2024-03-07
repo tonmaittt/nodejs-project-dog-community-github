@@ -846,6 +846,37 @@ const ifNotLogIn = (req, res, next) => {
         }
     });
 
+    // เติมพอทย์ ->Delete
+router.get("/confirmAddPoint/delete/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    dbCon.query("DELETE FROM tb_add_point WHERE add_point_id = ?", [id], (err, result) => {
+        if (err) {
+            req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            return console.log(err);
+        } else {
+          req.flash('success', 'ลบข้อมูลสำเร็จ');
+          res.redirect(req.get('referer'));
+        }
+    })
+    
+    }
+});
+
     // ยืนยันผู้ใช้ ถอนพอทย์ 
     router.get("/confirmOutPoint", function (req, res, next) {
         if (!req.session.ifNotLogIn ||  req.session.level < 4) {
@@ -948,6 +979,38 @@ const ifNotLogIn = (req, res, next) => {
             });
         }
     });
+
+// ถอนพอทย์ ->Delete
+router.get("/confirmOutPoint/delete/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    dbCon.query("DELETE FROM tb_out_point WHERE out_point_id = ?", [id], (err, result) => {
+        if (err) {
+            req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            return console.log(err);
+        } else {
+          req.flash('success', 'ลบข้อมูลสำเร็จ');
+          res.redirect(req.get('referer'));
+        }
+    })
+    
+    }
+});
+
 //------------------------------------------------ ข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
 // user
 router.get("/user", function (req, res, next) {
@@ -1014,7 +1077,7 @@ router.post('/user/submit/(:id)', (req, res, next) => {
         // update query
         dbCon.query("UPDATE tb_user SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
             if (err) {
-                req.flash('error', err);
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
                 res.redirect(req.get('referer'));
             } else {
                 req.flash('success', 'แก้ไขข้อมูลผู้ใช้สำเร็จ');
@@ -1047,7 +1110,7 @@ router.post('/userPassword/submit/(:id)', (req, res, next) => {
             // update query
             dbCon.query("UPDATE tb_user SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
                 if (err) {
-                    req.flash('error', err);
+                    req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
                     res.redirect(req.get('referer'));
                 } else {
                     req.flash('success', 'แก้ไขรหัสผ่านผู้ใช้สำเร็จ');
@@ -1080,7 +1143,7 @@ router.post("/userIMG/submit/(:id)", upload.single("photo"), (req, res, next) =>
         // insert query
         dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
         if (err) {
-            req.flash('error', err);
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             res.redirect(req.get('referer'));
         } else {
             req.flash('success', 'แก้ไขรูปผู้ใช้สำเร็จ');
@@ -1121,7 +1184,7 @@ router.get("/userDelete/submit/(:id)", (req, res, next) => {
     // insert query
     dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
         if (err) {
-            req.flash('error', err);
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
             res.redirect(req.get('referer'));
         } else {
             req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
@@ -1132,6 +1195,425 @@ router.get("/userDelete/submit/(:id)", (req, res, next) => {
 });
 
 //------------------------------------------------ ปิดข้อมูลผู้ใช้ ----------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------ ข้อมูลผู้ใช้เพิ่มเติม ----------------------------------------------------------------------------------------------------------------
+// userData1
+router.get("/userData1", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT tb_user.username AS username, tb_user_data_1.* FROM tb_user_data_1 LEFT JOIN tb_user ON tb_user_data_1.user_id = tb_user.id ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/userData1", {
+                    title: "จัดการ ข้อมูลผู้ใช้เพิ่มเติม",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/userData1", {
+                    title: "จัดการ ข้อมูลผู้ใช้เพิ่มเติม",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+
+// userData1 ->Edit 
+router.post('/userData1/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let gender = req.body.gender;
+    let Birthday = req.body.Birthday;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            gender: gender,
+            Birthday: Birthday,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_data_1_id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขข้อมูลผู้ใช้เพิ่มเติมสำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// userData1 ->Delete
+router.get("/userData1Delete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    dbCon.query("DELETE FROM tb_user_data_1 WHERE user_data_1_id = ?", [id], (err, result) => {
+        if (err) {
+            req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            return console.log(err);
+        } else {
+          req.flash('success', 'ลบข้อมูลผู้ใช้เพิ่มเติมสำเร็จ');
+          res.redirect(req.get('referer'));
+        }
+    })
+    
+    // insert query
+    // dbCon.query("UPDATE tb_user_data_1 SET ? WHERE user_data_1_id = ?" ,[form_data,id], (err, result) => {
+    //     if (err) {
+    //         req.flash('error', err);
+    //         res.redirect(req.get('referer'));
+    //     } else {
+    //         req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+    //         res.redirect(req.get('referer'));
+    //     }
+    // })
+    }
+});
+//------------------------------------------------ ปิดข้อมูลผู้ใช้เพิ่มเติม ----------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------ ข้อมูลสุนัข ----------------------------------------------------------------------------------------------------------------
+// dog
+router.get("/dog", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT tb_user.username AS username, tb_dog.* FROM tb_dog LEFT JOIN tb_user ON tb_dog.user_id = tb_user.id ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/dog", {
+                    title: "จัดการ สุนัข",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/dog", {
+                    title: "จัดการ สุนัข",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+
+// dog ->Edit 
+router.post('/dog/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let dog_name = req.body.dog_name;
+    let dog_breed = req.body.dog_breed;
+    let dog_birthday = req.body.dog_birthday;
+    let dog_gender = req.body.dog_gender;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            dog_name: dog_name,
+            dog_breed: dog_breed,
+            dog_birthday: dog_birthday,
+            dog_gender: dog_gender,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_dog SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขข้อมูลสุนัขสำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// dog ->Edit IMG
+router.post("/dogIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    
+    let photo = req.file.filename;
+    let id = req.params.id;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            dog_img: photo,
+        };
+        // insert query
+        dbCon.query("UPDATE tb_dog SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'แก้ไขรูปสุนัขสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+// dog ->Delete
+router.get("/dogDelete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    // dbCon.query("DELETE FROM tb_user WHERE id = ?", [id], (err, result) => {
+    //     if (err) {
+    //         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+    //         return console.log(err);
+    //     } else {
+    //       req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+    //       res.redirect(req.get('referer'));
+    //     }
+    // })
+    
+    // insert query
+    dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'ลบข้อมูลสุนัขสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+//------------------------------------------------ ปิดข้อมูลสุนัข ----------------------------------------------------------------------------------------------------------------
+
+
+//------------------------------------------------ ข้อมูลร้านค้า ----------------------------------------------------------------------------------------------------------------
+// userShop
+router.get("/userShop", function (req, res, next) {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }else{
+        dbCon.query("SELECT tb_user.username AS username, tb_user_shop.* FROM tb_user_shop LEFT JOIN tb_user ON tb_user_shop.user_id = tb_user.id ORDER BY id DESC;" , (err, rows) => {
+            if (err) {
+                req.flash("error", err);
+                res.render("adminData/userShop", {
+                    title: "จัดการ โปรไฟล์ร้าค้า",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: "",
+                });
+            } else {
+                res.render("adminData/userShop", {
+                    title: "จัดการ โปรไฟล์ร้าค้า",
+                    username: req.session.userName,
+                    emailS: req.session.emailUser,
+                    levelS: req.session.level,
+                    userImg: req.session.userImg,
+                    data: rows,
+                });
+            }
+            });
+    }
+});
+
+// userShop ->Edit 
+router.post('/userShop/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let shop_name = req.body.shop_name;
+    let shop_type = req.body.shop_type;
+    let shop_introduce = req.body.shop_introduce;
+    let shop_tel = req.body.shop_tel;
+    let shop_shopee = req.body.shop_shopee;
+    let shop_facebook = req.body.shop_facebook;
+    let shop_line = req.body.shop_line;
+    let shop_address = req.body.shop_address;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            shop_name: shop_name,
+            shop_type: shop_type,
+            shop_introduce: shop_introduce,
+            shop_tel: shop_tel,
+            shop_shopee: shop_shopee,
+            shop_facebook: shop_facebook,
+            shop_line: shop_line,
+            shop_address: shop_address,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_user_shop SET ? WHERE	id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขข้อมูลร้านค้าสำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// userShop ->Edit IMG
+router.post("/userShopIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    
+    let photo = req.file.filename;
+    let id = req.params.id;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            shop_img: photo,
+        };
+        // insert query
+        dbCon.query("UPDATE tb_user_shop SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'แก้ไขรูปร้านค้าสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+// userShop ->Delete
+router.get("/userShopDelete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    // dbCon.query("DELETE FROM tb_user_shop WHERE id = ?", [id], (err, result) => {
+    //     if (err) {
+    //         req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+    //         return console.log(err);
+    //     } else {
+    //       req.flash('success', 'ลบข้อมูลร้านค้าสำเร็จ');
+    //       res.redirect(req.get('referer'));
+    //     }
+    // })
+    
+    // insert query
+    dbCon.query("UPDATE tb_user_shop SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'ลบข้อมูลร้านค้าสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+//------------------------------------------------ ปิดข้อมูลร้านค้า ----------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------ ข้อมูลผู้ใช้ที่ผ่านการยืนยันแล้ว ----------------------------------------------------------------------------------------------------------------
 // userVerify
@@ -1147,7 +1629,7 @@ router.get("/userVerify", function (req, res, next) {
             if (err) {
                 req.flash("error", err);
                 res.render("adminData/userVerify", {
-                    title: "จัดการ ผู้ใช้",
+                    title: "จัดการ ผู้ใช้ที่ผ่านการยืนยันแล้ว",
                     username: req.session.userName,
                     emailS: req.session.emailUser,
                     levelS: req.session.level,
@@ -1156,7 +1638,7 @@ router.get("/userVerify", function (req, res, next) {
                 });
             } else {
                 res.render("adminData/userVerify", {
-                    title: "จัดการ ผู้ใช้",
+                    title: "จัดการ ผู้ใช้ที่ผ่านการยืนยันแล้ว",
                     username: req.session.userName,
                     emailS: req.session.emailUser,
                     levelS: req.session.level,
@@ -1199,7 +1681,7 @@ router.post('/userVerify/submit/(:id)', (req, res, next) => {
         // update query
         dbCon.query("UPDATE tb_user_verified SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
             if (err) {
-                req.flash('error', err);
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
                 res.redirect(req.get('referer'));
             } else {
                 req.flash('success', 'แก้ไขผู้ใช้ที่ผ่านการยืนยันแล้วสำเร็จ');
@@ -1252,7 +1734,7 @@ router.get("/userVerifyDelete/submit/(:id)", (req, res, next) => {
 //------------------------------------------------ ปิดข้อมูลผู้ใช้ที่ผ่านการยืนยันแล้ว ----------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------ ข้อมูลผู้เชี่ยวชาญ ----------------------------------------------------------------------------------------------------------------
-// userVerify
+// userVets
 router.get("/userVets", function (req, res, next) {
     if (!req.session.ifNotLogIn ||  req.session.level < 4) {
         res.render("adminData/login", {
@@ -1265,7 +1747,7 @@ router.get("/userVets", function (req, res, next) {
             if (err) {
                 req.flash("error", err);
                 res.render("adminData/userVets", {
-                    title: "จัดการ ผู้ใช้",
+                    title: "จัดการ ผู้เชี่ยวชาญ",
                     username: req.session.userName,
                     emailS: req.session.emailUser,
                     levelS: req.session.level,
@@ -1274,7 +1756,7 @@ router.get("/userVets", function (req, res, next) {
                 });
             } else {
                 res.render("adminData/userVets", {
-                    title: "จัดการ ผู้ใช้",
+                    title: "จัดการ ผู้เชี่ยวชาญ",
                     username: req.session.userName,
                     emailS: req.session.emailUser,
                     levelS: req.session.level,
@@ -1283,6 +1765,173 @@ router.get("/userVets", function (req, res, next) {
                 });
             }
             });
+    }
+});
+
+
+// userVets ->Edit 
+router.post('/userVets/submit/(:id)', (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let vets_title = req.body.vets_title;
+    let vets_fname = req.body.vets_fname;
+    let vets_sname = req.body.vets_sname;
+    let vets_email = req.body.vets_email;
+    let vets_name_show = req.body.vets_name_show;
+    let vets_gender = req.body.vets_gender;
+    let vets_birthday = req.body.vets_birthday;
+    let vets_address = req.body.vets_address;
+    let vets_tel = req.body.vets_tel;
+    let vets_facebook = req.body.vets_facebook;
+    let vets_line = req.body.vets_line;
+    let vets_workplace = req.body.vets_workplace;
+    let vets_position = req.body.vets_position;
+    let vets_graduated = req.body.vets_graduated;
+    let vets_introduce = req.body.vets_introduce;
+    let status = req.body.status;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            vets_title: vets_title,
+            vets_fname: vets_fname,
+            vets_sname: vets_sname,
+            vets_email: vets_email,
+            vets_name_show: vets_name_show,
+            vets_gender: vets_gender,
+            vets_birthday: vets_birthday,
+            vets_address: vets_address,
+            vets_tel: vets_tel,
+            vets_facebook: vets_facebook,
+            vets_line: vets_line,
+            vets_workplace: vets_workplace,
+            vets_position: vets_position,
+            vets_graduated: vets_graduated,
+            vets_introduce: vets_introduce,
+            status: status,
+        }
+        // update query
+        dbCon.query("UPDATE tb_vets SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+            if (err) {
+                req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+                res.redirect(req.get('referer'));
+            } else {
+                req.flash('success', 'แก้ไขผู้เชี่ยวชาญสำเร็จ');
+                res.redirect(req.get('referer'));
+            }
+        })
+    }
+});
+
+// userVets ->Edit vetsLicense
+router.post("/vetsLicense/submit/(:id)", upload.single("photo"), (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    
+    let photo = req.file.filename;
+    let id = req.params.id;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            vets_license: photo,
+        };
+        // insert query
+        dbCon.query("UPDATE tb_vets SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'แก้ไขใบอนุญาตสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+// userVets ->Edit vetsIMG
+router.post("/vetsIMG/submit/(:id)", upload.single("photo"), (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    
+    let photo = req.file.filename;
+    let id = req.params.id;
+    let errors = false;
+    
+    // if no error
+    if (!errors) {
+        let form_data = {
+            vets_img: photo,
+        };
+        // insert query
+        dbCon.query("UPDATE tb_vets SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+        if (err) {
+            req.flash('error', "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            res.redirect(req.get('referer'));
+        } else {
+            req.flash('success', 'แก้ไขใบอนุญาตสำเร็จ');
+            res.redirect(req.get('referer'));
+        }
+    })
+    }
+});
+
+// userVets ->Delete
+router.get("/userVetsDelete/submit/(:id)", (req, res, next) => {
+    if (!req.session.ifNotLogIn ||  req.session.level < 4) {
+        res.render("adminData/login", {
+            title: "login",
+            email: "",
+            password: "",
+        });
+    }
+    let id = req.params.id;
+    let errors = false;
+  
+    // if no error
+    if (!errors) {
+      let form_data = {
+        status: 0,
+      };
+
+    dbCon.query("DELETE FROM tb_vets WHERE id = ?", [id], (err, result) => {
+        if (err) {
+            req.flash("error", "พบข้อมผิดพลาดกรุณาลองใหม่อีกครั้ง");
+            return console.log(err);
+        } else {
+          req.flash('success', 'ลบข้อมูลผู้เชียวชาญสำเร็จ');
+          res.redirect(req.get('referer'));
+        }
+    })
+    
+    // insert query
+    // dbCon.query("UPDATE tb_user SET ? WHERE id = ?" ,[form_data,id], (err, result) => {
+    //     if (err) {
+    //         req.flash('error', err);
+    //         res.redirect(req.get('referer'));
+    //     } else {
+    //         req.flash('success', 'ลบข้อมูลผู้ใช้สำเร็จ');
+    //         res.redirect(req.get('referer'));
+    //     }
+    // })
     }
 });
 //------------------------------------------------ ข้อมูลผู้เชี่ยวชาญ ----------------------------------------------------------------------------------------------------------------
