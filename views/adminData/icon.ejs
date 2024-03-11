@@ -35,14 +35,23 @@
                               <div class="full dis_flex center_text">
                                  
                                  <form action="/admin/icon/add" method="post" enctype="multipart/form-data" id="fruitkha-contact" class="form-inline">
-                                    <div class="form-group mx-sm-3 mb-2">
-                                       <label>ICON Website : </label>
-                                       <img id="output" class="border" src="../img/<%= photo[0].icon%>   " alt="" width="100%" >
-                                     </div>
-                                     <div class="custom-file mt-4 ml-4">
-                                       <input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                    <div class="col-12">
+                                       <div class="form-group mx-sm-3 mb-2">
+                                          <label>ICON Website : </label>
+                                          <div class="border d-flex p-2" style="width: 100%;">
+                                             <img style="width: 100%;" id="output" src="../img/<%= photo[0].icon%>" alt="">
+                                          </div>
+                                          
+                                        </div>
+                                        <div class="custom-file mt-4 ml-4">
+                                          <input type="file" accept="image/*" onchange="loadFile(event)" name="photo" required>
+                                       </div>
+                                       <div class="d-flex">
+                                          <button type="submit" class="btn btn-primary mb-2 ml-auto mr-5">แก้ไข</button>
+                                       </div>
+                                       
                                     </div>
-                                    <button type="submit" class="btn btn-primary mb-2 ml-auto mr-5">แก้ไข</button>
+                                    
                                     
                                   </form>
                               </div>

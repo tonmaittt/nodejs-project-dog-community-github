@@ -103,7 +103,7 @@
 				.then(function(data) {
 				console.log(data);
 				document.getElementById('icon').innerHTML += `
-				<img src="../img/${data[0]["icon"]}" alt="">		
+				<img style="width: auto; height: 40px;" src="../img/${data[0]["icon"]}" alt="">		
 												`;
 				})
 				.catch(function(error) {
