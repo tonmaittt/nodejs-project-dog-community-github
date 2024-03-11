@@ -45,14 +45,14 @@
 				<div class="col-lg-8 mb-5 mb-lg-0" style="overflow-x:auto;">
 					<label for="exampleFormControlSelect1">เลือกดูประวัติ</label>
 					<select class="form-control" id="selectTable" name="selectTable" onchange="location = this.value;">
-						<option value="/historyPoint" selected>เติมพอยท์</option>
+						<option value="/historyPoint">เติมพอยท์</option>
 						<% if (levelS == 3) { %>
-						<option value="/historyPointOut">ถอนพอยท์</option>
+						<option value="/historyPointOut" selected>ถอนพอยท์</option>
 						<% } %>
 						<option value="/historyBoost">โปรโมทร้านค้า</option>
 					</select>
 					<br>
-					<% if(!add_point.length) { %>
+					<% if(!pointOut.length){ %>
                         <p class="text-center">ไม่พบข้อมูล</p>
                     <% }else{ %>
 						<table class="table">
@@ -61,6 +61,7 @@
 								  <th>#</th>
 								  <!-- <th>ผู้ขอ</th> -->
 								  <th>ชื่อบัญชี</th>
+								  <th>จำนวนพอยท์ที่ถอน</th>
 								  <th>หลักฐาน</th>
 								  <th>วันที่</th>
 								  <th>เวลา</th>
@@ -70,21 +71,22 @@
 							   </tr>
 							</thead>
 							<tbody>
-							   <% for(let i=0; i < add_point.length; i++) { %>
+							   <% for(let i=0; i < pointOut.length; i++) { %>
 							   <tr>
 								  <td><%= i+1 %></td>
-								  <td><%= add_point[i].name%></td>
-								  <td data-toggle="modal" data-target="#showPhoto<%= add_point[i].add_point_id %>" style="cursor: pointer;">
-									<img class="img-responsive" src="../img/<%= add_point[i].photo%>" alt="#" height="200px" >
+								  <td><%= pointOut[i].name%></td>
+								  <td><%= pointOut[i].money%></td>
+								  <td data-toggle="modal" data-target="#showPhoto<%= pointOut[i].out_point_id%>" style="cursor: pointer;">
+									<img class="img-responsive" src="../img/<%= pointOut[i].photo%>" alt="#" height="200px" >
 								  </td>
-								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].date)%></td>
-								  <td><%= add_point[i].time%></td>
-								  <td><%= (add_point[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
-								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].created_at)%></td>
-								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(add_point[i].update_at)%></td>
+								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(pointOut[i].date)%></td>
+								  <td><%= pointOut[i].time%></td>
+								  <td><%= (pointOut[i].status == 0) ? "ไม่ผ่านการยืนยัน" : "ยืนยันแล้ว"%></td>
+								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(pointOut[i].created_at)%></td>
+								  <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(pointOut[i].update_at)%></td>
 							   </tr>
 							   <!-- แสดงรูป เปิด-->
-								<div class="modal fade" id="showPhoto<%= add_point[i].add_point_id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal fade" id="showPhoto<%= pointOut[i].out_point_id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -96,7 +98,7 @@
 										<div class="modal-body">
 										<div class="form-group">
 											<div class="modal-body">
-												<img class="img-responsive" src="../img/<%= add_point[i].photo%>" alt="#" width="100%" />
+												<img class="img-responsive" src="../img/<%= pointOut[i].photo%>" alt="#" width="100%" />
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -110,6 +112,7 @@
 							   <% } %>
 							</tbody>
 						</table>
+						
 					<% } %>
 					
 				</div>

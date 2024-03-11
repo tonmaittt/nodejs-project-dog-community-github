@@ -1,0 +1,104 @@
+<%- include('partials/heads') -%>
+<%- include('partials/headers') -%>
+<body>
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section hero-edit-profile">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>ยินดีต้อนรับ</p>
+						<h1>ข้อมูลผู้ใช้</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- check out section -->
+	<div class="checkout-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				
+					<div class="col-lg-8 mb-5 mb-lg-0" style="overflow-x:auto;">
+                        <label for="exampleFormControlSelect1">เลือกดูประวัติ</label>
+                        <select class="form-control" id="selectTable" name="selectTable" onchange="location = this.value;">
+                            <option value="/historyBoardhealth" >โพสต์บอร์ดสุขภาพสุนัข</option>
+                            <% if (levelS != 1) { %>
+                            <option value="/historyArticle" >โพสต์บทความ</option>
+                            <% } %>
+                            <option value="/historyBoardcommunity" >โพสต์บอร์ดชุมชน</option>
+                            <option value="/historyShop" selected>โพสต์ร้านค้า</option>
+                        </select>
+                        <br>
+                        <% if(!data.length){ %>
+                            <p class="text-center">ไม่พบข้อมูล</p>
+                        <% }else{ %>
+                            <table class="table">
+                                <thead class="thead-light">
+                                   <tr>
+                                      <th>#</th>
+                                      <th>ชื่อโพสต์</th>
+                                      <th>รูป</th>
+                                      <th>สถานะ</th>
+                                      <th>วันที่สร้าง</th>
+                                      <th>แก้ไขล่าสุด</th>
+                                   </tr>
+                                </thead>
+                                <tbody>
+                                   <% for(let i=0; i < data.length; i++) { %>
+                                   <tr>
+                                      <td><%= i+1 %></td>
+                                      <td><%= data[i].title%></td>
+                                      <td data-toggle="modal" data-target="#showPhoto<%= data[i].tb_shop%>" style="cursor: pointer;">
+                                        <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" height="100px" >
+                                      </td>
+                                      <td><%= (data[i].status == 0) ? "ปิด" : "เปิดใช้งาน"%></td>
+                                      <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].created_at)%></td>
+                                      <td><%= new Intl.DateTimeFormat('th-GB', {year: 'numeric' , month: 'long' , day: '2-digit'}).format(data[i].update_at)%></td>
+                                   </tr>
+                                   <!-- แสดงรูป เปิด-->
+                                    <div class="modal fade" id="showPhoto<%= data[i].tb_shop%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">รูป</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="modal-body">
+                                                    <img class="img-responsive" src="../img/<%= data[i].photo%>" alt="#" width="100%" />
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- แสดงรูป ปิด-->
+                                   <% } %>
+                                </tbody>
+                            </table>
+                            
+                        <% } %>
+                        
+                    </div>
+				
+
+				<%- include('partials/manuEdit') -%>
+			</div>
+		</div>
+	</div>
+	<!-- end check out section -->
+
+
+  <%- include('partials/footers') -%>
+	
+</body>
+</html>

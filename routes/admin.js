@@ -72,7 +72,7 @@ const ifNotLogIn = (req, res, next) => {
                 if (err) {
                     req.flash("error", err);
                     res.render("adminData/pointbase", {
-                        title: "ยืนยันผู้ใช้",
+                        title: "จัดการพอทย์ระบบ",
                         username: req.session.userName,
                         emailS: req.session.emailUser,
                         levelS: req.session.level,
@@ -81,7 +81,7 @@ const ifNotLogIn = (req, res, next) => {
                     });
                 } else {
                     res.render("adminData/pointbase", {
-                        title: "ยืนยันผู้ใช้",
+                        title: "จัดการพอทย์ระบบ",
                         username: req.session.userName,
                         emailS: req.session.emailUser,
                         levelS: req.session.level,
@@ -130,7 +130,7 @@ const ifNotLogIn = (req, res, next) => {
                 if (err) {
                     req.flash("error", err);
                     res.render("adminData/history", {
-                        title: "ยืนยันผู้ใช้",
+                        title: "ประวัติ",
                         username: req.session.userName,
                         emailS: req.session.emailUser,
                         levelS: req.session.level,
@@ -151,7 +151,7 @@ const ifNotLogIn = (req, res, next) => {
                         if (err) {
                             req.flash("error", err);
                             res.render("adminData/history", {
-                                title: "ยืนยันผู้ใช้",
+                                title: "ประวัติ",
                                 username: req.session.userName,
                                 emailS: req.session.emailUser,
                                 levelS: req.session.level,
@@ -172,7 +172,7 @@ const ifNotLogIn = (req, res, next) => {
                                 if (err) {
                                     req.flash("error", err);
                                     res.render("adminData/history", {
-                                        title: "ยืนยันผู้ใช้",
+                                        title: "ประวัติ",
                                         username: req.session.userName,
                                         emailS: req.session.emailUser,
                                         levelS: req.session.level,
@@ -193,7 +193,7 @@ const ifNotLogIn = (req, res, next) => {
                                         if (err) {
                                             req.flash("error", err);
                                             res.render("adminData/history", {
-                                                title: "ยืนยันผู้ใช้",
+                                                title: "ประวัติ",
                                                 username: req.session.userName,
                                                 emailS: req.session.emailUser,
                                                 levelS: req.session.level,
@@ -215,7 +215,7 @@ const ifNotLogIn = (req, res, next) => {
                                                 if (err) {
                                                     req.flash("error", err);
                                                     res.render("adminData/history", {
-                                                        title: "ยืนยันผู้ใช้",
+                                                        title: "ประวัติ",
                                                         username: req.session.userName,
                                                         emailS: req.session.emailUser,
                                                         levelS: req.session.level,
@@ -237,7 +237,7 @@ const ifNotLogIn = (req, res, next) => {
                                                         if (err) {
                                                             req.flash("error", err);
                                                             res.render("adminData/history", {
-                                                                title: "ยืนยันผู้ใช้",
+                                                                title: "ประวัติ",
                                                                 username: req.session.userName,
                                                                 emailS: req.session.emailUser,
                                                                 levelS: req.session.level,
@@ -259,7 +259,7 @@ const ifNotLogIn = (req, res, next) => {
                                                                 if (err) {
                                                                     req.flash("error", err);
                                                                     res.render("adminData/history", {
-                                                                        title: "ยืนยันผู้ใช้",
+                                                                        title: "ประวัติ",
                                                                         username: req.session.userName,
                                                                         emailS: req.session.emailUser,
                                                                         levelS: req.session.level,
@@ -280,7 +280,7 @@ const ifNotLogIn = (req, res, next) => {
                                                                         if (err) {
                                                                             req.flash("error", err);
                                                                             res.render("adminData/history", {
-                                                                                title: "ยืนยันผู้ใช้",
+                                                                                title: "ประวัติ",
                                                                                 username: req.session.userName,
                                                                                 emailS: req.session.emailUser,
                                                                                 levelS: req.session.level,
@@ -301,7 +301,7 @@ const ifNotLogIn = (req, res, next) => {
                                                                                 if (err) {
                                                                                     req.flash("error", err);
                                                                                     res.render("adminData/history", {
-                                                                                        title: "ยืนยันผู้ใช้",
+                                                                                        title: "ประวัติ",
                                                                                         username: req.session.userName,
                                                                                         emailS: req.session.emailUser,
                                                                                         levelS: req.session.level,
@@ -319,7 +319,7 @@ const ifNotLogIn = (req, res, next) => {
                                                                                 } else {
                                                                 
                                                                                     res.render("adminData/history", {
-                                                                                        title: "ยืนยันผู้ใช้",
+                                                                                        title: "ประวัติ",
                                                                                         username: req.session.userName,
                                                                                         emailS: req.session.emailUser,
                                                                                         levelS: req.session.level,
@@ -368,7 +368,7 @@ const ifNotLogIn = (req, res, next) => {
                 if (err) {
                     req.flash("error", err);
                     res.render("adminData/icon", {
-                        title: "แก้ไขICON",
+                        title: "แก้ไข Logo",
                         username: req.session.userName,
                         emailS: req.session.emailUser,
                         levelS: req.session.level,
@@ -377,7 +377,7 @@ const ifNotLogIn = (req, res, next) => {
                     });
                 } else {
                     res.render("adminData/icon", {
-                        title: "แก้ไขICON",
+                        title: "แก้ไข Logo",
                         username: req.session.userName,
                         emailS: req.session.emailUser,
                         levelS: req.session.level,

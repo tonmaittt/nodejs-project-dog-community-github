@@ -2510,7 +2510,9 @@ router.post("/pointOutAdd", (req, res, next) => {
   }
 });
 
-// ประวิต point
+// ประวัติ point
+
+//เติม
 router.get("/historyPoint", function (req, res, next) {
   if (!req.session.ifNotLogIn || req.session.level === 1) {
     return res.redirect("/");
@@ -2530,7 +2532,7 @@ router.get("/historyPoint", function (req, res, next) {
               res.redirect("/");
             } else {
               res.render("historyPoint", {
-                title: "ประวัติพอยท์",
+                title: "ประวัติเติมพอยท์",
                 username: req.session.userName,
                 emailS: req.session.emailUser,
                 levelS: req.session.level,
@@ -2547,13 +2549,177 @@ router.get("/historyPoint", function (req, res, next) {
   
 });
 
+router.get("/historyPointOut", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+    (err, pointShow) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        dbCon.query(
+          "SELECT tb_out_point.*, tb_confirm_out_point.photo FROM tb_out_point JOIN tb_confirm_out_point ON tb_out_point.out_point_id = tb_confirm_out_point.out_point_id  WHERE tb_out_point.user_id = ?",[req.session.idUser],
+          (err, pointOut) => {
+            if (err) {
+              req.flash("error", err);
+              res.redirect("/");
+            } else {
+              res.render("historyPointOut", {
+                title: "ประวัติถอนพอยท์",
+                username: req.session.userName,
+                emailS: req.session.emailUser,
+                levelS: req.session.level,
+                userImg: req.session.userImg,
+                pointShow: pointShow,
+                pointOut: pointOut
+              });
+            }
+          }
+        );
+      }
+    }
+  );
+  
+});
 
+router.get("/historyBoost", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_point_user WHERE user_id = ?",[req.session.idUser],
+    (err, pointShow) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        dbCon.query(
+          "SELECT tb_boost.*, tb_shop.user_id,tb_shop.photo,tb_shop.title FROM tb_boost JOIN tb_shop ON tb_boost.shop_id = tb_shop.shop_id  WHERE tb_shop.user_id = ?",[req.session.idUser],
+          (err, boost) => {
+            if (err) {
+              req.flash("error", err);
+              res.redirect("/");
+            } else {
+              res.render("historyBoost", {
+                title: "ประวัติโปรโมทร้านค้า",
+                username: req.session.userName,
+                emailS: req.session.emailUser,
+                levelS: req.session.level,
+                userImg: req.session.userImg,
+                pointShow: pointShow,
+                boost: boost
+              });
+            }
+          }
+        );
+      }
+    }
+  );
+  
+});
 
+router.get("/historyBoardhealth", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_boardhealth  WHERE user_id = ?",[req.session.idUser],
+    (err, data) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("historyBoardhealth", {
+          title: "ประวัติบอร์ดสุขภาพ",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: data
+        });
+      }
+    }
+  );
+  
+});
 
+router.get("/historyArticle", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_article  WHERE user_id = ?",[req.session.idUser],
+    (err, data) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("historyArticle", {
+          title: "ประวัติบทความ",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: data
+        });
+      }
+    }
+  );
+  
+});
 
+router.get("/historyBoardcommunity", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_communityboard  WHERE user_id = ?",[req.session.idUser],
+    (err, data) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("historyBoardcommunity", {
+          title: "ประวัติบอร์ดชุมชน",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: data
+        });
+      }
+    }
+  );
+  
+});
 
-
-
+router.get("/historyShop", function (req, res, next) {
+  if (!req.session.ifNotLogIn || req.session.level === 1) {
+    return res.redirect("/");
+  }
+  dbCon.query(
+    "SELECT * FROM tb_shop  WHERE user_id = ?",[req.session.idUser],
+    (err, data) => {
+      if (err) {
+        req.flash("error", err);
+        res.redirect("/");
+      } else {
+        res.render("historyShop", {
+          title: "ประวัติร้านค้า",
+          username: req.session.userName,
+          emailS: req.session.emailUser,
+          levelS: req.session.level,
+          userImg: req.session.userImg,
+          data: data
+        });
+      }
+    }
+  );
+  
+});
 
 
 /* login page. -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -2612,28 +2778,39 @@ router.post("/login/submit", (req, res, next) => {
             "SELECT * FROM tb_user WHERE email = ?",[email],
             async (err, rows) => {
               if (rows.length == 1) {
-                let chackpass = await bcrypt.compare(
-                  password,
-                  rows[0].password
-                );
-                if (chackpass) {
-                  req.session.ifNotLogIn = true;
-                  req.session.idUser = rows[0].id;
-                  req.session.emailUser = rows[0].email;
-                  req.session.level = rows[0].level;
-                  req.session.userName = rows[0].username;
-                  req.session.userImg = rows[0].img;
-                  //res.redirect(req.get('referer'));
-                  res.redirect("../");
-                } else {
-                  req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+                if (rows[0].status == 0) {
+                  req.flash("error", "บัญชีนี้ถูกปิด");
                   res.render("login", {
                     title: "Login",
                     emailS: "0",
                     email: email,
                     password: "",
                   });
+                }else{
+                  let chackpass = await bcrypt.compare(
+                    password,
+                    rows[0].password
+                  );
+                  if (chackpass) {
+                    req.session.ifNotLogIn = true;
+                    req.session.idUser = rows[0].id;
+                    req.session.emailUser = rows[0].email;
+                    req.session.level = rows[0].level;
+                    req.session.userName = rows[0].username;
+                    req.session.userImg = rows[0].img;
+                    //res.redirect(req.get('referer'));
+                    res.redirect("../");
+                  } else {
+                    req.flash("error", "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+                    res.render("login", {
+                      title: "Login",
+                      emailS: "0",
+                      email: email,
+                      password: "",
+                    });
+                  }
                 }
+                
               }
             }
           );
@@ -3857,7 +4034,7 @@ router.get("/myBoardhealth", function (req, res, next) {
     return res.redirect("../*")
   }
   dbCon.query(
-    "SELECT tb_boardhealth.user_id,tb_boardhealth.boardhealth_id,tb_boardhealth.title,tb_boardhealth.photo,tb_boardhealth.details,tb_boardhealth.status,tb_boardhealth.view,tb_boardhealth.created_at,tb_boardhealth.update_at, tb_user.username FROM tb_boardhealth INNER JOIN tb_user ON tb_boardhealth.user_id = tb_user.id WHERE tb_boardhealth.user_id = ? ORDER BY boardhealth_id DESC",[req.session.idUser],
+    "SELECT tb_boardhealth.user_id,tb_boardhealth.boardhealth_id,tb_boardhealth.title,tb_boardhealth.photo,tb_boardhealth.details,tb_boardhealth.status,tb_boardhealth.view,tb_boardhealth.created_at,tb_boardhealth.update_at, tb_user.username FROM tb_boardhealth INNER JOIN tb_user ON tb_boardhealth.user_id = tb_user.id WHERE tb_boardhealth.user_id = ? AND tb_boardhealth.status = 1 ORDER BY boardhealth_id DESC",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -4035,7 +4212,7 @@ router.get("/myArticle", function (req, res, next) {
     return res.redirect("../*")
   }
   dbCon.query(
-    "SELECT tb_article.article_id,tb_article.title,tb_article.photo,tb_article.details,tb_article.status,tb_article.view,tb_article.created_at,tb_article.update_at,tb_user.username,tb_user.img FROM tb_article INNER JOIN tb_user ON tb_article.user_id = tb_user.id WHERE tb_article.user_id = ? ORDER BY article_id DESC",[req.session.idUser],
+    "SELECT tb_article.article_id,tb_article.title,tb_article.photo,tb_article.details,tb_article.status,tb_article.view,tb_article.created_at,tb_article.update_at,tb_user.username,tb_user.img FROM tb_article INNER JOIN tb_user ON tb_article.user_id = tb_user.id WHERE tb_article.user_id = ? AND tb_article.status = 1 ORDER BY article_id DESC",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -4211,7 +4388,7 @@ router.get("/myBoardcommunity", function (req, res, next) {
     return res.redirect("../*")
   }
   dbCon.query(
-    "SELECT tb_communityboard.communityboard_id,tb_communityboard.title,tb_communityboard.photo,tb_communityboard.details,tb_communityboard.status,tb_communityboard.view,tb_communityboard.created_at,tb_communityboard.update_at,tb_user.username,tb_user.img FROM tb_communityboard INNER JOIN tb_user ON tb_communityboard.user_id = tb_user.id WHERE tb_communityboard.user_id = ? ORDER BY communityboard_id DESC",[req.session.idUser],
+    "SELECT tb_communityboard.communityboard_id,tb_communityboard.title,tb_communityboard.photo,tb_communityboard.details,tb_communityboard.status,tb_communityboard.view,tb_communityboard.created_at,tb_communityboard.update_at,tb_user.username,tb_user.img FROM tb_communityboard INNER JOIN tb_user ON tb_communityboard.user_id = tb_user.id WHERE tb_communityboard.user_id = ? AND tb_communityboard.status = 1 ORDER BY communityboard_id DESC",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
@@ -4387,7 +4564,7 @@ router.get("/myShop", function (req, res, next) {
     return res.redirect("../*")
   }
   dbCon.query(
-    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id WHERE tb_shop.user_id = ? ORDER BY boost DESC , shop_id DESC",[req.session.idUser],
+    "SELECT tb_shop.shop_id,tb_shop.title,tb_shop.photo,tb_shop.details,tb_shop.status,tb_shop.boost,tb_shop.view,tb_shop.created_at,tb_shop.update_at, tb_user.username, tb_user_shop.shop_name FROM tb_shop LEFT JOIN tb_user ON tb_shop.user_id = tb_user.id LEFT JOIN tb_user_shop ON tb_shop.user_id = tb_user_shop.user_id WHERE tb_shop.user_id = ? AND tb_shop.status = 1 ORDER BY boost DESC , shop_id DESC",[req.session.idUser],
     (err, rows) => {
       if (err) {
         req.flash("error", err);
